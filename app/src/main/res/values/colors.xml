@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorPrimaryDark">#0288D1</color>
+    <color name="colorAccent">#FF5722</color>
+    <color name="windowBackground">#303030</color>
+    <color name="amoled_black">#000000</color>
+</resources>

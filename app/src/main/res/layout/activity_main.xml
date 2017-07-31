@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wardellbagby.tokipona.ui.activity.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:fitsSystemWindows="false"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:background="@color/amoled_black"
+        app:itemIconTint="@drawable/nav_color_state"
+        app:itemTextColor="@drawable/nav_color_state"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/navigation" />
+
+</android.support.constraint.ConstraintLayout>

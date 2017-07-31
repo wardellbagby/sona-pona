@@ -1,0 +1,56 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
+    defaultConfig {
+
+        applicationId "com.wardellbagby.tokipona"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+repositories {
+    maven { url "https://jitpack.io" }
+    maven { url 'https://maven.google.com' }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "com.android.support:support-v4:$support_lib_version"
+    implementation "com.android.support:appcompat-v7:$support_lib_version"
+    implementation "com.android.support:recyclerview-v7:$support_lib_version"
+    implementation "com.android.support:design:$support_lib_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation "com.android.support:support-vector-drawable:$support_lib_version"
+    implementation "com.android.support:design:$support_lib_version"
+    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.bowyer.app:fab-toolbar:1.1.0@aar'
+    implementation 'org.droidparts:droidparts-misc:3.2.0'
+    implementation 'com.github.yamamotoj:pikkel:0.3.3'
+    implementation('com.github.ozodrukh:CirculaRreveal:2.0.1') {
+        transitive = true
+    }
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+}

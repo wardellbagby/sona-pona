@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    tools:context="com.wardellbagby.tokipona.ui.fragment.WordListFragment">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include layout="@layout/word_list" />
+    </FrameLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_search" />
+
+    <com.bowyer.app.fabtoolbar.FabToolbar
+        android:id="@+id/fab_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:tb_anim_duration="400"
+        app:tb_color="@color/colorAccent"
+        app:tb_container_gravity="center"
+        app:tb_fab_type="normal">
+
+        <org.droidparts.widget.ClearableEditText
+            android:id="@+id/search_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableEnd="@drawable/ic_clear"
+            android:hint="@string/search_hint"
+            android:maxLines="1" />
+
+    </com.bowyer.app.fabtoolbar.FabToolbar>
+
+
+</android.support.design.widget.CoordinatorLayout>

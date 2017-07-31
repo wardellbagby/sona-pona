@@ -1,0 +1,1898 @@
+[
+  {
+    "name": "a",
+    "definitions": [
+      {
+        "part_of_speech": "INTERJECTION",
+        "definition": "ah, ha, uh, oh, ooh, aw, well (emotion word)"
+      }
+    ],
+    "gloss": "ah"
+  },
+  {
+    "name": "akesi",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "non-cute animal, reptile, amphibian"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "creeping animal, a scaly or slimy animal that creeps on land"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "reptile, any air-breathing cold-blooded animal that crawls on land and has scales and bones; reptile"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "amphibian, any cold-blooded animal with bones that lives on both land and in water; amphibian"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "large arthropod, a large arthropod that lives on land; scorpion"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "like an akesi in appearance"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "having the characteristics or properties of an akesi "
+      }
+    ],
+    "gloss": "reptile"
+  },
+  {
+    "name": "ala",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "no, not, none, un-"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "nothing, negation, zero"
+      },
+      {
+        "part_of_speech": "INTERJECTION",
+        "definition": "no!"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "not, not such; no, not"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "no, zero, no quantity of; no, zero"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "un-, opposite of; un-"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "the state, situation or general phenomenon of being ala; absence, emptiness, negation, nothing, zero"
+      },
+      {
+        "part_of_speech": "INTERJECTION",
+        "definition": "a short, sudden or emotional expression of ala; no! "
+      }
+    ],
+    "gloss": "not"
+  },
+  {
+    "name": "alasa",
+    "definitions": [
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "to gather, to collect food, resources or material needed for daily life and survival; to gather, harvest"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "to hunt, to pursue and kill animals to use as food and clothing; to hunt"
+      }
+    ],
+    "gloss": "hunt"
+  },
+  {
+    "name": "ale",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "everything, anything, life, the universe"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "all, every, complete, whole"
+      }
+    ],
+    "gloss": "everything"
+  },
+  {
+    "name": "anpa",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "bottom, lower part, under, below, floor, beneath"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "low, lower, bottom, down"
+      }
+    ],
+    "gloss": "bottom"
+  },
+  {
+    "name": "ante",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "difference"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "different"
+      },
+      {
+        "part_of_speech": "CONJUNCTION",
+        "definition": "otherwise, or else"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "change, alter, modify"
+      }
+    ],
+    "gloss": "different"
+  },
+  {
+    "name": "anu",
+    "definitions": [
+      {
+        "part_of_speech": "CONJUNCTION",
+        "definition": "or"
+      }
+    ],
+    "gloss": "or"
+  },
+  {
+    "name": "awen",
+    "definitions": [
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "stay, wait, remain"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "keep"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "remaining, stationary, permanent, sedentary"
+      }
+    ],
+    "gloss": "wait"
+  },
+  {
+    "name": "e",
+    "definitions": [
+      {
+        "part_of_speech": "SEPARATOR",
+        "definition": "(introduces a direct object)"
+      }
+    ],
+    "gloss": "the"
+  },
+  {
+    "name": "en",
+    "definitions": [
+      {
+        "part_of_speech": "CONJUNCTION",
+        "definition": "and (used to coordinate head nouns)"
+      }
+    ],
+    "gloss": "and"
+  },
+  {
+    "name": "esun",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "market, shop"
+      }
+    ],
+    "gloss": "shop"
+  },
+  {
+    "name": "ijo",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "thing, something, stuff, anything, object"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "of something"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "objectify"
+      }
+    ],
+    "gloss": "thing"
+  },
+  {
+    "name": "ike",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "bad, negative, wrong, evil, overly complex, (figuratively) unhealthy"
+      },
+      {
+        "part_of_speech": "INTERJECTION",
+        "definition": "oh dear! woe! alas!"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "negativity, badness, evil"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "to make bad, to worsen, to have a negative effect upon"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "to be bad, to suck"
+      }
+    ],
+    "gloss": "bad"
+  },
+  {
+    "name": "ilo",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "tool, device, machine, thing used for a specific purpose"
+      }
+    ],
+    "gloss": "tool"
+  },
+  {
+    "name": "insa",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "inside, inner world, centre, stomach"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "inner, internal"
+      }
+    ],
+    "gloss": "inside"
+  },
+  {
+    "name": "jaki",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "dirty, gross, filthy, nasty"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "dirt, pollution, garbage, filth"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "pollute, dirty"
+      },
+      {
+        "part_of_speech": "INTERJECTION",
+        "definition": "ew! yuck!"
+      }
+    ],
+    "gloss": "nasty"
+  },
+  {
+    "name": "jan",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "person, people, human, being, somebody, anybody"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "human, somebody's, personal, of people"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "personify, humanize, personalize"
+      }
+    ],
+    "gloss": "person"
+  },
+  {
+    "name": "jelo",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "yellow, light green"
+      }
+    ],
+    "gloss": "yellow"
+  },
+  {
+    "name": "jo",
+    "definitions": [
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "have, contain"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "having"
+      },
+      {
+        "part_of_speech": "KAMA",
+        "definition": "receive, get, take, obtain"
+      }
+    ],
+    "gloss": "have"
+  },
+  {
+    "name": "kala",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "fish, sea creature"
+      }
+    ],
+    "gloss": "fish"
+  },
+  {
+    "name": "kalama",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "sound, noise, voice"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "make noise"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "sound, ring, play (an instrument)"
+      }
+    ],
+    "gloss": "noise"
+  },
+  {
+    "name": "kama",
+    "definitions": [
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "come, become, arrive, happen, pursue actions to arrive to (a certain state), manage to, start to"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "event, happening, chance, arrival, beginning"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "coming, future"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "bring about, summon"
+      }
+    ],
+    "gloss": "come"
+  },
+  {
+    "name": "kasi",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "plant, leaf, herb, tree, wood"
+      }
+    ],
+    "gloss": "plant"
+  },
+  {
+    "name": "ken",
+    "definitions": [
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "can, is able to, is allowed to, may, is possible"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "possibility, ability, power to do things, permission"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "make possible, enable, allow, permit"
+      }
+    ],
+    "gloss": "can"
+  },
+  {
+    "name": "kepeken",
+    "definitions": [
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "use"
+      },
+      {
+        "part_of_speech": "PREPOSITION",
+        "definition": "with"
+      }
+    ],
+    "gloss": "use"
+  },
+  {
+    "name": "kili",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "fruit, pulpy vegetable, mushroom"
+      }
+    ],
+    "gloss": "fruit"
+  },
+  {
+    "name": "kin",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "also, too, even, indeed (emphasizes the word(s) before it)"
+      }
+    ],
+    "gloss": "also"
+  },
+  {
+    "name": "kipisi",
+    "definitions": [
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "to cut"
+      }
+    ],
+    "gloss": "cut"
+  },
+  {
+    "name": "kiwen",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "hard, solid, stone-like, made of stone or metal"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "hard thing, rock, stone, metal, mineral, clay"
+      }
+    ],
+    "gloss": "hard"
+  },
+  {
+    "name": "ko",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "semi-solid or squishy substance, e.g. paste, powder, gum"
+      }
+    ],
+    "gloss": "squishy"
+  },
+  {
+    "name": "kon",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "air, wind, smell, soul"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "air-like, ethereal, gaseous"
+      }
+    ],
+    "gloss": "air"
+  },
+  {
+    "name": "kule",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "colour, paint"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "colourful"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "colour, paint"
+      }
+    ],
+    "gloss": "color"
+  },
+  {
+    "name": "kute",
+    "definitions": [
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "listen, hear"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "auditory, hearing"
+      }
+    ],
+    "gloss": "listen"
+  },
+  {
+    "name": "kulupu",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "group, community, society, company, people"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "communal, shared, public, of the society"
+      }
+    ],
+    "gloss": "group"
+  },
+  {
+    "name": "la",
+    "definitions": [
+      {
+        "part_of_speech": "SEPARATOR",
+        "definition": "(between adverb or phrase of context and sentence)"
+      }
+    ],
+    "gloss": "then,"
+  },
+  {
+    "name": "lape",
+    "definitions": [
+      {
+        "part_of_speech": "n, vi",
+        "definition": "sleep, rest"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "sleeping, of sleep"
+      }
+    ],
+    "gloss": "sleep"
+  },
+  {
+    "name": "laso",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "blue, blue-green"
+      }
+    ],
+    "gloss": "blue"
+  },
+  {
+    "name": "lawa",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "head, mind"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "main, leading, in charge"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "lead, control, rule, steer"
+      }
+    ],
+    "gloss": "head"
+  },
+  {
+    "name": "len",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "clothing, cloth, fabric"
+      }
+    ],
+    "gloss": "clothes"
+  },
+  {
+    "name": "lete",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "cold"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "cold, uncooked"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "cool down, chill"
+      }
+    ],
+    "gloss": "cold"
+  },
+  {
+    "name": "li",
+    "definitions": [
+      {
+        "part_of_speech": "SEPARATOR",
+        "definition": "\"(between any subject except mi and sina and its verb; also used to introduce a new verb for the same subject)\""
+      }
+    ],
+    "gloss": "is"
+  },
+  {
+    "name": "lili",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "small, little, young, a bit, short, few, less"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "reduce, shorten, shrink, lessen"
+      }
+    ],
+    "gloss": "small"
+  },
+  {
+    "name": "linja",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "long, very thin, floppy thing, e.g. string, rope, hair, thread, cord, chain"
+      }
+    ],
+    "gloss": "string"
+  },
+  {
+    "name": "lipu",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "flat and bendable thing, e.g. paper, card, ticket"
+      }
+    ],
+    "gloss": "paper"
+  },
+  {
+    "name": "loje",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "red"
+      }
+    ],
+    "gloss": "red"
+  },
+  {
+    "name": "lon",
+    "definitions": [
+      {
+        "part_of_speech": "PREPOSITION",
+        "definition": "be (located) in/at/on"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "be there, be present, be real/true, exist, be awake"
+      }
+    ],
+    "gloss": "located at"
+  },
+  {
+    "name": "luka",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "hand, arm"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "five"
+      }
+    ],
+    "gloss": "five"
+  },
+  {
+    "name": "lukin",
+    "definitions": [
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "see, look at, watch, read"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "look, watch out, pay attention"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "visual(ly)"
+      }
+    ],
+    "gloss": "see"
+  },
+  {
+    "name": "lupa",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "hole, orifice, window, door"
+      }
+    ],
+    "gloss": "hole"
+  },
+  {
+    "name": "ma",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "land, earth, country, (outdoor) area"
+      }
+    ],
+    "gloss": "land"
+  },
+  {
+    "name": "mama",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "parent, mother, father"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "of the parent, parental, maternal, fatherly"
+      }
+    ],
+    "gloss": "parent"
+  },
+  {
+    "name": "mani",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "money, material wealth, currency, dollar, capital"
+      }
+    ],
+    "gloss": "money"
+  },
+  {
+    "name": "meli",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "woman, female, girl, wife, girlfriend"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "female, feminine, womanly"
+      }
+    ],
+    "gloss": "woman"
+  },
+  {
+    "name": "mi",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "I, we"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "my, our"
+      }
+    ],
+    "gloss": "I"
+  },
+  {
+    "name": "mije",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "man, male, boy, husband, boyfriend"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "male, masculine, manly"
+      }
+    ],
+    "gloss": "man"
+  },
+  {
+    "name": "moku",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "food, meal"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "eat, drink, swallow, ingest, consume"
+      }
+    ],
+    "gloss": "eat"
+  },
+  {
+    "name": "moli",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "death"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "die, be dead"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "kill"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "dead, deadly, fatal"
+      }
+    ],
+    "gloss": "kill"
+  },
+  {
+    "name": "monsi",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "back, rear end, butt, behind"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "back, rear"
+      }
+    ],
+    "gloss": "back"
+  },
+  {
+    "name": "mu",
+    "definitions": [
+      {
+        "part_of_speech": "INTERJECTION",
+        "definition": "woof! meow! moo! etc. (cute animal noise)"
+      }
+    ],
+    "gloss": "(animal noise)"
+  },
+  {
+    "name": "mun",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "moon"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "lunar"
+      }
+    ],
+    "gloss": "moon"
+  },
+  {
+    "name": "musi",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "fun, playing, game, recreation, art, entertainment"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "artful, fun, recreational"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "play, have fun"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "amuse, entertain"
+      }
+    ],
+    "gloss": "artful"
+  },
+  {
+    "name": "mute",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "many, very, much, several, a lot, abundant, numerous, more"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "amount, quantity"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "make many or much"
+      }
+    ],
+    "gloss": "many"
+  },
+  {
+    "name": "namako",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "extra, additional, spice"
+      }
+    ],
+    "gloss": "extra"
+  },
+  {
+    "name": "nanpa",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "number"
+      },
+      {
+        "part_of_speech": "OTHER",
+        "definition": "-th (ordinal numbers)"
+      }
+    ],
+    "gloss": "number"
+  },
+  {
+    "name": "nasa",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "silly, crazy, foolish, drunk, strange, stupid, weird"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "drive crazy, make weird"
+      }
+    ],
+    "gloss": "silly"
+  },
+  {
+    "name": "nasin",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "way, manner, custom, road, path, doctrine, system, method"
+      }
+    ],
+    "gloss": "way"
+  },
+  {
+    "name": "nena",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "bump, nose, hill, mountain, button"
+      }
+    ],
+    "gloss": "bump"
+  },
+  {
+    "name": "ni",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "this, that"
+      }
+    ],
+    "gloss": "this"
+  },
+  {
+    "name": "nimi",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "word, name"
+      }
+    ],
+    "gloss": "word"
+  },
+  {
+    "name": "noka",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "leg, foot"
+      }
+    ],
+    "gloss": "leg"
+  },
+  {
+    "name": "o",
+    "definitions": [
+      {
+        "part_of_speech": "SEPARATOR",
+        "definition": "O (vocative or imperative)"
+      },
+      {
+        "part_of_speech": "INTERJECTION",
+        "definition": "hey! (calling somebody's attention)"
+      }
+    ],
+    "gloss": "hey"
+  },
+  {
+    "name": "oko",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "eye"
+      }
+    ],
+    "gloss": "eye"
+  },
+  {
+    "name": "olin",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "love"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "love"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "to love (a person)"
+      }
+    ],
+    "gloss": "love"
+  },
+  {
+    "name": "ona",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "she, he, it, they"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "her, his, its, their"
+      }
+    ],
+    "gloss": "it"
+  },
+  {
+    "name": "open",
+    "definitions": [
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "open, turn on, start"
+      }
+    ],
+    "gloss": "start"
+  },
+  {
+    "name": "pakala",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "blunder, accident, mistake, destruction, damage, breaking"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "screw up, fuck up, botch, ruin, break, hurt, injure, damage, spoil, ruin"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "screw up, fall apart, break"
+      },
+      {
+        "part_of_speech": "INTERJECTION",
+        "definition": "damn! fuck!"
+      }
+    ],
+    "gloss": "hurt"
+  },
+  {
+    "name": "pali",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "activity, work, deed, project"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "active, work-related, operating, working"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "do, make, build, create"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "act, work, function"
+      }
+    ],
+    "gloss": "work"
+  },
+  {
+    "name": "palisa",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "long, mostly hard object, e.g. rod, stick, branch"
+      }
+    ],
+    "gloss": "rod"
+  },
+  {
+    "name": "pan",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "grain, cereal"
+      }
+    ],
+    "gloss": "grain"
+  },
+  {
+    "name": "pana",
+    "definitions": [
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "give, put, send, place, release, emit, cause"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "giving, transfer, exchange"
+      }
+    ],
+    "gloss": "give"
+  },
+  {
+    "name": "pata",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "brother"
+      }
+    ],
+    "gloss": "brother"
+  },
+  {
+    "name": "pi",
+    "definitions": [
+      {
+        "part_of_speech": "SEPARATOR",
+        "definition": "of, belonging to"
+      }
+    ],
+    "gloss": "of"
+  },
+  {
+    "name": "pilin",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "feelings, emotion, heart"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "feel"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "feel, think, sense, touch"
+      }
+    ],
+    "gloss": "heart"
+  },
+  {
+    "name": "pimeja",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "black, dark"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "darkness, shadows"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "darken"
+      }
+    ],
+    "gloss": "dark"
+  },
+  {
+    "name": "pini",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "end, tip"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "completed, finished, past, done, ago"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "finish, close, end, turn off"
+      }
+    ],
+    "gloss": "end"
+  },
+  {
+    "name": "pipi",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "bug, insect, spider"
+      }
+    ],
+    "gloss": "insect"
+  },
+  {
+    "name": "poka",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "side, hip, next to"
+      },
+      {
+        "part_of_speech": "PREPOSITION",
+        "definition": "in the accompaniment of, with"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "neighbouring"
+      }
+    ],
+    "gloss": "side"
+  },
+  {
+    "name": "poki",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "container, box, bowl, cup, glass"
+      }
+    ],
+    "gloss": "container"
+  },
+  {
+    "name": "pona",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "good, simplicity, positivity"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "good, simple, positive, nice, correct, right"
+      },
+      {
+        "part_of_speech": "INTERJECTION",
+        "definition": "great! good! thanks! OK! cool! yay!"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "improve, fix, repair, make good"
+      }
+    ],
+    "gloss": "good"
+  },
+  {
+    "name": "sama",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "same, similar, equal, of equal status or position"
+      },
+      {
+        "part_of_speech": "PREPOSITION",
+        "definition": "like, as, seem"
+      },
+      {
+        "part_of_speech": "adjective",
+        "definition": "filling the same or a similar role; equivalent"
+      },
+      {
+        "part_of_speech": "adjective",
+        "definition": "self-"
+      }
+    ],
+    "gloss": "same"
+  },
+  {
+    "name": "seli",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "fire, warmth, heat"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "hot, warm, cooked"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "heat, warm up, cook"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "fire, a force of nature or chemical reaction that releases heat and light, potentially causing destruction; fire, lightning, explosion, exothermic reaction"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "heat source, something that provides heat"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "cooking source, something that provides heat for preparing food"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "light source, something that provides light"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "o use seli on"
+      }
+    ],
+    "gloss": "fire"
+  },
+  {
+    "name": "selo",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "outside, surface, skin, shell, bark, shape, peel"
+      }
+    ],
+    "gloss": "outside"
+  },
+  {
+    "name": "seme",
+    "definitions": [
+      {
+        "part_of_speech": "OTHER",
+        "definition": "what, which, wh- (question word)"
+      }
+    ],
+    "gloss": "what"
+  },
+  {
+    "name": "sewi",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "high, up, above, top, over, on"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "superior, elevated, religious, formal"
+      }
+    ],
+    "gloss": "high"
+  },
+  {
+    "name": "sijelo",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "body, physical state"
+      }
+    ],
+    "gloss": "body"
+  },
+  {
+    "name": "sike",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "circle, wheel, sphere, ball, cycle"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "round, cyclical"
+      }
+    ],
+    "gloss": "circle"
+  },
+  {
+    "name": "sin",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "new, fresh, another, more"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "renew, renovate, freshen"
+      }
+    ],
+    "gloss": "new"
+  },
+  {
+    "name": "sina",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "you"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "your"
+      }
+    ],
+    "gloss": "you"
+  },
+  {
+    "name": "sinpin",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "front, chest, torso, face, wall"
+      }
+    ],
+    "gloss": "front"
+  },
+  {
+    "name": "sitelen",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "picture, image"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "draw, write"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "representation, a visual or tactile work that serves to show, describe, explain or remind us of something else; representation, model"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "picture, specific lines and shapes marked on a surface; drawing, print, painting, image, sign, sketch, outline, blueprint, etching, picture, noun diagram, chart, graph\nnoun sculpture , an object made into the shape of something; carving, sculpture, figurine, replica\n"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "diagram, chart, graph"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "sculpture , an object made into the shape of something; carving, sculpture, figurine, replica"
+      }
+    ],
+    "gloss": "image"
+  },
+  {
+    "name": "sona",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "knowledge, wisdom, intelligence, understanding"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "know, understand, know how to"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "know, understand"
+      },
+      {
+        "part_of_speech": "KAMA",
+        "definition": "learn, study"
+      }
+    ],
+    "gloss": "learn"
+  },
+  {
+    "name": "soweli",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "animal, especially land mammal, lovable animal"
+      }
+    ],
+    "gloss": "animal"
+  },
+  {
+    "name": "suli",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "big, tall, long, adult, important"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "enlarge, lengthen"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "size"
+      }
+    ],
+    "gloss": "big"
+  },
+  {
+    "name": "suno",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "sun, light"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "having the qualities or characteristics of suno, shiny"
+      }
+    ],
+    "gloss": "sun"
+  },
+  {
+    "name": "supa",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "horizontal surface, e.g furniture, table, chair, pillow, floor"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "supporting platform, surface"
+      }
+    ],
+    "gloss": "horizontal surface"
+  },
+  {
+    "name": "suwi",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "candy, sweet food"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "sweet, cute"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "sweeten"
+      }
+    ],
+    "gloss": "cute"
+  },
+  {
+    "name": "tan",
+    "definitions": [
+      {
+        "part_of_speech": "PREPOSITION",
+        "definition": "from, by, because of, since"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "origin, cause"
+      },
+      {
+        "part_of_speech": "relation word",
+        "definition": " origin, indicates the place of origin"
+      }
+    ],
+    "gloss": "from"
+  },
+  {
+    "name": "taso",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "only, sole"
+      },
+      {
+        "part_of_speech": "CONJUNCTION",
+        "definition": "but"
+      }
+    ],
+    "gloss": "but"
+  },
+  {
+    "name": "tawa",
+    "definitions": [
+      {
+        "part_of_speech": "PREPOSITION",
+        "definition": "to, in order to, towards, for, until"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "go to, walk, travel, move, leave"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "movement, transportation"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "moving, mobile"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "move, displace"
+      }
+    ],
+    "gloss": "to"
+  },
+  {
+    "name": "telo",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "water, liquid, juice, sauce"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "water, wash with water"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "liquid, a flowing wet substance; liquid, fluid, water"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "beverage, a liquid for drinking; beverage, drink, water, juice"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "a liquid for washing; water"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "body fluid, a liquid that comes out of the body; blood, milk, saliva, semen, sweat, tears, urine"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "body of water, an area covered with water; bay, strait, sea, lake, river, stream"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "to use telo on; to water, rinse, wash, wet"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "having the characteristics or properties of telo; wet, liquid"
+      }
+    ],
+    "gloss": "water"
+  },
+  {
+    "name": "tenpo",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "time, period of time, moment, duration, situation"
+      }
+    ],
+    "gloss": "time"
+  },
+  {
+    "name": "toki",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "language, talking, speech, communication"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "talking, verbal"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "say"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "talk, chat, communicate"
+      },
+      {
+        "part_of_speech": "INTERJECTION",
+        "definition": "hello! hi!"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "to give and receive (e: information) (tawa: with); to communicate"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "to put together (e: thoughts or ideas); to think out"
+      }
+    ],
+    "gloss": "talk"
+  },
+  {
+    "name": "tomo",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "indoor constructed space, e.g. house, home, room, building"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "urban, domestic, household"
+      }
+    ],
+    "gloss": "house"
+  },
+  {
+    "name": "tu",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "two"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "duo, pair"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "double, separate/cut/divide in two"
+      }
+    ],
+    "gloss": "two"
+  },
+  {
+    "name": "unpa",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "sex, sexuality"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "erotic, sexual"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "have sex with, sleep with, fuck"
+      },
+      {
+        "part_of_speech": "INTRANSITIVE_VERB",
+        "definition": "have sex"
+      }
+    ],
+    "gloss": "sex"
+  },
+  {
+    "name": "uta",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "mouth"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "oral"
+      }
+    ],
+    "gloss": "mouth"
+  },
+  {
+    "name": "utala",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "conflict, disharmony, competition, fight, war, battle, attack, blow, argument, physical or verbal violence"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "hit, strike, attack, compete against"
+      }
+    ],
+    "gloss": "fight"
+  },
+  {
+    "name": "walo",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "white, light (colour)"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "white thing or part, whiteness, lightness"
+      }
+    ],
+    "gloss": "white"
+  },
+  {
+    "name": "wan",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "one, a"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "unit, element, particle, part, piece"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "unite, make one"
+      }
+    ],
+    "gloss": "one"
+  },
+  {
+    "name": "waso",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "bird, winged animal"
+      }
+    ],
+    "gloss": "bird"
+  },
+  {
+    "name": "wawa",
+    "definitions": [
+      {
+        "part_of_speech": "NOUN",
+        "definition": "energy, strength, power"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "energetic, strong, fierce, intense, sure, confident, powerful"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "strengthen, energize, empower"
+      }
+    ],
+    "gloss": "powerful"
+  },
+  {
+    "name": "weka",
+    "definitions": [
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "away, absent, missing"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "absence"
+      },
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "throw away, remove, get rid of"
+      }
+    ],
+    "gloss": "away"
+  },
+  {
+    "name": "wile",
+    "definitions": [
+      {
+        "part_of_speech": "TRANSITIVE_VERB",
+        "definition": "to want, need, wish, have to, must, will, should"
+      },
+      {
+        "part_of_speech": "NOUN",
+        "definition": "desire, need, will"
+      },
+      {
+        "part_of_speech": "MODIFIER",
+        "definition": "necessary"
+      }
+    ],
+    "gloss": "want"
+  }
+]
