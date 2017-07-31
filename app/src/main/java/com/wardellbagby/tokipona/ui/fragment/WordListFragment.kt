@@ -1,11 +1,8 @@
 package com.wardellbagby.tokipona.ui.fragment
 
-
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
 import android.support.v7.util.SortedList
-import android.support.v7.util.SortedList.Callback
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,21 +11,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.bowyer.app.fabtoolbar.FabToolbar
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.wardellbagby.tokipona.R
 import com.wardellbagby.tokipona.model.Word
+import com.wardellbagby.tokipona.util.Words
 import org.droidparts.widget.ClearableEditText
-import java.io.InputStreamReader
 
 /**
  * @author Wardell Bagby
  */
 class WordListFragment : BaseFragment() {
 
-    private var mTwoPane: Boolean = false
     private var mAdapter: SimpleItemRecyclerViewAdapter? = null
     private var mFabToolbar: FabToolbar? = null
+    private var mListener: ((Word) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_word_list, container, false)
@@ -59,8 +54,6 @@ class WordListFragment : BaseFragment() {
 
         val recyclerView = rootView.findViewById<View?>(R.id.word_list)
         setupRecyclerView(recyclerView as RecyclerView)
-
-        mTwoPane = rootView.findViewById<View>(R.id.word_detail_container) != null
     }
 
     override fun onBackPressed(): Boolean {
@@ -71,20 +64,24 @@ class WordListFragment : BaseFragment() {
         return false
     }
 
+    fun setOnWordClickedListener(listener: ((Word) -> Unit)?) {
+        mListener = listener
+    }
+
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        val gson = Gson()
-        val reader = InputStreamReader(resources.assets.open("word_list.json"))
-        val words: List<Word> = gson.fromJson(reader, object : TypeToken<List<Word>>() {}.type)
-        mAdapter = SimpleItemRecyclerViewAdapter(words)
-        recyclerView.adapter = mAdapter
+        //todo This should maybe show a loading bar?
+        Words.getWords(context, {
+            mAdapter = SimpleItemRecyclerViewAdapter(it)
+            recyclerView.adapter = mAdapter
+        })
     }
 
     inner class SimpleItemRecyclerViewAdapter(private val mValues: Collection<Word>) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
         private var mWords: SortedList<Word>? = null
 
         init {
-            mWords = SortedList<Word>(Word::class.java, object : Callback<Word>() {
+            mWords = SortedList<Word>(Word::class.java, object : SortedList.Callback<Word>() {
                 override fun onChanged(p0: Int, p1: Int) {
                     this@SimpleItemRecyclerViewAdapter.notifyItemRangeChanged(p0, p1)
                 }
@@ -127,24 +124,12 @@ class WordListFragment : BaseFragment() {
         }
 
         override fun onBindViewHolder(holder: SimpleItemRecyclerViewAdapter.ViewHolder, position: Int) {
-            holder.mItem = mWords!![position]
-            holder.mIdView.text = mWords!![position].name
-            holder.mContentView.text = mWords!![position].definitions[0].definitionText
+            holder.word = mWords?.get(position)
+            holder.name.text = holder.word?.name
+            holder.definition.text = holder.word?.definitions?.get(0)?.definitionText
 
-            holder.mView.setOnClickListener { _ ->
-                val manager = if (mTwoPane) childFragmentManager else fragmentManager
-                val layoutId = if (mTwoPane) R.id.word_detail_container else R.id.frameLayout
-
-                var fragment: Fragment? = manager.findFragmentByTag(holder.mItem?.name)
-                if (fragment == null) {
-                    fragment = WordDetailFragment()
-                    fragment.arguments = Bundle().apply { putParcelable(WordDetailFragment.Companion.WORD, holder.mItem) }
-                }
-
-                manager.beginTransaction()
-                        .replace(layoutId, fragment)
-                        .addToBackStack(R.id.navigation_dictionary.toString())
-                        .commit()
+            holder.view.setOnClickListener { _ ->
+                mListener?.invoke(holder.word ?: Word())
             }
         }
 
@@ -167,14 +152,10 @@ class WordListFragment : BaseFragment() {
             }
         }
 
-        inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-            val mIdView: TextView = mView.findViewById<View>(R.id.id) as TextView
-            val mContentView: TextView = mView.findViewById<View>(R.id.content) as TextView
-            var mItem: Word? = null
-
-            override fun toString(): String {
-                return super.toString() + " '" + mContentView.text + "'"
-            }
+        inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+            val name: TextView = view.findViewById<View>(R.id.id) as TextView
+            val definition: TextView = view.findViewById<View>(R.id.content) as TextView
+            var word: Word? = null
         }
     }
 }

@@ -7,5 +7,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.wardellbagby.tokipona.ui.fragment.WordListFragment"
+    tools:context="com.wardellbagby.tokipona.ui.fragment.DefinitionsFragment"
     tools:listitem="@layout/word_list_content" />

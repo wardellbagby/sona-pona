@@ -1,26 +1,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="32dp"
-    android:paddingRight="32dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
     tools:context="com.wardellbagby.tokipona.ui.fragment.DefinitionsFragment">
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/word_list"
-        android:name="com.wardellbagby.tokipona.WordListFragment"
+        android:name="com.wardellbagby.tokipona.ui.fragment.WordListFragment"
         android:layout_width="@dimen/item_width"
         android:layout_height="match_parent"
-
-        app:layoutManager="LinearLayoutManager"
-        tools:context="com.wardellbagby.tokipona.ui.fragment.DefinitionsFragment"
-        tools:listitem="@layout/word_list_content" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:tag="@id/navigation_dictionary" />
 
     <FrameLayout
         android:id="@+id/word_detail_container"

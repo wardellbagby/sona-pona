@@ -12,9 +12,11 @@ import com.wardellbagby.tokipona.R
 import com.wardellbagby.tokipona.model.Word
 
 /**
+ * Show the details (currently, just the definitions) of a [Word]
+ *
  * @author Wardell Bagby
  */
-class WordDetailFragment : BaseFragment() {
+class WordDetailsFragment : BaseFragment() {
     companion object {
         val WORD = "word"
     }

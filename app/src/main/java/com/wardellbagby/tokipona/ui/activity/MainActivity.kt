@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import com.wardellbagby.tokipona.R
+import com.wardellbagby.tokipona.ui.fragment.DefinitionsFragment
 import com.wardellbagby.tokipona.ui.fragment.GlossFragment
-import com.wardellbagby.tokipona.ui.fragment.WordListFragment
 import com.wardellbagby.tokipona.util.getLastBackStackEntry
 import com.wardellbagby.tokipona.util.isLastBackEntry
 
@@ -28,7 +28,7 @@ class MainActivity : BaseActivity() {
         if (fragment == null) {
             when (item.itemId) {
                 R.id.navigation_dictionary -> {
-                    fragment = WordListFragment()
+                    fragment = DefinitionsFragment()
                 }
                 R.id.navigation_gloss -> {
                     fragment = GlossFragment()
@@ -53,9 +53,17 @@ class MainActivity : BaseActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.frameLayout, WordListFragment(), R.id.navigation_dictionary.toString())
+                    .replace(R.id.frameLayout, DefinitionsFragment(), R.id.navigation_dictionary.toString())
                     .commit()
         }
+        /*todo This isn't working correctly. There is some backstack logic that is getting out of
+        hand and should be simplified, if possible. Specifically around the child fragment logic
+        in DefinitionsFragment. It might be a good idea to have BaseFragment force subclasses to
+        override a function that will force all fragments to report an ID that will respond to their
+        most parent fragment? Although since the DefinitionsFragment is using childFragments, the
+        issue might be more along the lines of this function just having an odd corner case that
+        I'm missing.
+         */
         supportFragmentManager.addOnBackStackChangedListener {
             val currentSelectedId = navigation.selectedItemId
             val newSelectedId = supportFragmentManager
