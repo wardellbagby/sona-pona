@@ -3,6 +3,7 @@ package com.wardellbagby.tokipona.ui.fragment
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.util.SortedList
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,9 +22,13 @@ import org.droidparts.widget.ClearableEditText
  */
 class WordListFragment : BaseFragment() {
 
+    private var mSearchEditText: ClearableEditText? = null
+    private var mRecyclerView: RecyclerView? = null
     private var mAdapter: SimpleItemRecyclerViewAdapter? = null
     private var mFabToolbar: FabToolbar? = null
-    private var mListener: ((Word) -> Unit)? = null
+    private var mListener: ((Word) -> Boolean)? = null
+    private var mScrollPosition by state(0)
+    private var mSelectedWord: Word? by state(null)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_word_list, container, false)
@@ -32,14 +37,16 @@ class WordListFragment : BaseFragment() {
 
     override fun onViewCreated(rootView: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(rootView, savedInstanceState)
-        val fab = rootView?.findViewById<View>(R.id.fab) as FloatingActionButton
-        mFabToolbar = rootView.findViewById<View>(R.id.fab_toolbar) as FabToolbar
+
+        val fab = rootView?.findViewById<FloatingActionButton>(R.id.fab)
+        mFabToolbar = rootView?.findViewById<FabToolbar>(R.id.fab_toolbar)
         mFabToolbar?.setFab(fab)
-        fab.setOnClickListener { mFabToolbar?.expandFab() }
-        val searchEditText = mFabToolbar?.findViewById<View>(R.id.search_edit_text) as ClearableEditText
-        searchEditText.addTextChangedListener(object : TextWatcher {
+        fab?.setOnClickListener { mFabToolbar?.expandFab() }
+
+        mSearchEditText = mFabToolbar?.findViewById<ClearableEditText>(R.id.search_edit_text)
+        mSearchEditText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                val text = searchEditText.text.toString().toLowerCase()
+                val text = s.toString().toLowerCase()
                 mAdapter?.filter(text)
             }
 
@@ -48,33 +55,57 @@ class WordListFragment : BaseFragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
         })
-        searchEditText.setListener {
+        mSearchEditText?.setListener {
+            mSearchEditText?.text?.clear()
             mFabToolbar?.slideInFab()
         }
 
-        val recyclerView = rootView.findViewById<View?>(R.id.word_list)
-        setupRecyclerView(recyclerView as RecyclerView)
+        mRecyclerView = rootView?.findViewById<RecyclerView>(R.id.word_list)
+        setupRecyclerView()
     }
 
     override fun onBackPressed(): Boolean {
         if (mFabToolbar?.isFabExpanded ?: false) {
+            mSearchEditText?.text?.clear()
             mFabToolbar?.slideInFab()
             return true
         }
         return false
     }
 
-    fun setOnWordClickedListener(listener: ((Word) -> Unit)?) {
+    /**
+     * Sets a callback that will be invoked when a [Word] is selected by the user.
+     * This callback will receive the [Word] that was selected, and should return a boolean
+     * stating whether or not the word should show as selected in the [WordListFragment]
+     */
+    fun setOnWordSelectedCallback(listener: ((Word) -> Boolean)?) {
         mListener = listener
     }
 
 
-    private fun setupRecyclerView(recyclerView: RecyclerView) {
+    private fun setupRecyclerView() {
         //todo This should maybe show a loading bar?
         Words.getWords(context, {
             mAdapter = SimpleItemRecyclerViewAdapter(it)
-            recyclerView.adapter = mAdapter
+            mRecyclerView?.adapter = mAdapter
+            (mRecyclerView?.layoutManager as LinearLayoutManager).scrollToPosition(mScrollPosition)
+            mRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    mScrollPosition = (mRecyclerView?.layoutManager as? LinearLayoutManager)
+                            ?.findFirstCompletelyVisibleItemPosition() ?: 0
+                }
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                }
+            })
         })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mScrollPosition = (mRecyclerView?.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition() ?: 0
     }
 
     inner class SimpleItemRecyclerViewAdapter(private val mValues: Collection<Word>) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
@@ -91,7 +122,7 @@ class WordListFragment : BaseFragment() {
                 }
 
                 override fun compare(p0: Word?, p1: Word?): Int {
-                    return p0!!.name.compareTo(p1!!.name)
+                    return p0?.name?.compareTo(p1?.name ?: "") ?: 0
                 }
 
                 override fun areItemsTheSame(p0: Word?, p1: Word?): Boolean {
@@ -128,9 +159,23 @@ class WordListFragment : BaseFragment() {
             holder.name.text = holder.word?.name
             holder.definition.text = holder.word?.definitions?.get(0)?.definitionText
 
-            holder.view.setOnClickListener { _ ->
-                mListener?.invoke(holder.word ?: Word())
+            //todo Almost certain I can just use a ColorStateList for this...
+            if (mSelectedWord == holder.word) {
+                holder.view.setBackgroundColor(resources.getColor(R.color.colorAccent))
+            } else {
+                val attrs = intArrayOf(android.R.attr.selectableItemBackground)
+                val ta = context.obtainStyledAttributes(attrs)
+                holder.view.background = ta.getDrawable(0)
+                ta.recycle()
             }
+
+            holder.view.setOnClickListener { _ ->
+                if (mListener?.invoke(holder.word ?: Word()) ?: true) {
+                    mSelectedWord = holder.word
+                }
+                notifyDataSetChanged()
+            }
+
         }
 
         override fun getItemCount(): Int {

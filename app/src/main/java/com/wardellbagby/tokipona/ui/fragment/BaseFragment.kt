@@ -6,6 +6,7 @@ import android.view.View
 import com.github.yamamotoj.pikkel.Pikkel
 import com.github.yamamotoj.pikkel.PikkelDelegate
 import com.wardellbagby.tokipona.R
+import com.wardellbagby.tokipona.util.sendOnBackPressed
 
 /**
  * @author Wardell Bagby
@@ -23,7 +24,7 @@ open class BaseFragment : Fragment(), Pikkel by PikkelDelegate() {
     }
 
     open fun onBackPressed(): Boolean {
-        return false
+        return childFragmentManager.sendOnBackPressed()
     }
 
     open fun getTitle(): CharSequence? {

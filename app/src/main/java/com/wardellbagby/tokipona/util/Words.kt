@@ -26,6 +26,7 @@ object Words {
     fun getWords(context: Context, callback: (List<Word>) -> Unit) {
         if (wordsList != null) {
             callback(wordsList ?: listOf())
+            return
         }
         val stream = context.assets.open("word_list.json")
         LoadWordListTask {

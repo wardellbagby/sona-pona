@@ -15,12 +15,15 @@ import com.wardellbagby.tokipona.util.isTagInBackstack
  */
 class DefinitionsFragment : BaseFragment() {
 
+    private var mTwoPane = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_definitions, container, false)
     }
 
     override fun onViewCreated(rootView: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(rootView, savedInstanceState)
+        mTwoPane = resources.getBoolean(R.bool.is_two_pane)
         var listFragment: WordListFragment? = childFragmentManager.findFragmentByClass(WordListFragment::class.java)
         if (listFragment == null && !fragmentManager.isTagInBackstack(R.id.navigation_dictionary.toString())) {
             listFragment = WordListFragment()
@@ -29,7 +32,7 @@ class DefinitionsFragment : BaseFragment() {
                     .addToBackStack(R.id.navigation_dictionary.toString())
                     .commit()
         }
-        listFragment?.setOnWordClickedListener {
+        listFragment?.setOnWordSelectedCallback {
 
             var fragment: Fragment? = childFragmentManager.findFragmentByTag(it.name)
             if (fragment == null) {
@@ -41,6 +44,12 @@ class DefinitionsFragment : BaseFragment() {
                     .replace(R.id.word_detail_container, fragment, it.name)
                     .addToBackStack(it.name)
                     .commit()
+            mTwoPane // We only need to show an item as selected on two panes, where the user can see the list and details.
         }
+    }
+
+    override fun onBackPressed(): Boolean {
+        return childFragmentManager.popBackStackImmediate(R.id.navigation_dictionary.toString(), 0)
+                || super.onBackPressed()
     }
 }

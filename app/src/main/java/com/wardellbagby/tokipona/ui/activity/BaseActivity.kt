@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar
 import com.github.yamamotoj.pikkel.Pikkel
 import com.github.yamamotoj.pikkel.PikkelDelegate
 import com.wardellbagby.tokipona.R
-import com.wardellbagby.tokipona.ui.fragment.BaseFragment
+import com.wardellbagby.tokipona.util.sendOnBackPressed
 
 /**
  * @author Wardell Bagby
@@ -25,15 +25,9 @@ open class BaseActivity : AppCompatActivity(), Pikkel by PikkelDelegate() {
     }
 
     override fun onBackPressed() {
-        supportFragmentManager.fragments
-                .filter { it.isAdded && it.isVisible && !it.isRemoving && it.isResumed }
-                .firstOrNull { it is BaseFragment && it.onBackPressed() }
-                .also {
-                    if (it == null) {
-                        super.onBackPressed()
-                    }
-                }
-
+        if (!supportFragmentManager.sendOnBackPressed()) {
+            super.onBackPressed()
+        }
     }
 
     override fun setTitle(title: CharSequence?) {
