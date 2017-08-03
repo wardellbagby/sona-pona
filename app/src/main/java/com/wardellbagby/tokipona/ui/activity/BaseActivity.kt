@@ -12,7 +12,7 @@ import com.wardellbagby.tokipona.util.sendOnBackPressed
 /**
  * @author Wardell Bagby
  */
-@SuppressLint("Registered")
+@SuppressLint("Registered") //This only provides functionality to Activities that extend it.
 open class BaseActivity : AppCompatActivity(), Pikkel by PikkelDelegate() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

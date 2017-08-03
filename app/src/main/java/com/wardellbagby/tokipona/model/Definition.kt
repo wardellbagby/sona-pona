@@ -18,7 +18,7 @@ import com.google.gson.annotations.SerializedName
 data class Definition(@SerializedName("part_of_speech") val partOfSpeech: PartOfSpeech,
                       @SerializedName("definition") val definitionText: String) : Parcelable {
     companion object {
-        @Suppress("unused")
+        @Suppress("unused") // Used by the Android system to un-parcel this object.
         @JvmField val CREATOR: Parcelable.Creator<Definition> = object : Parcelable.Creator<Definition> {
             override fun createFromParcel(source: Parcel): Definition = Definition(source)
             override fun newArray(size: Int): Array<Definition?> = arrayOfNulls(size)

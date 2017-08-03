@@ -1,5 +1,6 @@
 package com.wardellbagby.tokipona.ui.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.util.SortedList
@@ -161,7 +162,12 @@ class WordListFragment : BaseFragment() {
 
             //todo Almost certain I can just use a ColorStateList for this...
             if (mSelectedWord == holder.word) {
-                holder.view.setBackgroundColor(resources.getColor(R.color.colorAccent))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    holder.view.setBackgroundColor(resources.getColor(R.color.colorAccent, context.theme))
+                } else {
+                    @Suppress("DEPRECATION") // Necessary evil until minSdk is Marshmallow.
+                    holder.view.setBackgroundColor(resources.getColor(R.color.colorAccent))
+                }
             } else {
                 val attrs = intArrayOf(android.R.attr.selectableItemBackground)
                 val ta = context.obtainStyledAttributes(attrs)

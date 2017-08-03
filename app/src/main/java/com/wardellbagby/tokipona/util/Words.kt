@@ -35,7 +35,7 @@ object Words {
         }.execute(stream)
     }
 
-    @Suppress("unused", "UNUSED_PARAMETER")
+    @Suppress("unused", "UNUSED_PARAMETER") //Will be used in the future. (Date written: 8/2/2017, remove by 2/2/2018)
     fun tokenize(sentence: String, words: List<Word>): List<Pair<PartsOfSentence, String>> {
         val tokens = sentence.split(Pattern.compile("(?=[$DELIMITERS])|(?<=[$DELIMITERS])")).filter { it != " " }
         val partsOfSentence: MutableList<Pair<PartsOfSentence, String>> = mutableListOf()
@@ -49,7 +49,7 @@ object Words {
         while (index < tokens.size) {
             val currentWord = tokens[index]
             when (currentWord) {
-                "o" -> {
+                "o"  -> {
                     partsOfSentence.addAll(handleVocative(tokens.subList(start, index)))
                     start = index
                 }
@@ -92,7 +92,7 @@ object Words {
         loop@ while (index < tokens.size) {
             val token = tokens[index]
             when (token) {
-                "e" -> {
+                "e"  -> {
                     if (index + 1 > tokens.size - 1) {
                         predicateParts.addAll(handleDirectObject(tokens.subList(index + 1, tokens.size)))
                     } else {

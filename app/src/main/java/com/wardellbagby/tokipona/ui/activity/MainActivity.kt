@@ -1,13 +1,17 @@
 package com.wardellbagby.tokipona.ui.activity
 
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import com.wardellbagby.tokipona.R
 import com.wardellbagby.tokipona.ui.fragment.DefinitionsFragment
 import com.wardellbagby.tokipona.ui.fragment.GlossFragment
 import com.wardellbagby.tokipona.util.getLastBackStackEntry
-import com.wardellbagby.tokipona.util.isLastBackEntry
+
 
 /**
  * The main entry point into the app. This Activity handles the bottom navigation bar and swapping
@@ -17,29 +21,21 @@ import com.wardellbagby.tokipona.util.isLastBackEntry
  */
 class MainActivity : BaseActivity() {
 
+    companion object {
+        val OVERLAY_PERMISSION_REQUEST_CODE = 9584
+    }
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        if (supportFragmentManager.isLastBackEntry(item.itemId.toString())) {
-            return@OnNavigationItemSelectedListener true
-        }
-        if (supportFragmentManager.popBackStackImmediate(item.itemId.toString(), 0)) {
-            return@OnNavigationItemSelectedListener true
-        }
-        var fragment: Fragment? = supportFragmentManager.findFragmentByTag(item.itemId.toString())
-        if (fragment == null) {
-            when (item.itemId) {
-                R.id.navigation_dictionary -> {
-                    fragment = DefinitionsFragment()
+        val fragment: Fragment? = supportFragmentManager.findFragmentByTag(item.itemId.toString()) ?:
+                when (item.itemId) {
+                    R.id.navigation_dictionary -> DefinitionsFragment()
+                    R.id.navigation_gloss      -> GlossFragment()
+                    else                       -> Fragment()
                 }
-                R.id.navigation_gloss -> {
-                    fragment = GlossFragment()
-                }
-                else -> {
-                    fragment = Fragment()
-                }
-            }
-        }
+
         supportFragmentManager.beginTransaction()
                 .addToBackStack(item.itemId.toString())
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .replace(R.id.frameLayout, fragment, item.itemId.toString())
                 .commit()
         true
@@ -72,6 +68,16 @@ class MainActivity : BaseActivity() {
                     ?.toIntOrNull() ?: BottomNavigationView.NO_ID
             if (currentSelectedId != newSelectedId) {
                 navigation.selectedItemId = newSelectedId
+            }
+        }
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + packageName)), OVERLAY_PERMISSION_REQUEST_CODE)
             }
         }
     }

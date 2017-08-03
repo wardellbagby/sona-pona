@@ -12,11 +12,7 @@ fun FragmentManager.getLastBackStackEntry(): FragmentManager.BackStackEntry? {
     return if (backStackEntryCount == 0) null else getBackStackEntryAt(backStackEntryCount - 1)
 }
 
-fun FragmentManager.isLastBackEntry(name: String): Boolean {
-    return getLastBackStackEntry()?.name == name
-}
-
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST") // We KNOW it's of type T 'cause we do a class check.
 fun <T : Fragment> FragmentManager.findFragmentByClass(clazz: Class<T>): T? {
     return fragments.firstOrNull { it.javaClass == clazz } as? T
 }
@@ -31,5 +27,7 @@ fun FragmentManager.sendOnBackPressed(): Boolean {
     return fragments
             .filter { it.isAdded && it.isVisible && !it.isRemoving && it.isResumed }
             .any { it is BaseFragment && it.onBackPressed() }
-
 }
+
+val Any.TAG: String
+    get() = javaClass.simpleName

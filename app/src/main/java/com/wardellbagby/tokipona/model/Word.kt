@@ -17,7 +17,7 @@ import android.os.Parcelable
 
 data class Word(val name: String = "", val definitions: List<Definition> = listOf(), val gloss: String? = name) : Parcelable {
     companion object {
-        @Suppress("unused")
+        @Suppress("unused") // Used by the Android system to un-parcel this object.
         @JvmField val CREATOR: Parcelable.Creator<Word> = object : Parcelable.Creator<Word> {
             override fun createFromParcel(source: Parcel): Word = Word(source)
             override fun newArray(size: Int): Array<Word?> = arrayOfNulls(size)

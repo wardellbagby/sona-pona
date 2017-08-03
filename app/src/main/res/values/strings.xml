@@ -5,4 +5,5 @@
     <string name="title_gloss">Gloss</string>
     <string name="title_quiz">Quiz</string>
     <string name="gloss_text_hint">Enter Toki Pona text to gloss.</string>
+    <string name="gloss_button_content_desc">Toki Pona Companion gloss copied text button.</string>
 </resources>

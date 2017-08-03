@@ -5,7 +5,6 @@ package com.wardellbagby.tokipona.model
  *
  * @author Wardell Bagby
  */
-@SuppressWarnings("SpellCheckingInspection")
 enum class PartOfSpeech {
     NOUN, //JAN li pona
     MODIFIER, // jan PONA li nasa.
