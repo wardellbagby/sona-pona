@@ -1,4 +1,4 @@
-package com.wardellbagby.tokipona.model
+package com.wardellbagby.tokipona.data
 
 /**
  * @author Wardell Bagby

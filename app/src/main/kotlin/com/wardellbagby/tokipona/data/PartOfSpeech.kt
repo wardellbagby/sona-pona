@@ -1,4 +1,4 @@
-package com.wardellbagby.tokipona.model
+package com.wardellbagby.tokipona.data
 
 /**
  * An enum representing the parts of speech for a [Definition] of a [Word]

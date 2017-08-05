@@ -14,7 +14,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.bowyer.app.fabtoolbar.FabToolbar
 import com.wardellbagby.tokipona.R
-import com.wardellbagby.tokipona.model.Word
+import com.wardellbagby.tokipona.data.Word
 import com.wardellbagby.tokipona.util.Words
 import org.droidparts.widget.ClearableEditText
 
@@ -199,7 +199,7 @@ class WordListFragment : BaseFragment() {
         private fun containsText(item: Word, text: String): Boolean {
             when {
                 text.toLowerCase() in item.name -> return true
-                else -> return item.definitions.any { text.toLowerCase() in it.definitionText.toLowerCase() }
+                else                            -> return item.definitions.any { text.toLowerCase() in it.definitionText.toLowerCase() }
             }
         }
 

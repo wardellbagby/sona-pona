@@ -1,4 +1,4 @@
-package com.wardellbagby.tokipona.model
+package com.wardellbagby.tokipona.data
 
 import android.os.Parcel
 import android.os.Parcelable

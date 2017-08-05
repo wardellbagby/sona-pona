@@ -1,7 +1,9 @@
 package com.wardellbagby.tokipona.util
 
+import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import com.wardellbagby.tokipona.ui.activity.BaseActivity
 import com.wardellbagby.tokipona.ui.fragment.BaseFragment
 
 /**
@@ -27,6 +29,12 @@ fun FragmentManager.sendOnBackPressed(): Boolean {
     return fragments
             .filter { it.isAdded && it.isVisible && !it.isRemoving && it.isResumed }
             .any { it is BaseFragment && it.onBackPressed() }
+}
+
+fun <EventType : BaseActivity.BaseEvent> Context.subscribe(consumer: (EventType) -> Unit) {
+    if (this is BaseActivity<*>) {
+        safeSubscribe(consumer)
+    }
 }
 
 val Any.TAG: String

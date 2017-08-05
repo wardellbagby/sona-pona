@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.tokenautocomplete.TokenCompleteTextView
 import com.wardellbagby.tokipona.R
-import com.wardellbagby.tokipona.model.Word
+import com.wardellbagby.tokipona.data.Word
 
 /**
  * @author Wardell Bagby
@@ -28,13 +28,14 @@ class WordCompletionView : TokenCompleteTextView<Word> {
 
     var isGlossed = false
         set(value) {
+            //todo Investigate performance issues and possibly replace this lib.
+            //Doing this takes too much of a performance hit on large paragraphs. I think it's
+            // a limitation of this lib using spans that I can't update after the fact.
             field = value
             val objects = objects
             clear()
             if (objects.isNotEmpty()) {
-                objects.forEach {
-                    addObject(it)
-                }
+                objects.forEach { this.addObject(it, it.name) }
             }
         }
 

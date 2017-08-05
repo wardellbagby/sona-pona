@@ -1,4 +1,4 @@
-package com.wardellbagby.tokipona.model
+package com.wardellbagby.tokipona.data
 
 /**
  * An enum that states the current status of a [Word].

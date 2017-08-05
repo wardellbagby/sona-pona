@@ -4,8 +4,8 @@ import android.content.Context
 import android.os.AsyncTask
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.wardellbagby.tokipona.model.PartsOfSentence
-import com.wardellbagby.tokipona.model.Word
+import com.wardellbagby.tokipona.data.PartsOfSentence
+import com.wardellbagby.tokipona.data.Word
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -16,7 +16,8 @@ import java.util.regex.Pattern
  */
 object Words {
 
-    const val DELIMITERS: String = " ,;\"?.!':()[]{}*^"
+    const val DELIMITERS: String = " ,;\"?\\.!':\\(\\)\\[\\]\\{\\}\\*\\^"
+    private val DELIMITERS_PATTERN = Pattern.compile("(?=[$DELIMITERS])|(?<=[$DELIMITERS])")
 
     private var wordsList: List<Word>? = null
 
@@ -35,9 +36,13 @@ object Words {
         }.execute(stream)
     }
 
+    fun convertToWords(text: String, words: List<Word>, callback: (List<Word>) -> Unit) {
+        ConvertToWordsTask(words, callback).execute(text)
+    }
+
     @Suppress("unused", "UNUSED_PARAMETER") //Will be used in the future. (Date written: 8/2/2017, remove by 2/2/2018)
     fun tokenize(sentence: String, words: List<Word>): List<Pair<PartsOfSentence, String>> {
-        val tokens = sentence.split(Pattern.compile("(?=[$DELIMITERS])|(?<=[$DELIMITERS])")).filter { it != " " }
+        val tokens = sentence.split(DELIMITERS_PATTERN).filter { it != " " }
         val partsOfSentence: MutableList<Pair<PartsOfSentence, String>> = mutableListOf()
         var index = 0
         var start = 0
@@ -145,6 +150,21 @@ object Words {
         override fun doInBackground(vararg p0: InputStream?): List<Word> {
             val reader = BufferedReader(InputStreamReader(p0[0]))
             return Gson().fromJson(reader, object : TypeToken<List<Word>>() {}.type)
+        }
+
+        override fun onPostExecute(result: List<Word>) {
+            super.onPostExecute(result)
+            callback(result)
+        }
+    }
+
+    private class ConvertToWordsTask(val words: List<Word>, val callback: (List<Word>) -> Unit) : AsyncTask<String, Unit, List<Word>>() {
+        override fun doInBackground(vararg p0: String?): List<Word> {
+            val delimiters = DELIMITERS.toCharArray()
+            val tokens = p0[0]?.split(DELIMITERS_PATTERN)?.filter { !it.trim().isBlank() && !delimiters.contains(it[0]) }
+            return tokens?.map { token ->
+                words.firstOrNull { it.name == token } ?: Word(token)
+            } ?: listOf()
         }
 
         override fun onPostExecute(result: List<Word>) {

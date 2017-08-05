@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.wardellbagby.tokipona.R
 
-import com.wardellbagby.tokipona.model.Word
+import com.wardellbagby.tokipona.data.Word
 
 /**
  * Show the details (currently, just the definitions) of a [Word]

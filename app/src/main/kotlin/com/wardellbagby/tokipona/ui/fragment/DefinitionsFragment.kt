@@ -28,8 +28,9 @@ class DefinitionsFragment : BaseFragment() {
         if (listFragment == null && !fragmentManager.isTagInBackstack(R.id.navigation_dictionary.toString())) {
             listFragment = WordListFragment()
             childFragmentManager.beginTransaction()
-                    .replace(R.id.word_detail_container, listFragment, R.id.navigation_dictionary.toString())
                     .addToBackStack(R.id.navigation_dictionary.toString())
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .replace(R.id.word_detail_container, listFragment, R.id.navigation_dictionary.toString())
                     .commit()
         }
         listFragment?.setOnWordSelectedCallback {
