@@ -1,29 +1,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.wardellbagby.tokipona.ui.fragment.GlossFragment">
 
     <com.wardellbagby.tokipona.ui.widget.WordCompletionView
         android:id="@+id/entered_text"
+        style="@android:style/Widget.EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="4"
-        android:focusable="true"
         android:layout_alignParentTop="true"
+        android:focusable="true"
         android:focusableInTouchMode="true"
+        android:hint="@string/gloss_text_hint"
         android:inputType="textNoSuggestions|textMultiLine|textVisiblePassword"
-        style="@android:style/Widget.EditText"
-        android:hint="@string/gloss_text_hint" />
+        android:lines="4" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_gloss_text" />
+        android:transitionName="@string/transition_name_fab"
+        app:srcCompat="@drawable/ic_gloss_text"
+        tools:ignore="UnusedAttribute" /><!-- No animation pre-21 and that's okay. -->
 
 </RelativeLayout>

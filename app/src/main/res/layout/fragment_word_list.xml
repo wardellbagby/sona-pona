@@ -7,16 +7,16 @@
     android:fitsSystemWindows="false"
     tools:context="com.wardellbagby.tokipona.ui.fragment.WordListFragment">
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/word_list"
-        android:name="com.wardellbagby.tokipona.WordListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:transitionName="@string/transition_name_list"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.wardellbagby.tokipona.ui.fragment.WordListFragment"
-        tools:listitem="@layout/word_list_content" />
+        tools:ignore="UnusedAttribute"
+        tools:listitem="@layout/word_list_content" /><!-- No animation pre-21 and that's okay. -->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -24,7 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_search" />
+        android:transitionName="@string/transition_name_fab"
+        app:srcCompat="@drawable/ic_search"
+        tools:ignore="UnusedAttribute" /><!-- No animation pre-21 and that's okay. -->
 
     <com.bowyer.app.fabtoolbar.FabToolbar
         android:id="@+id/fab_toolbar"

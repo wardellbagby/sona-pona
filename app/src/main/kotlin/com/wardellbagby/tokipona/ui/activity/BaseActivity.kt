@@ -2,12 +2,16 @@ package com.wardellbagby.tokipona.ui.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.support.annotation.IdRes
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.View
 import com.github.yamamotoj.pikkel.Pikkel
 import com.github.yamamotoj.pikkel.PikkelDelegate
 import com.wardellbagby.tokipona.R
 import com.wardellbagby.tokipona.ui.activity.BaseActivity.BaseEvent
+import com.wardellbagby.tokipona.util.Fragments
 import com.wardellbagby.tokipona.util.sendOnBackPressed
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -98,5 +102,13 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
                 consumer(event)
             }
         })
+    }
+
+    fun getSharedElementForTransition(transitionName: String): View? {
+        return Fragments.getSharedElementForTransition(window.decorView, supportFragmentManager, transitionName)
+    }
+
+    fun replace(@IdRes id: Int, fragmentToAdd: Fragment, tag: String) {
+        Fragments.replace(supportFragmentManager, id, fragmentToAdd, tag)
     }
 }

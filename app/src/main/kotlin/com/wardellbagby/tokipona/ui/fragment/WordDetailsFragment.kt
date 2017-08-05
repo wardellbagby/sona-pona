@@ -25,7 +25,6 @@ class WordDetailsFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         if (arguments.containsKey(WORD)) {
             mWord = arguments.getParcelable<Word>(WORD)
             val activity = this.activity
@@ -36,16 +35,19 @@ class WordDetailsFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val rootView = inflater?.inflate(R.layout.word_detail, container, false)
+        val rootView = inflater?.inflate(R.layout.fragment_word_details, container, false)
 
         val recyclerView = rootView?.findViewById<View>(R.id.definition_list) as RecyclerView
         recyclerView.adapter = WordDetailsAdapter()
-
         return rootView
     }
 
     override fun getTitle(): CharSequence? {
         return mWord?.name
+    }
+
+    override fun getSupportedTransitionNames(): List<String> {
+        return listOf(R.string.transition_name_list).map(this::getString)
     }
 
     class WordDetailsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -60,7 +62,7 @@ class WordDetailsFragment : BaseFragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordDetailsViewHolder {
             val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.word_detail_content, parent, false)
+                    .inflate(R.layout.word_details_content, parent, false)
             return WordDetailsViewHolder(view)
         }
 
@@ -68,8 +70,6 @@ class WordDetailsFragment : BaseFragment() {
             val definition = mWord?.definitions?.get(position)
             viewHolder.partOfSpeechView.text = definition?.partOfSpeech.toString()
             viewHolder.definitionView.text = definition?.definitionText
-
         }
-
     }
 }

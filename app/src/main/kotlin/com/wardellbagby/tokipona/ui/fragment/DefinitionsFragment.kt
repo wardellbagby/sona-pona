@@ -27,11 +27,7 @@ class DefinitionsFragment : BaseFragment() {
         var listFragment: WordListFragment? = childFragmentManager.findFragmentByClass(WordListFragment::class.java)
         if (listFragment == null && !fragmentManager.isTagInBackstack(R.id.navigation_dictionary.toString())) {
             listFragment = WordListFragment()
-            childFragmentManager.beginTransaction()
-                    .addToBackStack(R.id.navigation_dictionary.toString())
-                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                    .replace(R.id.word_detail_container, listFragment, R.id.navigation_dictionary.toString())
-                    .commit()
+            replace(R.id.word_detail_container, listFragment, R.id.navigation_dictionary.toString())
         }
         listFragment?.setOnWordSelectedCallback {
 
@@ -40,11 +36,7 @@ class DefinitionsFragment : BaseFragment() {
                 fragment = WordDetailsFragment()
                 fragment.arguments = Bundle().apply { putParcelable(WordDetailsFragment.Companion.WORD, it) }
             }
-
-            childFragmentManager.beginTransaction()
-                    .replace(R.id.word_detail_container, fragment, it.name)
-                    .addToBackStack(it.name)
-                    .commit()
+            replace(R.id.word_detail_container, fragment, it.name)
             mTwoPane // We only need to show an item as selected on two panes, where the user can see the list and details.
         }
     }
@@ -52,5 +44,9 @@ class DefinitionsFragment : BaseFragment() {
     override fun onBackPressed(): Boolean {
         return childFragmentManager.popBackStackImmediate(R.id.navigation_dictionary.toString(), 0)
                 || super.onBackPressed()
+    }
+
+    override fun getSupportedTransitionNames(): List<String> {
+        return listOf(R.string.transition_name_fab).map(this::getString)
     }
 }

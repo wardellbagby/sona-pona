@@ -32,8 +32,7 @@ class WordListFragment : BaseFragment() {
     private var mSelectedWord: Word? by state(null)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_word_list, container, false)
-        return rootView
+        return inflater.inflate(R.layout.fragment_word_list, container, false)
     }
 
     override fun onViewCreated(rootView: View?, savedInstanceState: Bundle?) {
@@ -65,6 +64,11 @@ class WordListFragment : BaseFragment() {
         setupRecyclerView()
     }
 
+    override fun onPause() {
+        super.onPause()
+        mScrollPosition = (mRecyclerView?.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition() ?: 0
+    }
+
     override fun onBackPressed(): Boolean {
         if (mFabToolbar?.isFabExpanded ?: false) {
             mSearchEditText?.text?.clear()
@@ -72,6 +76,11 @@ class WordListFragment : BaseFragment() {
             return true
         }
         return false
+    }
+
+    override fun getSupportedTransitionNames(): List<String> {
+        return listOf(R.string.transition_name_fab, R.string.transition_name_list)
+                .map(this::getString)
     }
 
     /**
@@ -102,11 +111,6 @@ class WordListFragment : BaseFragment() {
                 }
             })
         })
-    }
-
-    override fun onPause() {
-        super.onPause()
-        mScrollPosition = (mRecyclerView?.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition() ?: 0
     }
 
     inner class SimpleItemRecyclerViewAdapter(private val mValues: Collection<Word>) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
@@ -163,23 +167,23 @@ class WordListFragment : BaseFragment() {
             //todo Almost certain I can just use a ColorStateList for this...
             if (mSelectedWord == holder.word) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    holder.view.setBackgroundColor(resources.getColor(R.color.colorAccent, context.theme))
+                    holder.contentView.setBackgroundColor(resources.getColor(R.color.colorAccent, context.theme))
                 } else {
                     @Suppress("DEPRECATION") // Necessary evil until minSdk is Marshmallow.
-                    holder.view.setBackgroundColor(resources.getColor(R.color.colorAccent))
+                    holder.contentView.setBackgroundColor(resources.getColor(R.color.colorAccent))
                 }
             } else {
                 val attrs = intArrayOf(android.R.attr.selectableItemBackground)
                 val ta = context.obtainStyledAttributes(attrs)
-                holder.view.background = ta.getDrawable(0)
+                holder.contentView.background = ta.getDrawable(0)
                 ta.recycle()
             }
 
             holder.view.setOnClickListener { _ ->
                 if (mListener?.invoke(holder.word ?: Word()) ?: true) {
                     mSelectedWord = holder.word
+                    notifyDataSetChanged()
                 }
-                notifyDataSetChanged()
             }
 
         }
@@ -204,8 +208,9 @@ class WordListFragment : BaseFragment() {
         }
 
         inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-            val name: TextView = view.findViewById<View>(R.id.id) as TextView
-            val definition: TextView = view.findViewById<View>(R.id.content) as TextView
+            val name: TextView = view.findViewById<View>(R.id.name) as TextView
+            val definition: TextView = view.findViewById<View>(R.id.definition) as TextView
+            val contentView: ViewGroup = view.findViewById(R.id.content)
             var word: Word? = null
         }
     }

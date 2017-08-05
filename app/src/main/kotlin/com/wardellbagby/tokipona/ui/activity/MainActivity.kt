@@ -42,18 +42,14 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
     private var mRequestedOverlayPermission by state(false)
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        val fragment: Fragment? = supportFragmentManager.findFragmentByTag(item.itemId.toString()) ?:
+        val fragment: Fragment = supportFragmentManager.findFragmentByTag(item.itemId.toString()) ?:
                 when (item.itemId) {
                     R.id.navigation_dictionary -> DefinitionsFragment()
                     R.id.navigation_gloss      -> GlossFragment()
                     else                       -> Fragment()
                 }
 
-        supportFragmentManager.beginTransaction()
-                .addToBackStack(item.itemId.toString())
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .replace(R.id.frameLayout, fragment, item.itemId.toString())
-                .commit()
+        replace(R.id.frameLayout, fragment, item.itemId.toString())
         true
     }
 

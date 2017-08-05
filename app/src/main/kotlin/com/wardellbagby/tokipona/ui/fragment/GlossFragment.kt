@@ -54,6 +54,10 @@ class GlossFragment : BaseFragment() {
         context.subscribe(this::setText)
     }
 
+    override fun getSupportedTransitionNames(): List<String> {
+        return listOf(R.string.transition_name_fab).map(this::getString)
+    }
+
     fun setText(event: MainActivity.GlossEvent) {
         mWordCompletionView?.clear()
         Words.getWords(context) {
