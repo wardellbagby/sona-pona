@@ -1,7 +1,11 @@
 package com.wardellbagby.tokipona.ui.activity
 
 import android.annotation.SuppressLint
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -10,6 +14,7 @@ import android.view.View
 import com.github.yamamotoj.pikkel.Pikkel
 import com.github.yamamotoj.pikkel.PikkelDelegate
 import com.wardellbagby.tokipona.R
+import com.wardellbagby.tokipona.overlay.service.TokiPonaClipboardService
 import com.wardellbagby.tokipona.ui.activity.BaseActivity.BaseEvent
 import com.wardellbagby.tokipona.util.Fragments
 import com.wardellbagby.tokipona.util.sendOnBackPressed
@@ -65,6 +70,12 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
     override fun onPause() {
         super.onPause()
         disposables?.dispose()
+        unbindService(mConnection)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        bindService(Intent(this, TokiPonaClipboardService::class.java), mConnection, 0)
     }
 
     override fun onBackPressed() {
@@ -110,5 +121,10 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
 
     fun replace(@IdRes id: Int, fragmentToAdd: Fragment, tag: String) {
         Fragments.replace(supportFragmentManager, id, fragmentToAdd, tag)
+    }
+
+    private val mConnection: ServiceConnection = object : ServiceConnection {
+        override fun onServiceDisconnected(p0: ComponentName?) {}
+        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {}
     }
 }

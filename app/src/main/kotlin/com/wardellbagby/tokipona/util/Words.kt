@@ -16,13 +16,15 @@ import java.util.regex.Pattern
  */
 object Words {
 
-    const val DELIMITERS: String = " ,;\"?\\.!':\\(\\)\\[\\]\\{\\}\\*\\^"
-    private val DELIMITERS_PATTERN = Pattern.compile("(?=[$DELIMITERS])|(?<=[$DELIMITERS])")
+    private val DELIMITERS_ARRAY = " ,;\"?.!':\\()[]{}*^".toCharArray()
+    private val REGEX_SAFE_DELIMITERS: String = DELIMITERS_ARRAY.map { "\\" + it }.reduce { left, right -> left + right }
+    private val DELIMITERS_PATTERN = Pattern.compile("(?=[$REGEX_SAFE_DELIMITERS])|(?<=[$REGEX_SAFE_DELIMITERS])")
 
     private var wordsList: List<Word>? = null
 
     /**
-     * Initializes and returns the list of {@link Word}
+     * Initializes and returns a list of Toki Pona [Word]s. Future calls after the initial call
+     * will return the cached copy.
      */
     fun getWords(context: Context, callback: (List<Word>) -> Unit) {
         if (wordsList != null) {
@@ -36,8 +38,43 @@ object Words {
         }.execute(stream)
     }
 
-    fun convertToWords(text: String, words: List<Word>, callback: (List<Word>) -> Unit) {
-        ConvertToWordsTask(words, callback).execute(text)
+    /**
+     * Given a [String] of text and a list of [Word]s, glosses the text into a list of [Word]s. The returned
+     * list is in the same order as the given text.
+     *
+     * @param text The text that should be glossed.
+     * @param words A word list that contains valid [Word]s. This will be checked against for the glossing functionality.
+     * @param includeSpecialCharacters Whether or not special characters should be returned in the result or omitted.
+     * @param callback The callback that will be invoked with the result of this transaction.
+     */
+    fun gloss(text: String, words: List<Word>, includeSpecialCharacters: Boolean = false, callback: (List<Word>) -> Unit) {
+        GlossTask(words, includeSpecialCharacters, callback).execute(text)
+    }
+
+    /**
+     * Same as [gloss], but returns a [String] to the callback instead of a list of [Word]s.
+     */
+    fun glossToString(text: String, words: List<Word>, includeSpecialCharacters: Boolean = false, callback: (String) -> Unit) {
+        gloss(text, words, includeSpecialCharacters) {
+            if (it.isEmpty()) {
+                callback(emptyString())
+            }
+            val result = it.map(Word::gloss).reduce { total, next ->
+                if (Words.isSpecialCharacter(next)) {
+                    return@reduce total + next
+                }
+                return@reduce total + " " + next
+            } ?: emptyString()
+            callback(result)
+        }
+    }
+
+    fun isSpecialCharacter(text: String?): Boolean {
+        return text != null && text.length == 1 && isSpecialCharacter(text.single())
+    }
+
+    fun isSpecialCharacter(character: Char?): Boolean {
+        return character != null && character in DELIMITERS_ARRAY
     }
 
     @Suppress("unused", "UNUSED_PARAMETER") //Will be used in the future. (Date written: 8/2/2017, remove by 2/2/2018)
@@ -154,16 +191,17 @@ object Words {
 
         override fun onPostExecute(result: List<Word>) {
             super.onPostExecute(result)
-            callback(result)
+            callback(result.sortedBy(Word::name))
         }
     }
 
-    private class ConvertToWordsTask(val words: List<Word>, val callback: (List<Word>) -> Unit) : AsyncTask<String, Unit, List<Word>>() {
+    private class GlossTask(val words: List<Word>, val includePunctuation: Boolean, val callback: (List<Word>) -> Unit) : AsyncTask<String, Unit, List<Word>>() {
         override fun doInBackground(vararg p0: String?): List<Word> {
-            val delimiters = DELIMITERS.toCharArray()
-            val tokens = p0[0]?.split(DELIMITERS_PATTERN)?.filter { !it.trim().isBlank() && !delimiters.contains(it[0]) }
+            val tokens = p0[0]?.split(DELIMITERS_PATTERN)?.filter {
+                !it.trim().isBlank() && (includePunctuation || isSpecialCharacter(it))
+            }
             return tokens?.map { token ->
-                words.firstOrNull { it.name == token } ?: Word(token)
+                words.firstOrNull { it.name == token } ?: Word(token, isValidWord = false)
             } ?: listOf()
         }
 

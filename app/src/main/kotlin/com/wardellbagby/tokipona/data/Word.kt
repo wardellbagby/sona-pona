@@ -2,6 +2,7 @@ package com.wardellbagby.tokipona.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.wardellbagby.tokipona.util.emptyString
 
 /**
  * An object for a Word. A Word should have:
@@ -15,7 +16,10 @@ import android.os.Parcelable
  * @author Wardell Bagby
  */
 
-data class Word(val name: String = "", val definitions: List<Definition> = listOf(), val gloss: String? = name) : Parcelable {
+data class Word(val name: String = emptyString(),
+                val definitions: List<Definition> = listOf(),
+                val gloss: String? = name,
+                val isValidWord: Boolean = name.isNotBlank()) : Parcelable {
     companion object {
         @Suppress("unused") // Used by the Android system to un-parcel this object.
         @JvmField val CREATOR: Parcelable.Creator<Word> = object : Parcelable.Creator<Word> {
