@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.skyfishjy.library.RippleBackground xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:contentDescription="@string/gloss_button_content_desc"
-    android:src="@mipmap/ic_launcher_round" />
+    android:layout_gravity="center"
+    app:rb_color="@color/colorAccent"
+    app:rb_duration="1500"
+    app:rb_radius="8dp"
+    app:rb_rippleAmount="1"
+    app:rb_scale="4">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/gloss_button_content_desc"
+        android:orientation="vertical"
+        android:scaleType="center"
+        android:src="@mipmap/ic_launcher_round" />
+</com.skyfishjy.library.RippleBackground>

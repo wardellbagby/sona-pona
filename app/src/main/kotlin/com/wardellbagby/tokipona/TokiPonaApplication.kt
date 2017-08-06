@@ -6,7 +6,7 @@ import com.rollbar.android.Rollbar
 import com.wardellbagby.tokipona.dagger.AppComponent
 import com.wardellbagby.tokipona.dagger.AppModule
 import com.wardellbagby.tokipona.dagger.DaggerAppComponent
-import com.wardellbagby.tokipona.service.TokiPonaClipboardService
+import com.wardellbagby.tokipona.overlay.service.TokiPonaClipboardService
 
 /**
  * @author Wardell Bagby
