@@ -54,7 +54,7 @@ object Words {
         while (index < tokens.size) {
             val currentWord = tokens[index]
             when (currentWord) {
-                "o"  -> {
+                "o" -> {
                     partsOfSentence.addAll(handleVocative(tokens.subList(start, index)))
                     start = index
                 }
@@ -97,7 +97,7 @@ object Words {
         loop@ while (index < tokens.size) {
             val token = tokens[index]
             when (token) {
-                "e"  -> {
+                "e" -> {
                     if (index + 1 > tokens.size - 1) {
                         predicateParts.addAll(handleDirectObject(tokens.subList(index + 1, tokens.size)))
                     } else {

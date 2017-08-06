@@ -1,6 +1,5 @@
 package com.wardellbagby.tokipona.ui.fragment
 
-
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.view.LayoutInflater
@@ -14,7 +13,6 @@ import com.wardellbagby.tokipona.ui.activity.MainActivity
 import com.wardellbagby.tokipona.ui.widget.WordCompletionView
 import com.wardellbagby.tokipona.util.Words
 import com.wardellbagby.tokipona.util.subscribe
-
 
 /**
  * A fragment for glossing [Word]s into English and back again.

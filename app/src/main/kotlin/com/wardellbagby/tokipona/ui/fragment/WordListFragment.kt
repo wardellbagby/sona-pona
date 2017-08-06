@@ -92,7 +92,6 @@ class WordListFragment : BaseFragment() {
         mListener = listener
     }
 
-
     private fun setupRecyclerView() {
         //todo This should maybe show a loading bar?
         Words.getWords(context, {
@@ -203,7 +202,7 @@ class WordListFragment : BaseFragment() {
         private fun containsText(item: Word, text: String): Boolean {
             when {
                 text.toLowerCase() in item.name -> return true
-                else                            -> return item.definitions.any { text.toLowerCase() in it.definitionText.toLowerCase() }
+                else -> return item.definitions.any { text.toLowerCase() in it.definitionText.toLowerCase() }
             }
         }
 

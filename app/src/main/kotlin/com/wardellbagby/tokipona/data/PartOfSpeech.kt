@@ -21,5 +21,4 @@ enum class PartOfSpeech {
         return name.toLowerCase().replace('_', ' ').capitalize()
     }
 
-
 }

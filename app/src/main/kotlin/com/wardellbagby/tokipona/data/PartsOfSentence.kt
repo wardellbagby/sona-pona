@@ -16,5 +16,4 @@ enum class PartsOfSentence {
         return name.toLowerCase().replace('_', ' ').capitalize()
     }
 
-
 }
