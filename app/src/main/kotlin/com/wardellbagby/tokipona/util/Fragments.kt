@@ -18,7 +18,7 @@ import com.wardellbagby.tokipona.ui.fragment.BaseFragment
 object Fragments {
     fun replace(manager: FragmentManager, @IdRes id: Int, fragmentToAdd: Fragment, tag: String) {
         val transaction = manager.beginTransaction().addToBackStack(tag)
-        val currentFragment = manager.findFragmentById(id)
+        val currentFragment: Fragment? = manager.findFragmentById(id)
 
         addTransitionsToTransaction(currentFragment, fragmentToAdd, transaction)
 
@@ -28,7 +28,7 @@ object Fragments {
             .commit()
     }
 
-    private fun addTransitionsToTransaction(currentFragment: Fragment, fragmentToAdd: Fragment, transaction: FragmentTransaction) {
+    private fun addTransitionsToTransaction(currentFragment: Fragment?, fragmentToAdd: Fragment, transaction: FragmentTransaction) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && currentFragment is BaseFragment) {
             currentFragment.getSupportedTransitionNames().map(currentFragment::getSharedElementForTransition)
                 .filter { it != null }
