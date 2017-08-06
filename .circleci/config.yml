@@ -27,5 +27,11 @@ jobs:
       - store_artifacts:
           path: app/build/reports
           destination: reports
+      - run:
+          name: Build
+          command: ./gradlew build
+      - store_artifacts:
+          path: app/build/outputs/apk
+          destination: outputs/apk
       - store_test_results:
           path: app/build/test-results
