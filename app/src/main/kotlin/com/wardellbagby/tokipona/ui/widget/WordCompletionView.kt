@@ -25,7 +25,6 @@ class WordCompletionView : TokenCompleteTextView<Word> {
 
     private var listener: OnWordClickedListener? = null
 
-
     var isGlossed = false
         set(value) {
             //todo Investigate performance issues and possibly replace this lib.

@@ -37,9 +37,15 @@ android {
 repositories {
     maven { url "https://jitpack.io" }
     maven { url 'https://maven.google.com' }
+    mavenCentral()
+}
+
+configurations {
+    ktlint
 }
 
 dependencies {
+    ktlint 'com.github.shyiko:ktlint:0.9.1'
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -67,4 +73,18 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+}
+
+task ktlint(type: JavaExec) {
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "src/**/*.kt"
+}
+
+check.dependsOn ktlint
+
+task ktlintFormat(type: JavaExec) {
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "-F", "src/**/*.kt"
 }

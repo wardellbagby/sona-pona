@@ -22,7 +22,6 @@ import io.reactivex.processors.AsyncProcessor
 import io.reactivex.processors.FlowableProcessor
 import javax.inject.Inject
 
-
 /**
  * The main entry point into the app. This Activity handles the bottom navigation bar and swapping
  * between the 3 main fragments.
@@ -45,8 +44,8 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
         val fragment: Fragment = supportFragmentManager.findFragmentByTag(item.itemId.toString()) ?:
                 when (item.itemId) {
                     R.id.navigation_dictionary -> DefinitionsFragment()
-                    R.id.navigation_gloss      -> GlossFragment()
-                    else                       -> Fragment()
+                    R.id.navigation_gloss -> GlossFragment()
+                    else -> Fragment()
                 }
 
         replace(R.id.frameLayout, fragment, item.itemId.toString())

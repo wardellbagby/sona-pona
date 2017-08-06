@@ -2,7 +2,11 @@ package com.wardellbagby.tokipona.service
 
 import android.annotation.SuppressLint
 import android.app.Service
-import android.content.*
+import android.content.ClipData
+import android.content.ClipDescription
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.provider.Settings
@@ -16,7 +20,6 @@ import com.wardellbagby.tokipona.util.IntentExtras
 import com.wardellbagby.tokipona.util.TAG
 import opennlp.tools.sentdetect.SentenceDetectorME
 import opennlp.tools.sentdetect.SentenceModel
-
 
 class TokiPonaClipboardService : Service() {
 
