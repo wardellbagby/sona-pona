@@ -18,7 +18,7 @@ import com.wardellbagby.tokipona.R
  * @author Wardell Bagby
  */
 class GlossedDisplayView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-        CardView(context, attrs, defStyleAttr) {
+    CardView(context, attrs, defStyleAttr) {
 
     private val mFactory = ViewSwitcher.ViewFactory { LayoutInflater.from(context).inflate(R.layout.glossed_text_view, mGlossedText, false) as TextView }
 
@@ -32,6 +32,10 @@ class GlossedDisplayView @JvmOverloads constructor(context: Context, attrs: Attr
         mCopyButton = findViewById<ImageButton>(R.id.copy_button)
         mShareButton = findViewById<ImageButton>(R.id.share_button)
         mGlossedText.setFactory(mFactory)
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
         setOnCopyClickListener {
             val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboardManager.primaryClip = ClipData.newPlainText(context.getString(R.string.app_name), it)

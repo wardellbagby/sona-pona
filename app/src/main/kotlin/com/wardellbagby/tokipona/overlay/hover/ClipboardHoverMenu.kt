@@ -29,40 +29,7 @@ class ClipboardHoverMenu(val context: Context, val onHiddenCallback: () -> Unit)
     }
 
     private fun getSectionContent(): Content {
-        return object : Content {
-            override fun onShown() {
-                mStopAnimation?.run()
-            }
-
-            override fun getView(): View {
-                if (mView != null) {
-                    return mView ?: View(context)
-                }
-                //This should never ever happen, but that doesn't mean it won't.
-                if (mGlossedDisplayView?.parent != null) {
-                    val text = mGlossedDisplayView?.getGlossedText() ?: ""
-                    mGlossedDisplayView = GlossedDisplayView(context)
-                    mGlossedDisplayView?.setGlossedText(text)
-                }
-
-                val margin = context.resources.getDimensionPixelSize(R.dimen.glossed_display_view_margin)
-                mGlossedDisplayView?.setSharePaneVisibility(View.VISIBLE)
-
-                mView = FrameLayout(context).apply {
-                    layoutParams = ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.MATCH_PARENT).apply {
-                        setMargins(margin, margin, margin, margin)
-                    }
-                    addView(mGlossedDisplayView ?: View(context))
-                }
-                return mView ?: View(context)
-            }
-
-            override fun onHidden() {
-                onHiddenCallback()
-            }
-
-            override fun isFullscreen(): Boolean = true
-        }
+        return ClipboardHoverContent()
     }
 
     @SuppressLint("InflateParams") // No parent to pass in.
@@ -107,6 +74,35 @@ class ClipboardHoverMenu(val context: Context, val onHiddenCallback: () -> Unit)
 
     override fun getSectionCount(): Int {
         return 1
+    }
+
+    inner class ClipboardHoverContent : Content {
+        override fun onShown() {
+            mStopAnimation?.run()
+        }
+
+        override fun getView(): View {
+            if (mView != null) {
+                return mView ?: View(context)
+            }
+
+            val margin = context.resources.getDimensionPixelSize(R.dimen.glossed_display_view_margin)
+            mGlossedDisplayView?.setSharePaneVisibility(View.VISIBLE)
+
+            mView = FrameLayout(context).apply {
+                layoutParams = ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.MATCH_PARENT).apply {
+                    setMargins(margin, margin, margin, margin)
+                }
+                addView(mGlossedDisplayView ?: View(context))
+            }
+            return mView ?: View(context)
+        }
+
+        override fun onHidden() {
+            onHiddenCallback()
+        }
+
+        override fun isFullscreen(): Boolean = true
     }
 
 }

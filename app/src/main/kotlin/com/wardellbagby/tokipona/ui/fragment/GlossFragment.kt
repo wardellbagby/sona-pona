@@ -53,7 +53,7 @@ class GlossFragment : BaseFragment() {
                     setVisibilityForShareButtons(View.VISIBLE)
                 }
                 Words.getWords(context) {
-                    Words.glossToString(editable.toString(), it, true) {
+                    Words.glossToString(editable.toString(), it) {
                         if (mGlossedDisplayView.getGlossedText() != it.trim()) {
                             mGlossedDisplayView.setGlossedText(it)
                         }
@@ -85,7 +85,7 @@ class GlossFragment : BaseFragment() {
         mGlossedDisplayView.setGlossedText(emptyString())
         Words.getWords(context) {
             //Set it on the input so it can be cleared and the animations will start.
-            Words.glossToString(event.glossableText, it, true, mInputtedText::setText)
+            Words.glossToString(event.glossableText, it, mInputtedText::setText)
         }
 
     }
