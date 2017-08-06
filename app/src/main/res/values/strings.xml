@@ -6,9 +6,12 @@
     <string name="title_quiz">Quiz</string>
     <string name="gloss_text_hint">Enter Toki Pona text to gloss.</string>
     <string name="gloss_button_content_desc">Toki Pona Companion gloss copied text button.</string>
+    <string name="share_button_cont_desc">Share</string>
+    <string name="copy_button_cont_desc">Copy</string>
     <string name="overlay_permission_explanation">This permission will be used to display a floating button when you copy text. When pressed, this button will allow you to instantly gloss text. The copied text never leaves the phone, and all glossing happens locally.</string>
     <string name="overlay_permission_title">Allow Display Over Other Apps?</string>
     <string name="never">Never</string>
     <string name="transition_name_list">list_transition</string>
     <string name="transition_name_fab">fab_transition</string>
+    <string name="share">Share text to…</string>
 </resources>

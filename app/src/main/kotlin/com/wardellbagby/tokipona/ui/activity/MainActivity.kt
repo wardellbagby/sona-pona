@@ -12,7 +12,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import com.wardellbagby.tokipona.R
 import com.wardellbagby.tokipona.TokiPonaApplication
-import com.wardellbagby.tokipona.service.TokiPonaClipboardService
+import com.wardellbagby.tokipona.overlay.service.TokiPonaClipboardService
 import com.wardellbagby.tokipona.ui.fragment.DefinitionsFragment
 import com.wardellbagby.tokipona.ui.fragment.GlossFragment
 import com.wardellbagby.tokipona.util.IntentExtras
