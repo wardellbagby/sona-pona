@@ -1,23 +1,19 @@
 package com.wardellbagby.tokipona.util
 
 import android.content.Context
-import android.os.AsyncTask
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.wardellbagby.tokipona.data.Word
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
+import com.wardellbagby.tokipona.task.GlossTask
+import com.wardellbagby.tokipona.task.LoadWordListTask
 import java.util.regex.Pattern
 
 /**
+ * Logic useful for dealing with [Word]s.
  * @author Wardell Bagby
  */
 object Words {
 
-    private val DELIMITERS_ARRAY = " ,;\"?.!':\\()[]{}*^".toCharArray()
-    private val REGEX_SAFE_DELIMITERS: String = DELIMITERS_ARRAY.map { "\\" + it }.reduce { left, right -> left + right }
-    private val DELIMITERS_PATTERN = Pattern.compile("(?=[$REGEX_SAFE_DELIMITERS])|(?<=[$REGEX_SAFE_DELIMITERS])")
+    private val REGEX_EXCLUDE_DELIMITERS = Pattern.compile("[\\W]")
+    private val REGEX_KEEP_DELIMITERS = Pattern.compile("(?=[\\W])|(?<=[\\W])")
 
     private var wordsList: List<Word>? = null
 
@@ -50,56 +46,42 @@ object Words {
     }
 
     /**
-     * Same as [gloss], but returns a [String] to the callback instead of a list of [Word]s.
+     * Convenience method for calling [gloss] and passing the result to [reduceToText]
+     *
      */
-    fun glossToString(text: String, words: List<Word>, callback: (String) -> Unit) {
+    fun glossToText(text: String, words: List<Word>, callback: (String) -> Unit) {
         gloss(text, words) {
-            if (it.isEmpty()) {
-                callback(emptyString())
-            }
-            val result = it.map(Word::gloss).reduce { total, next ->
-                if (Words.isSpecialCharacter(next)) {
-                    return@reduce total + next
-                }
-                return@reduce total + " " + next
-            } ?: emptyString()
-            callback(result)
+            callback(reduceToText(it))
         }
+    }
+
+    /**
+     * Reduces a list of [Word] into human readable text with spacing and punctuation,
+     * if punctuation is in the provided [glossedWords] list.
+     *
+     */
+    fun reduceToText(glossedWords: List<Word>): String {
+        if (glossedWords.isEmpty()) {
+            return emptyString()
+        }
+        return glossedWords.map(Word::gloss).reduce { total, next ->
+            if (Words.isSpecialCharacter(next) || Words.isSpecialCharacter(total?.last())) {
+                return@reduce total + next
+            }
+            return@reduce total + " " + next
+        } ?: emptyString()
     }
 
     fun isSpecialCharacter(text: String?): Boolean {
         return text != null && text.length == 1 && isSpecialCharacter(text.single())
     }
 
-    fun isSpecialCharacter(character: Char?): Boolean {
-        return character != null && character in DELIMITERS_ARRAY
+    fun isSpecialCharacter(char: Char?): Boolean {
+        return char != null && !Character.isLetter(char)
     }
 
-    private class LoadWordListTask(val callback: (List<Word>) -> Unit) : AsyncTask<InputStream, Unit, List<Word>>() {
-        override fun doInBackground(vararg p0: InputStream?): List<Word> {
-            val reader = BufferedReader(InputStreamReader(p0[0]))
-            return Gson().fromJson(reader, object : TypeToken<List<Word>>() {}.type)
-        }
-
-        override fun onPostExecute(result: List<Word>) {
-            super.onPostExecute(result)
-            callback(result.sortedBy(Word::name))
-        }
+    fun split(text: String?, includePunctuation: Boolean = true): List<String>? {
+        return text?.split(if (includePunctuation) REGEX_KEEP_DELIMITERS else REGEX_EXCLUDE_DELIMITERS)
     }
 
-    private class GlossTask(val words: List<Word>, val includePunctuation: Boolean, val callback: (List<Word>) -> Unit) : AsyncTask<String, Unit, List<Word>>() {
-        override fun doInBackground(vararg p0: String?): List<Word> {
-            val tokens = p0[0]?.split(DELIMITERS_PATTERN)?.filter {
-                !it.trim().isBlank() && (includePunctuation || isSpecialCharacter(it))
-            }
-            return tokens?.map { token ->
-                words.firstOrNull { it.name == token } ?: Word(token, isValidWord = false)
-            } ?: listOf()
-        }
-
-        override fun onPostExecute(result: List<Word>) {
-            super.onPostExecute(result)
-            callback(result)
-        }
-    }
 }

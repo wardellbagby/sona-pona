@@ -102,7 +102,7 @@ class TokiPonaClipboardService : Service() {
         }
         mHoverView?.addToWindow()
         Words.getWords(this) {
-            Words.glossToString(text, it) {
+            Words.glossToText(text, it) {
                 mClipboardHoverMenu?.setText(it)
             }
         }

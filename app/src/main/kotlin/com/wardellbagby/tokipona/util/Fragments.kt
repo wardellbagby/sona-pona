@@ -1,5 +1,6 @@
 package com.wardellbagby.tokipona.util
 
+import android.annotation.TargetApi
 import android.os.Build
 import android.support.annotation.IdRes
 import android.support.annotation.RequiresApi
@@ -7,12 +8,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.transition.AutoTransition
-import android.transition.Slide
+import android.transition.Fade
 import android.view.View
 import android.view.ViewGroup
 import com.wardellbagby.tokipona.ui.fragment.BaseFragment
 
 /**
+ * Utility class containing useful methods for Fragments.
  * @author Wardell Bagby
  */
 object Fragments {
@@ -20,32 +22,45 @@ object Fragments {
         val transaction = manager.beginTransaction().addToBackStack(tag)
         val currentFragment: Fragment? = manager.findFragmentById(id)
 
-        addTransitionsToTransaction(currentFragment, fragmentToAdd, transaction)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && currentFragment is BaseFragment) {
+            addTransitionsToTransaction(currentFragment, fragmentToAdd, transaction)
+        }
 
         transaction
-            .setReorderingAllowed(true)
-            .replace(id, fragmentToAdd, tag)
-            .commit()
+                .setReorderingAllowed(true)
+                .replace(id, fragmentToAdd, tag)
+                .commit()
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun addTransitionsToTransaction(currentFragment: Fragment?, fragmentToAdd: Fragment, transaction: FragmentTransaction) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && currentFragment is BaseFragment) {
+        if (currentFragment is BaseFragment) {
             currentFragment.getSupportedTransitionNames().map(currentFragment::getSharedElementForTransition)
-                .filter { it != null }
-                .forEach { transaction.addSharedElement(it, it?.transitionName) }
+                    .filter { it != null }
+                    .forEach { transaction.addSharedElement(it, it?.transitionName) }
             fragmentToAdd.apply {
-                sharedElementEnterTransition = AutoTransition()
-                sharedElementReturnTransition = AutoTransition()
-                enterTransition = Slide()
-                exitTransition = Slide()
+                val sharedElementTransitions = AutoTransition()
+                val defaultTransition = Fade()
+
+                currentFragment.getTargetsToExcludeFromTransitions().forEach {
+                    sharedElementTransitions.excludeChildren(it, true)
+                    defaultTransition.excludeChildren(it, true)
+                }
+
+                allowEnterTransitionOverlap = false
+                allowReturnTransitionOverlap = false
+                sharedElementEnterTransition = sharedElementEnterTransition
+                sharedElementReturnTransition = sharedElementReturnTransition
+                reenterTransition = defaultTransition
+                enterTransition = defaultTransition
+                returnTransition = defaultTransition
+                exitTransition = defaultTransition
             }
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     fun getSharedElementForTransition(rootView: View?, manager: FragmentManager, transitionName: String): View? {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return null
-        }
         return getSharedElementFromView(rootView, transitionName) ?: getSharedElementFromManager(manager, transitionName)
     }
 
@@ -54,10 +69,13 @@ object Fragments {
         if (view !is ViewGroup) {
             return null
         }
+        if (view.transitionName == transitionName) {
+            return view
+        }
         val element = (0..view.childCount).map(view::getChildAt)
-            .firstOrNull {
-                it != null && it.transitionName == transitionName
-            }
+                .firstOrNull {
+                    it != null && it.transitionName == transitionName
+                }
         return element
     }
 

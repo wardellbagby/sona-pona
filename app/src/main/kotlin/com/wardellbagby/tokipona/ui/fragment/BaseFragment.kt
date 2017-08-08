@@ -61,4 +61,11 @@ open class BaseFragment : Fragment(), Pikkel by PikkelDelegate() {
     fun replace(@IdRes id: Int, fragment: Fragment, tag: String) {
         Fragments.replace(childFragmentManager, id, fragment, tag)
     }
+
+    /**
+     * Returns a list of Views that should be excluded from transition animations.
+     */
+    open fun getTargetsToExcludeFromTransitions(): List<View> {
+        return listOf()
+    }
 }

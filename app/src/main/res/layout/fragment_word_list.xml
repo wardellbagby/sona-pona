@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
-        android:transitionName="@string/transition_name_list"
+        android:transitionGroup="true"
+        android:transitionName="@string/transition_name_main_content"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.wardellbagby.tokipona.ui.fragment.WordListFragment"
         tools:ignore="UnusedAttribute"
@@ -24,7 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:transitionName="@string/transition_name_fab"
         app:srcCompat="@drawable/ic_search"
         tools:ignore="UnusedAttribute" /><!-- No animation pre-21 and that's okay. -->
 
@@ -43,10 +43,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/amoled_black"
-            android:padding="8dp"
             android:drawableRight="@drawable/ic_clear"
             android:hint="@string/search_hint"
             android:maxLines="1"
+            android:padding="8dp"
             tools:ignore="RtlHardcoded" />
         <!--This lib only supports drawableRight or drawableLeft, so can't use drawableEnd.-->
 

@@ -47,7 +47,7 @@ class WordDetailsFragment : BaseFragment() {
     }
 
     override fun getSupportedTransitionNames(): List<String> {
-        return listOf(R.string.transition_name_list).map(this::getString)
+        return listOf(R.string.transition_name_main_content).map(this::getString)
     }
 
     class WordDetailsViewHolder(view: View) : RecyclerView.ViewHolder(view) {

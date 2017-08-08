@@ -53,7 +53,7 @@ class GlossFragment : BaseFragment() {
                     setVisibilityForShareButtons(View.VISIBLE)
                 }
                 Words.getWords(context) {
-                    Words.glossToString(editable.toString(), it) {
+                    Words.glossToText(editable.toString(), it) {
                         if (mGlossedDisplayView.getGlossedText() != it.trim()) {
                             mGlossedDisplayView.setGlossedText(it)
                         }
@@ -72,7 +72,7 @@ class GlossFragment : BaseFragment() {
     }
 
     override fun getSupportedTransitionNames(): List<String> {
-        return listOf(R.string.transition_name_list).map(this::getString)
+        return listOf(R.string.transition_name_main_content, R.string.transition_name_extra_content).map(this::getString)
     }
 
     private fun setVisibilityForShareButtons(visibility: Int) {
@@ -85,7 +85,7 @@ class GlossFragment : BaseFragment() {
         mGlossedDisplayView.setGlossedText(emptyString())
         Words.getWords(context) {
             //Set it on the input so it can be cleared and the animations will start.
-            Words.glossToString(event.glossableText, it, mInputtedText::setText)
+            Words.glossToText(event.glossableText, it, mInputtedText::setText)
         }
 
     }

@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.wardellbagby.tokipona.R
-import com.wardellbagby.tokipona.util.findFragmentByClass
-import com.wardellbagby.tokipona.util.isTagInBackstack
 
 /**
  * @author Wardell Bagby
@@ -23,12 +21,12 @@ class DefinitionsFragment : BaseFragment() {
     override fun onViewCreated(rootView: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(rootView, savedInstanceState)
         mTwoPane = resources.getBoolean(R.bool.is_two_pane)
-        var listFragment: WordListFragment? = childFragmentManager.findFragmentByClass(WordListFragment::class.java)
-        if (listFragment == null && !fragmentManager.isTagInBackstack(R.id.navigation_dictionary.toString())) {
+        var listFragment: WordListFragment? = childFragmentManager.findFragmentByTag(R.id.navigation_dictionary.toString()) as WordListFragment?
+        if (listFragment == null) {
             listFragment = WordListFragment()
             replace(R.id.word_detail_container, listFragment, R.id.navigation_dictionary.toString())
         }
-        listFragment?.setOnWordSelectedCallback {
+        listFragment.setOnWordSelectedCallback {
 
             var fragment: Fragment? = childFragmentManager.findFragmentByTag(it.name)
             if (fragment == null) {
@@ -41,11 +39,29 @@ class DefinitionsFragment : BaseFragment() {
     }
 
     override fun onBackPressed(): Boolean {
-        return childFragmentManager.popBackStackImmediate(R.id.navigation_dictionary.toString(), 0)
-                || super.onBackPressed()
+        val superResult = super.onBackPressed()
+        if (superResult) {
+            return true
+        }
+        if (!popToWordListFragment()) {
+            activity.finish()
+        }
+        return true
     }
 
     override fun getSupportedTransitionNames(): List<String> {
-        return listOf(R.string.transition_name_fab).map(this::getString)
+        return listOf(R.string.transition_name_main_content).map(this::getString)
+    }
+
+    private fun popToWordListFragment(): Boolean {
+        var listFragment: WordListFragment? = childFragmentManager.findFragmentByTag(R.id.navigation_dictionary.toString()) as WordListFragment?
+        if (listFragment == null) {
+            listFragment = WordListFragment()
+        }
+        if (childFragmentManager.backStackEntryCount > 0 && childFragmentManager.getBackStackEntryAt(0).name == R.id.navigation_dictionary.toString()) {
+            replace(R.id.word_detail_container, listFragment, R.id.navigation_dictionary.toString())
+            return true
+        }
+        return false
     }
 }
