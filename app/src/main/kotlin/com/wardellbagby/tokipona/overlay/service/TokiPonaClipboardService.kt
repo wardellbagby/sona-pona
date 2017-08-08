@@ -1,4 +1,4 @@
-package com.wardellbagby.tokipona.service
+package com.wardellbagby.tokipona.overlay.service
 
 import android.annotation.SuppressLint
 import android.app.Service
@@ -11,13 +11,15 @@ import android.os.Build
 import android.os.IBinder
 import android.provider.Settings
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import com.danialgoodwin.globaloverlay.GlobalOverlay
+import android.view.ContextThemeWrapper
+import android.view.WindowManager
 import com.wardellbagby.tokipona.R
-import com.wardellbagby.tokipona.ui.activity.MainActivity
-import com.wardellbagby.tokipona.util.IntentExtras
+import com.wardellbagby.tokipona.overlay.hover.ClipboardHoverMenu
 import com.wardellbagby.tokipona.util.TAG
+import com.wardellbagby.tokipona.util.Words
+import io.mattcarroll.hover.HoverView
+import io.mattcarroll.hover.SideDock
+import io.mattcarroll.hover.window.WindowViewController
 import opennlp.tools.sentdetect.SentenceDetectorME
 import opennlp.tools.sentdetect.SentenceModel
 
@@ -27,12 +29,24 @@ class TokiPonaClipboardService : Service() {
         val CUTOFF_SENTENCE_PROBABILITY = .7f
     }
 
-    private var mGlossView: View? = null
-    private var mGlobalOverlay: GlobalOverlay? = null
+    private var mHoverView: HoverView? = null
+    private var mClipboardHoverMenu: ClipboardHoverMenu? = null
     private var mSentenceModel: SentenceModel? = null
+    private var mIsBound = false
 
     override fun onBind(intent: Intent): IBinder? {
-        throw UnsupportedOperationException("Binding to this Service is not supported.")
+        mIsBound = true
+        return null
+    }
+
+    override fun onUnbind(intent: Intent?): Boolean {
+        mIsBound = false
+        return super.onUnbind(intent)
+    }
+
+    override fun onRebind(intent: Intent?) {
+        super.onRebind(intent)
+        mIsBound = true
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -48,56 +62,53 @@ class TokiPonaClipboardService : Service() {
             mSentenceModel = SentenceModel(modelStream)
         }
 
-        if (mGlossView == null) {
-            mGlobalOverlay = GlobalOverlay(this)
-            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            clipboard.addPrimaryClipChangedListener({
-                val clipData = clipboard.primaryClip
-                if (isClipDataText(clipData)) {
-                    val text = clipData.getItemAt(0).coerceToText(this).toString()
-                    if (isTextLikelyEnglish(text)) {
-                        mGlossView = initGlossButton(applicationContext, mGlobalOverlay, getGlossIntent(this, text)) {
-                            mGlossView = null
-                        }
-                    }
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.addPrimaryClipChangedListener({
+            val clipData = clipboard.primaryClip
+            if (!mIsBound && isClipDataText(clipData)) {
+                val text = clipData.getItemAt(0).coerceToText(this).toString()
+                if (isTextLikelyEnglish(text)) {
+                    showHoverView(applicationContext, text)
                 }
-            })
-        }
+            }
+        })
+
         return START_STICKY
     }
 
     private fun isClipDataText(clipData: ClipData): Boolean {
-        return clipData.itemCount > 0 && mGlossView == null && clipData.description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
+        return clipData.itemCount > 0 && clipData.description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
     }
 
     @SuppressLint("InflateParams") // No way to inflate it here without null. There is no parent.
-    private fun initGlossButton(context: Context,
-                                globalOverlay: GlobalOverlay?,
-                                intent: Intent,
-                                onRemovedCallback: () -> Unit): View? {
+    private fun showHoverView(context: Context, text: String) {
 
         if (!canDrawOverlays(context)) {
             Log.i(TAG, "Stopping TokiPonaClipboardService because we have lost the permission to draw overlays.")
             stopSelf()
-            return null
+            return
         }
 
-        val glossView = LayoutInflater.from(context).inflate(R.layout.gloss_button_view, null)
-
-        globalOverlay?.addOverlayView(glossView, {
-            startActivity(intent)
-            globalOverlay.removeOverlayView(glossView)
-            onRemovedCallback()
-        })
-
-        return glossView
-    }
-
-    private fun getGlossIntent(context: Context, glossableText: String): Intent {
-        return Intent(context, MainActivity::class.java).apply {
-            putExtra(IntentExtras.GLOSSABLE_TEXT, glossableText)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        if (mHoverView == null) {
+            mHoverView = HoverView.createForWindow(
+                    this,
+                    WindowViewController((getSystemService(Context.WINDOW_SERVICE) as WindowManager)),
+                    SideDock.SidePosition(SideDock.SidePosition.RIGHT, 0.3f))
+            mClipboardHoverMenu = ClipboardHoverMenu(ContextThemeWrapper(this, R.style.AppTheme_NoActionBar)) {
+                mHoverView?.release()
+                mHoverView?.removeFromWindow()
+                mHoverView = null
+            }
         }
+        mHoverView?.addToWindow()
+        Words.getWords(this) {
+            Words.glossToString(text, it) {
+                mClipboardHoverMenu?.setText(it)
+            }
+        }
+
+        mHoverView?.setMenu(mClipboardHoverMenu)
+        mHoverView?.collapse()
     }
 
     private fun canDrawOverlays(context: Context): Boolean {
@@ -114,8 +125,7 @@ class TokiPonaClipboardService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mGlossView != null) {
-            mGlobalOverlay?.removeOverlayView(mGlossView)
-        }
+        mHoverView?.release()
+        mHoverView?.removeFromWindow()
     }
 }

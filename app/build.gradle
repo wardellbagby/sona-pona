@@ -69,6 +69,8 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxkotlin:$rx_version"
     implementation "io.reactivex.rxjava2:rxjava:$rx_version"
     implementation 'com.rollbar:rollbar-android:0.2.1'
+    implementation 'io.mattcarroll.hover:hover:0.9.8'
+    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
     implementation('com.github.ozodrukh:CirculaRreveal:2.0.1') {
         transitive = true
     }

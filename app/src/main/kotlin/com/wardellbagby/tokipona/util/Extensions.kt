@@ -10,6 +10,8 @@ import com.wardellbagby.tokipona.ui.fragment.BaseFragment
  * @author Wardell Bagby
  */
 
+private const val EMPTY_STRING = ""
+
 fun FragmentManager.getLastBackStackEntry(): FragmentManager.BackStackEntry? {
     return if (backStackEntryCount == 0) null else getBackStackEntryAt(backStackEntryCount - 1)
 }
@@ -35,6 +37,10 @@ fun <EventType : BaseActivity.BaseEvent> Context.subscribe(consumer: (EventType)
     if (this is BaseActivity<*>) {
         safeSubscribe(consumer)
     }
+}
+
+fun emptyString(): String {
+    return EMPTY_STRING
 }
 
 val Any.TAG: String

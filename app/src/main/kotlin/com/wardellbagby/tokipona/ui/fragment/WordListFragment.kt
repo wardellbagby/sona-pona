@@ -16,6 +16,7 @@ import com.bowyer.app.fabtoolbar.FabToolbar
 import com.wardellbagby.tokipona.R
 import com.wardellbagby.tokipona.data.Word
 import com.wardellbagby.tokipona.util.Words
+import com.wardellbagby.tokipona.util.emptyString
 import org.droidparts.widget.ClearableEditText
 
 /**
@@ -126,7 +127,7 @@ class WordListFragment : BaseFragment() {
                 }
 
                 override fun compare(p0: Word?, p1: Word?): Int {
-                    return p0?.name?.compareTo(p1?.name ?: "") ?: 0
+                    return p0?.name?.compareTo(p1?.name ?: emptyString()) ?: 0
                 }
 
                 override fun areItemsTheSame(p0: Word?, p1: Word?): Boolean {
