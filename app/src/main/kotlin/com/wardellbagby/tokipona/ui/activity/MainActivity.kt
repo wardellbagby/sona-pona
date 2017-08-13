@@ -39,8 +39,12 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
 
     private var mNavigationView: BottomNavigationView? = null
     private var mRequestedOverlayPermission by state(false)
+    private var mIgnoreItemSelected = false
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        if (mIgnoreItemSelected || item.itemId == mNavigationView?.selectedItemId) {
+            return@OnNavigationItemSelectedListener true
+        }
         val fragment: Fragment = supportFragmentManager.findFragmentByTag(item.itemId.toString()) ?:
                 when (item.itemId) {
                     R.id.navigation_dictionary -> DefinitionsFragment()
@@ -62,18 +66,9 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
         mNavigationView = findViewById<BottomNavigationView>(R.id.navigation)
         mNavigationView?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.frameLayout, DefinitionsFragment(), R.id.navigation_dictionary.toString())
-                    .commit()
+            replace(R.id.frameLayout, DefinitionsFragment(), R.id.navigation_dictionary.toString())
         }
-        /*todo This isn't working correctly. There is some backstack logic that is getting out of
-        hand and should be simplified, if possible. Specifically around the child fragment logic
-        in DefinitionsFragment. It might be a good idea to have BaseFragment force subclasses to
-        override a function that will force all fragments to report an ID that will respond to their
-        most parent fragment? Although since the DefinitionsFragment is using childFragments, the
-        issue might be more along the lines of this function just having an odd corner case that
-        I'm missing.
-         */
+
         supportFragmentManager.addOnBackStackChangedListener {
             val currentSelectedId = mNavigationView?.selectedItemId
             val newSelectedId = supportFragmentManager
@@ -81,9 +76,15 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
                     ?.name
                     ?.toIntOrNull() ?: BottomNavigationView.NO_ID
             if (currentSelectedId != newSelectedId) {
-                mNavigationView?.selectedItemId = newSelectedId
+                updateNavigationBarState(newSelectedId)
             }
         }
+    }
+
+    private fun updateNavigationBarState(selectedId: Int) {
+        mIgnoreItemSelected = true
+        mNavigationView?.selectedItemId = selectedId
+        mIgnoreItemSelected = false
     }
 
     override fun onPostResume() {

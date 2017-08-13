@@ -12,6 +12,7 @@
         android:title="@string/title_gloss" />
 
     <item
+        android:id="@+id/navigation_quiz"
         android:icon="@drawable/ic_quiz"
         android:title="@string/title_quiz" />
 

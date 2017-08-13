@@ -42,7 +42,10 @@ class WordListFragment : BaseFragment() {
         val fab = rootView?.findViewById<FloatingActionButton>(R.id.fab)
         mFabToolbar = rootView?.findViewById<FabToolbar>(R.id.fab_toolbar)
         mFabToolbar?.setFab(fab)
-        fab?.setOnClickListener { mFabToolbar?.expandFab() }
+        fab?.setOnClickListener {
+            mFabToolbar?.visibility = View.VISIBLE
+            mFabToolbar?.expandFab()
+        }
 
         mSearchEditText = mFabToolbar?.findViewById<ClearableEditText>(R.id.search_edit_text)
         mSearchEditText?.addTextChangedListener(object : TextWatcher {
@@ -80,8 +83,15 @@ class WordListFragment : BaseFragment() {
     }
 
     override fun getSupportedTransitionNames(): List<String> {
-        return listOf(R.string.transition_name_fab, R.string.transition_name_list)
-                .map(this::getString)
+        return listOf(R.string.transition_name_main_content).map(this::getString)
+    }
+
+    override fun getTargetsToExcludeFromTransitions(): List<View> {
+        val toolbar = mFabToolbar
+        if (toolbar != null) {
+            return listOf(toolbar)
+        }
+        return super.getTargetsToExcludeFromTransitions()
     }
 
     /**

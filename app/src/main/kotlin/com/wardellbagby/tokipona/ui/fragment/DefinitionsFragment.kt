@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.wardellbagby.tokipona.R
-import com.wardellbagby.tokipona.util.findFragmentByClass
-import com.wardellbagby.tokipona.util.isTagInBackstack
 
 /**
  * @author Wardell Bagby
@@ -23,13 +21,12 @@ class DefinitionsFragment : BaseFragment() {
     override fun onViewCreated(rootView: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(rootView, savedInstanceState)
         mTwoPane = resources.getBoolean(R.bool.is_two_pane)
-        var listFragment: WordListFragment? = childFragmentManager.findFragmentByClass(WordListFragment::class.java)
-        if (listFragment == null && !fragmentManager.isTagInBackstack(R.id.navigation_dictionary.toString())) {
+        var listFragment: WordListFragment? = childFragmentManager.findFragmentByTag(getString(R.string.fragment_word_list)) as WordListFragment?
+        if (listFragment == null) {
             listFragment = WordListFragment()
-            replace(R.id.word_detail_container, listFragment, R.id.navigation_dictionary.toString())
+            replace(R.id.word_detail_container, listFragment, getString(R.string.fragment_word_list))
         }
-        listFragment?.setOnWordSelectedCallback {
-
+        listFragment.setOnWordSelectedCallback {
             var fragment: Fragment? = childFragmentManager.findFragmentByTag(it.name)
             if (fragment == null) {
                 fragment = WordDetailsFragment()
@@ -41,11 +38,17 @@ class DefinitionsFragment : BaseFragment() {
     }
 
     override fun onBackPressed(): Boolean {
-        return childFragmentManager.popBackStackImmediate(R.id.navigation_dictionary.toString(), 0)
-                || super.onBackPressed()
+        val superResult = super.onBackPressed()
+        if (superResult) {
+            return true
+        }
+        if (!childFragmentManager.popBackStackImmediate(getString(R.string.fragment_word_list), 0)) {
+            activity.finish()
+        }
+        return true
     }
 
     override fun getSupportedTransitionNames(): List<String> {
-        return listOf(R.string.transition_name_fab).map(this::getString)
+        return listOf(R.string.transition_name_main_content).map(this::getString)
     }
 }

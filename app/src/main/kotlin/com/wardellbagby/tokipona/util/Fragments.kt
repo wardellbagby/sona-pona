@@ -5,14 +5,14 @@ import android.support.annotation.IdRes
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
 import android.transition.AutoTransition
-import android.transition.Slide
+import android.transition.Transition
 import android.view.View
 import android.view.ViewGroup
 import com.wardellbagby.tokipona.ui.fragment.BaseFragment
 
 /**
+ * Utility class containing useful methods for Fragments.
  * @author Wardell Bagby
  */
 object Fragments {
@@ -20,32 +20,61 @@ object Fragments {
         val transaction = manager.beginTransaction().addToBackStack(tag)
         val currentFragment: Fragment? = manager.findFragmentById(id)
 
-        addTransitionsToTransaction(currentFragment, fragmentToAdd, transaction)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setFragmentTransitions(currentFragment, fragmentToAdd)
+        }
 
         transaction
-            .setReorderingAllowed(true)
-            .replace(id, fragmentToAdd, tag)
-            .commit()
+                .setReorderingAllowed(true)
+                .replace(id, fragmentToAdd, tag)
+                .commit()
     }
 
-    private fun addTransitionsToTransaction(currentFragment: Fragment?, fragmentToAdd: Fragment, transaction: FragmentTransaction) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && currentFragment is BaseFragment) {
-            currentFragment.getSupportedTransitionNames().map(currentFragment::getSharedElementForTransition)
-                .filter { it != null }
-                .forEach { transaction.addSharedElement(it, it?.transitionName) }
-            fragmentToAdd.apply {
-                sharedElementEnterTransition = AutoTransition()
-                sharedElementReturnTransition = AutoTransition()
-                enterTransition = Slide()
-                exitTransition = Slide()
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun setFragmentTransitions(currentFragment: Fragment?, fragmentToAdd: Fragment) {
+        applyTransitionsToFragment(currentFragment)
+        applyTransitionsToFragment(fragmentToAdd)
+        if (currentFragment is BaseFragment) {
+            excludeChildrenFromTransitions(currentFragment, currentFragment.getTargetsToExcludeFromTransitions())
+            excludeChildrenFromTransitions(fragmentToAdd, currentFragment.getTargetsToExcludeFromTransitions())
+        }
+    }
+
+    private fun excludeChildrenFromTransitions(fragment: Fragment, children: List<View>) {
+        children.forEach {
+            fragment.apply {
+                excludeChildFromTransition(enterTransition, it)
+                excludeChildFromTransition(exitTransition, it)
+                excludeChildFromTransition(reenterTransition, it)
+                excludeChildFromTransition(returnTransition, it)
             }
         }
     }
 
-    fun getSharedElementForTransition(rootView: View?, manager: FragmentManager, transitionName: String): View? {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return null
+    private fun excludeChildFromTransition(transition: Any, child: View) {
+        if (transition is Transition) {
+            transition.excludeTarget(child, true)
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun applyTransitionsToFragment(fragment: Fragment?) {
+        fragment?.apply {
+            allowEnterTransitionOverlap = false
+            allowReturnTransitionOverlap = false
+
+            reenterTransition = getDefaultEnterTransition()
+            enterTransition = getDefaultEnterTransition()
+            returnTransition = getDefaultExitTransition()
+            exitTransition = getDefaultExitTransition()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP) private fun getDefaultEnterTransition() = AutoTransition()
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP) private fun getDefaultExitTransition() = AutoTransition()
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun getSharedElementForTransition(rootView: View?, manager: FragmentManager, transitionName: String): View? {
         return getSharedElementFromView(rootView, transitionName) ?: getSharedElementFromManager(manager, transitionName)
     }
 
@@ -54,13 +83,17 @@ object Fragments {
         if (view !is ViewGroup) {
             return null
         }
+        if (view.transitionName == transitionName) {
+            return view
+        }
         val element = (0..view.childCount).map(view::getChildAt)
-            .firstOrNull {
-                it != null && it.transitionName == transitionName
-            }
+                .firstOrNull {
+                    it != null && it.transitionName == transitionName
+                }
         return element
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun getSharedElementFromManager(manager: FragmentManager, transitionName: String): View? {
         if (manager.fragments.isNotEmpty()) {
             manager.fragments.filter {

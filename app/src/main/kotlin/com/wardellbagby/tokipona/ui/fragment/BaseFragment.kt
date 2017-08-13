@@ -1,7 +1,9 @@
 package com.wardellbagby.tokipona.ui.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.support.annotation.IdRes
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.view.View
 import com.github.yamamotoj.pikkel.Pikkel
@@ -54,11 +56,19 @@ open class BaseFragment : Fragment(), Pikkel by PikkelDelegate() {
         return listOf()
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun getSharedElementForTransition(transitionName: String): View? {
         return Fragments.getSharedElementForTransition(view, childFragmentManager, transitionName)
     }
 
     fun replace(@IdRes id: Int, fragment: Fragment, tag: String) {
         Fragments.replace(childFragmentManager, id, fragment, tag)
+    }
+
+    /**
+     * Returns a list of Views that should be excluded from transition animations.
+     */
+    open fun getTargetsToExcludeFromTransitions(): List<View> {
+        return listOf()
     }
 }
