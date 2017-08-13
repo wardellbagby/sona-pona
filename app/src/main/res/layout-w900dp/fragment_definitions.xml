@@ -13,7 +13,7 @@
         android:name="com.wardellbagby.tokipona.ui.fragment.WordListFragment"
         android:layout_width="@dimen/item_width"
         android:layout_height="match_parent"
-        android:tag="@id/navigation_dictionary" />
+        android:tag="@string/fragment_word_list" />
 
     <FrameLayout
         android:id="@+id/word_detail_container"

@@ -42,7 +42,7 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
     private var mIgnoreItemSelected = false
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        if (mIgnoreItemSelected) {
+        if (mIgnoreItemSelected || item.itemId == mNavigationView?.selectedItemId) {
             return@OnNavigationItemSelectedListener true
         }
         val fragment: Fragment = supportFragmentManager.findFragmentByTag(item.itemId.toString()) ?:

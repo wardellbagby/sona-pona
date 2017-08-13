@@ -21,13 +21,12 @@ class DefinitionsFragment : BaseFragment() {
     override fun onViewCreated(rootView: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(rootView, savedInstanceState)
         mTwoPane = resources.getBoolean(R.bool.is_two_pane)
-        var listFragment: WordListFragment? = childFragmentManager.findFragmentByTag(R.id.navigation_dictionary.toString()) as WordListFragment?
+        var listFragment: WordListFragment? = childFragmentManager.findFragmentByTag(getString(R.string.fragment_word_list)) as WordListFragment?
         if (listFragment == null) {
             listFragment = WordListFragment()
-            replace(R.id.word_detail_container, listFragment, R.id.navigation_dictionary.toString())
+            replace(R.id.word_detail_container, listFragment, getString(R.string.fragment_word_list))
         }
         listFragment.setOnWordSelectedCallback {
-
             var fragment: Fragment? = childFragmentManager.findFragmentByTag(it.name)
             if (fragment == null) {
                 fragment = WordDetailsFragment()
@@ -43,7 +42,7 @@ class DefinitionsFragment : BaseFragment() {
         if (superResult) {
             return true
         }
-        if (!popToWordListFragment()) {
+        if (!childFragmentManager.popBackStackImmediate(getString(R.string.fragment_word_list), 0)) {
             activity.finish()
         }
         return true
@@ -51,17 +50,5 @@ class DefinitionsFragment : BaseFragment() {
 
     override fun getSupportedTransitionNames(): List<String> {
         return listOf(R.string.transition_name_main_content).map(this::getString)
-    }
-
-    private fun popToWordListFragment(): Boolean {
-        var listFragment: WordListFragment? = childFragmentManager.findFragmentByTag(R.id.navigation_dictionary.toString()) as WordListFragment?
-        if (listFragment == null) {
-            listFragment = WordListFragment()
-        }
-        if (childFragmentManager.backStackEntryCount > 0 && childFragmentManager.getBackStackEntryAt(0).name == R.id.navigation_dictionary.toString()) {
-            replace(R.id.word_detail_container, listFragment, R.id.navigation_dictionary.toString())
-            return true
-        }
-        return false
     }
 }

@@ -33,7 +33,6 @@ class WordListFragment : BaseFragment() {
     private var mSelectedWord: Word? by state(null)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        postponeEnterTransition()
         return inflater.inflate(R.layout.fragment_word_list, container, false)
     }
 
@@ -67,7 +66,6 @@ class WordListFragment : BaseFragment() {
 
         mRecyclerView = rootView?.findViewById<RecyclerView>(R.id.word_list)
         setupRecyclerView()
-        startPostponedEnterTransition()
     }
 
     override fun onPause() {

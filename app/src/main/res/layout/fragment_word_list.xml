@@ -25,8 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_search"
-        tools:ignore="UnusedAttribute" /><!-- No animation pre-21 and that's okay. -->
+        app:srcCompat="@drawable/ic_search" />
 
     <com.bowyer.app.fabtoolbar.FabToolbar
         android:id="@+id/fab_toolbar"
