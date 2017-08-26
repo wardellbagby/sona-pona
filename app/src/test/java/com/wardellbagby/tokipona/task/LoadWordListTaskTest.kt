@@ -16,9 +16,7 @@ class LoadWordListTaskTest {
     @Test
     fun testLoadWordListTask() {
         val lambdaListener = Mockito.mock(LambdaListener<List<Word>>()::class.java)
-        val callback = { words: List<Word> ->
-            lambdaListener.invoked(words)
-        }
+        val callback = lambdaListener::invoked
 
         //Direct linking is bad, but use the real file so that this test is always in sync.
         var file = File("app/src/main/assets/word_list.json")

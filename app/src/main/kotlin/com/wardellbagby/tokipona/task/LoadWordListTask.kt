@@ -7,7 +7,7 @@ import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
 
-open class LoadWordListTask(val callback: (List<Word>) -> Unit) : BackgroundTask<InputStream, Unit, List<Word>>() {
+open class LoadWordListTask(private val callback: (List<Word>) -> Unit) : BackgroundTask<InputStream, Unit, List<Word>>() {
 
     override fun onBackgrounded(vararg parameters: InputStream?): List<Word>? {
         val reader = BufferedReader(InputStreamReader(parameters[0]))

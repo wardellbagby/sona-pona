@@ -63,7 +63,7 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
 
         mEventProcessor = AsyncProcessor.create()
 
-        mNavigationView = findViewById<BottomNavigationView>(R.id.navigation)
+        mNavigationView = findViewById(R.id.navigation)
         mNavigationView?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         if (savedInstanceState == null) {
             replace(R.id.frameLayout, DefinitionsFragment(), R.id.navigation_dictionary.toString())

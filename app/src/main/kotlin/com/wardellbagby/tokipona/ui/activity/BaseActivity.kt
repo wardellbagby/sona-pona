@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.support.annotation.IdRes
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -115,6 +117,7 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun getSharedElementForTransition(transitionName: String): View? {
         return Fragments.getSharedElementForTransition(window.decorView, supportFragmentManager, transitionName)
     }
