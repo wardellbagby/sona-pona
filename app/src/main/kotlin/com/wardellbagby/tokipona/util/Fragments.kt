@@ -51,11 +51,7 @@ object Fragments {
         }
     }
 
-    private fun excludeChildFromTransition(transition: Any, child: View) {
-        if (transition is Transition) {
-            transition.excludeTarget(child, true)
-        }
-    }
+    private fun excludeChildFromTransition(transition: Any, child: View) = (transition as? Transition)?.excludeTarget(child, true)
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun applyTransitionsToFragment(fragment: Fragment?) {
@@ -86,11 +82,10 @@ object Fragments {
         if (view.transitionName == transitionName) {
             return view
         }
-        val element = (0..view.childCount).map(view::getChildAt)
+        return (0..view.childCount).map(view::getChildAt)
                 .firstOrNull {
                     it != null && it.transitionName == transitionName
                 }
-        return element
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

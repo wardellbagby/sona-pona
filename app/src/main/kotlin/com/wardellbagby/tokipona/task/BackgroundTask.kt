@@ -72,10 +72,10 @@ abstract class BackgroundTask<ParamsT, ProgressT, ResultT> : AsyncTask<ParamsT, 
     }
 
     final override fun doInBackground(vararg parameters: ParamsT): BackgroundTaskResult<ResultT> {
-        try {
-            return BackgroundTaskResult(result = onBackgrounded(*parameters))
+        return try {
+            BackgroundTaskResult(result = onBackgrounded(*parameters))
         } catch (e: Exception) {
-            return BackgroundTaskResult(exception = e)
+            BackgroundTaskResult(exception = e)
         }
     }
 

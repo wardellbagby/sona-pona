@@ -28,9 +28,9 @@ class GlossedDisplayView @JvmOverloads constructor(context: Context, attrs: Attr
 
     init {
         LayoutInflater.from(context).inflate(R.layout.glossed_text_display, this, true)
-        mGlossedText = findViewById<TextSwitcher>(R.id.textSwitcher)
-        mCopyButton = findViewById<ImageButton>(R.id.copy_button)
-        mShareButton = findViewById<ImageButton>(R.id.share_button)
+        mGlossedText = findViewById(R.id.textSwitcher)
+        mCopyButton = findViewById(R.id.copy_button)
+        mShareButton = findViewById(R.id.share_button)
         mGlossedText.setFactory(mFactory)
     }
 
@@ -64,13 +64,13 @@ class GlossedDisplayView @JvmOverloads constructor(context: Context, attrs: Attr
         return (mGlossedText.currentView as? TextView)?.text ?: ""
     }
 
-    fun setOnCopyClickListener(callback: (CharSequence) -> Unit) {
+    private fun setOnCopyClickListener(callback: (CharSequence) -> Unit) {
         mCopyButton.setOnClickListener {
             callback(getGlossedText())
         }
     }
 
-    fun setOnShareClickListener(callback: (CharSequence) -> Unit) {
+    private fun setOnShareClickListener(callback: (CharSequence) -> Unit) {
         mShareButton.setOnClickListener {
             callback(getGlossedText())
         }

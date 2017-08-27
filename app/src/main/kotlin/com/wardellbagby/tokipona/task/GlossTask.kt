@@ -3,7 +3,7 @@ package com.wardellbagby.tokipona.task
 import com.wardellbagby.tokipona.data.Word
 import com.wardellbagby.tokipona.util.Words
 
-class GlossTask(val words: List<Word>, val includePunctuation: Boolean, val callback: (List<Word>) -> Unit) : BackgroundTask<String, Unit, List<Word>>() {
+class GlossTask(private val words: List<Word>, private val includePunctuation: Boolean, private val callback: (List<Word>) -> Unit) : BackgroundTask<String, Unit, List<Word>>() {
 
     override fun onBackgrounded(vararg parameters: String?): List<Word>? {
         if (parameters.isEmpty()) {

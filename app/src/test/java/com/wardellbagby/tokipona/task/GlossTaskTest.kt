@@ -34,10 +34,9 @@ class GlossTaskTest {
 
         val lambdaListener = Mockito.mock(LambdaListener<List<Word>?>()::class.java)
         val tokiPonaString = "cool dude writes test for fun"
-        val expectedResult = tokiPonaString
         val callback = { result: List<Word> ->
             lambdaListener.invoked(result)
-            assertEquals(expectedResult, convertResultToString(result))
+            assertEquals(tokiPonaString, convertResultToString(result))
         }
         GlossTask(words, true, callback).apply {
             onResult(onBackgrounded(tokiPonaString))
@@ -84,10 +83,9 @@ class GlossTaskTest {
 
         val lambdaListener = Mockito.mock(LambdaListener<List<Word>?>()::class.java)
         val tokiPonaString = "cool; :dude: [writes] (test) (for) =fun="
-        val expectedResult = tokiPonaString
         val callback = { result: List<Word> ->
             lambdaListener.invoked(result)
-            assertEquals(expectedResult, convertResultToString(result))
+            assertEquals(tokiPonaString, convertResultToString(result))
         }
         GlossTask(words, true, callback).apply {
             onResult(onBackgrounded(tokiPonaString))

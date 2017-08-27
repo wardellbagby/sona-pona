@@ -17,6 +17,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField "String", "ROLLBAR_ACCESS_TOKEN", "\"$System.env.ROLLBAR_ACCESS_TOKEN\""
+        buildConfigField "Boolean", "CRASH_REPORTING_ENABLED", "$System.env.CRASH_REPORTING_ENABLED"
     }
 
     sourceSets {
@@ -71,6 +72,7 @@ dependencies {
     implementation 'com.rollbar:rollbar-android:0.2.1'
     implementation 'io.mattcarroll.hover:hover:0.9.8'
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
+    implementation 'com.github.bumptech.glide:glide:4.0.0'
     implementation('com.github.ozodrukh:CirculaRreveal:2.0.1') {
         transitive = true
     }

@@ -21,11 +21,7 @@ fun FragmentManager.sendOnBackPressed(): Boolean {
             .any { it is BaseFragment && it.onBackPressed() }
 }
 
-fun <EventType : BaseActivity.BaseEvent> Context.subscribe(consumer: (EventType) -> Unit) {
-    if (this is BaseActivity<*>) {
-        safeSubscribe(consumer)
-    }
-}
+fun <EventType : BaseActivity.BaseEvent> Context.subscribe(consumer: (EventType) -> Unit) = (this as? BaseActivity<*>)?.safeSubscribe(consumer)
 
 fun emptyString(): String {
     return EMPTY_STRING

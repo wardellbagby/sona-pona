@@ -41,7 +41,7 @@ object Words {
      * @param words A word list that contains valid [Word]s. This will be checked against for the glossing functionality.
      * @param callback The callback that will be invoked with the result of this transaction.
      */
-    fun gloss(text: String, words: List<Word>, callback: (List<Word>) -> Unit) {
+    private fun gloss(text: String, words: List<Word>, callback: (List<Word>) -> Unit) {
         GlossTask(words, true, callback).execute(text)
     }
 
@@ -72,11 +72,11 @@ object Words {
         } ?: emptyString()
     }
 
-    fun isSpecialCharacter(text: String?): Boolean {
+    private fun isSpecialCharacter(text: String?): Boolean {
         return text != null && text.length == 1 && isSpecialCharacter(text.single())
     }
 
-    fun isSpecialCharacter(char: Char?): Boolean {
+    private fun isSpecialCharacter(char: Char?): Boolean {
         return char != null && !Character.isLetter(char)
     }
 

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.wardellbagby.tokipona.R
-
 import com.wardellbagby.tokipona.data.Word
 
 /**
@@ -26,7 +25,7 @@ class WordDetailsFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments.containsKey(WORD)) {
-            mWord = arguments.getParcelable<Word>(WORD)
+            mWord = arguments.getParcelable(WORD)
             val activity = this.activity
             val toolbar = activity.findViewById<View>(R.id.toolbar) as Toolbar?
             toolbar?.title = mWord?.name

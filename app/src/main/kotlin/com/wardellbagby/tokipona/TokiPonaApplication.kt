@@ -21,9 +21,9 @@ class TokiPonaApplication : Application() {
         super.onCreate()
         val accessToken: String? = BuildConfig.ROLLBAR_ACCESS_TOKEN
         @Suppress("SENSELESS_COMPARISON") //This is NOT always true/false.
-        if (accessToken != null) {
+        if (accessToken != null && BuildConfig.CRASH_REPORTING_ENABLED == true) {
             var flavor = BuildConfig.FLAVOR
-            if (flavor.isNullOrEmpty()) {
+            if (flavor.isEmpty()) {
                 flavor = "default"
             }
             Rollbar.init(this, BuildConfig.ROLLBAR_ACCESS_TOKEN, flavor + "/" + BuildConfig.BUILD_TYPE)

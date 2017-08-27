@@ -7,7 +7,7 @@ import android.content.SharedPreferences
  *
  * @author Wardell Bagby
  */
-class Preferences(val preferences: SharedPreferences) {
+class Preferences(private val preferences: SharedPreferences) {
 
     fun shouldShowOverlayPermission(): Boolean {
         return preferences.getBoolean(SHOULD_SHOW_OVERLAY_PERMISSION, true)

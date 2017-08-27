@@ -38,9 +38,9 @@ class GlossFragment : BaseFragment() {
             return
         }
 
-        mGlossedDisplayView = rootView.findViewById<GlossedDisplayView>(R.id.transition_root)
+        mGlossedDisplayView = rootView.findViewById(R.id.transition_root)
 
-        mInputtedText = rootView.findViewById<EditText>(R.id.inputted_text)
+        mInputtedText = rootView.findViewById(R.id.inputted_text)
         mGlossedDisplayView.setTextAnimations(context, R.anim.fade_in_quick, R.anim.fade_out_quick)
 
         mInputtedText.addTextChangedListener(object : TextWatcher {

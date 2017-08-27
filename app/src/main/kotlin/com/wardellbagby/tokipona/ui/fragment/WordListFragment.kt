@@ -11,10 +11,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.bowyer.app.fabtoolbar.FabToolbar
+import com.bumptech.glide.Glide
 import com.wardellbagby.tokipona.R
 import com.wardellbagby.tokipona.data.Word
+import com.wardellbagby.tokipona.provider.GlyphContentProvider
 import com.wardellbagby.tokipona.util.Words
 import com.wardellbagby.tokipona.util.emptyString
 import org.droidparts.widget.ClearableEditText
@@ -40,14 +43,14 @@ class WordListFragment : BaseFragment() {
         super.onViewCreated(rootView, savedInstanceState)
 
         val fab = rootView?.findViewById<FloatingActionButton>(R.id.fab)
-        mFabToolbar = rootView?.findViewById<FabToolbar>(R.id.fab_toolbar)
+        mFabToolbar = rootView?.findViewById(R.id.fab_toolbar)
         mFabToolbar?.setFab(fab)
         fab?.setOnClickListener {
             mFabToolbar?.visibility = View.VISIBLE
             mFabToolbar?.expandFab()
         }
 
-        mSearchEditText = mFabToolbar?.findViewById<ClearableEditText>(R.id.search_edit_text)
+        mSearchEditText = mFabToolbar?.findViewById(R.id.search_edit_text)
         mSearchEditText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val text = s.toString().toLowerCase()
@@ -64,7 +67,7 @@ class WordListFragment : BaseFragment() {
             mFabToolbar?.slideInFab()
         }
 
-        mRecyclerView = rootView?.findViewById<RecyclerView>(R.id.word_list)
+        mRecyclerView = rootView?.findViewById(R.id.word_list)
         setupRecyclerView()
     }
 
@@ -74,7 +77,7 @@ class WordListFragment : BaseFragment() {
     }
 
     override fun onBackPressed(): Boolean {
-        if (mFabToolbar?.isFabExpanded ?: false) {
+        if (mFabToolbar?.isFabExpanded == true) {
             mSearchEditText?.text?.clear()
             mFabToolbar?.slideInFab()
             return true
@@ -173,6 +176,12 @@ class WordListFragment : BaseFragment() {
             holder.word = mWords?.get(position)
             holder.name.text = holder.word?.name
             holder.definition.text = holder.word?.definitions?.get(0)?.definitionText
+            Glide.with(this@WordListFragment)
+                    .asBitmap()
+                    .load(GlyphContentProvider.getUriForWord(holder.word))
+                    .into(holder.icon)
+
+            holder.icon.contentDescription = holder.word?.name
 
             //todo Almost certain I can just use a ColorStateList for this...
             if (mSelectedWord == holder.word) {
@@ -190,7 +199,7 @@ class WordListFragment : BaseFragment() {
             }
 
             holder.view.setOnClickListener { _ ->
-                if (mListener?.invoke(holder.word ?: Word()) ?: true) {
+                if (mListener?.invoke(holder.word ?: Word()) != false) {
                     mSelectedWord = holder.word
                     notifyDataSetChanged()
                 }
@@ -211,15 +220,16 @@ class WordListFragment : BaseFragment() {
         }
 
         private fun containsText(item: Word, text: String): Boolean {
-            when {
-                text.toLowerCase() in item.name -> return true
-                else -> return item.definitions.any { text.toLowerCase() in it.definitionText.toLowerCase() }
+            return when {
+                text.toLowerCase() in item.name -> true
+                else -> item.definitions.any { text.toLowerCase() in it.definitionText.toLowerCase() }
             }
         }
 
         inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-            val name: TextView = view.findViewById<View>(R.id.name) as TextView
-            val definition: TextView = view.findViewById<View>(R.id.definition) as TextView
+            val icon: ImageView = view.findViewById(R.id.icon)
+            val name: TextView = view.findViewById(R.id.name)
+            val definition: TextView = view.findViewById(R.id.definition)
             val contentView: ViewGroup = view.findViewById(R.id.content)
             var word: Word? = null
         }
