@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v4.app.FragmentManager
 import com.wardellbagby.tokipona.ui.activity.BaseActivity
 import com.wardellbagby.tokipona.ui.fragment.BaseFragment
+import java.util.Random
 
 /**
  * @author Wardell Bagby
@@ -29,3 +30,14 @@ fun emptyString(): String {
 
 val Any.TAG: String
     get() = javaClass.simpleName
+
+fun Random.nextInt(from: Int, to: Int): Int {
+    if (from == to) {
+        return from
+    }
+    return nextInt(to - from) + from
+}
+
+fun <T> Random.randomItem(list: List<T>): T {
+    return list[nextInt(0, list.size - 1)]
+}

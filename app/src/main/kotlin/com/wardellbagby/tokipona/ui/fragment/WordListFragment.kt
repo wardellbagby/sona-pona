@@ -2,7 +2,6 @@ package com.wardellbagby.tokipona.ui.fragment
 
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.v7.util.SortedList
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,24 +12,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.bowyer.app.fabtoolbar.FabToolbar
 import com.bumptech.glide.Glide
 import com.wardellbagby.tokipona.R
 import com.wardellbagby.tokipona.data.Word
 import com.wardellbagby.tokipona.provider.GlyphContentProvider
 import com.wardellbagby.tokipona.util.Words
 import com.wardellbagby.tokipona.util.emptyString
-import org.droidparts.widget.ClearableEditText
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_word_list.*
 
 /**
  * @author Wardell Bagby
  */
 class WordListFragment : BaseFragment() {
 
-    private var mSearchEditText: ClearableEditText? = null
-    private var mRecyclerView: RecyclerView? = null
-    private var mAdapter: SimpleItemRecyclerViewAdapter? = null
-    private var mFabToolbar: FabToolbar? = null
+    private lateinit var mAdapter: SimpleItemRecyclerViewAdapter
     private var mListener: ((Word) -> Boolean)? = null
     private var mScrollPosition by state(0)
     private var mSelectedWord: Word? by state(null)
@@ -42,19 +39,16 @@ class WordListFragment : BaseFragment() {
     override fun onViewCreated(rootView: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(rootView, savedInstanceState)
 
-        val fab = rootView?.findViewById<FloatingActionButton>(R.id.fab)
-        mFabToolbar = rootView?.findViewById(R.id.fab_toolbar)
-        mFabToolbar?.setFab(fab)
-        fab?.setOnClickListener {
-            mFabToolbar?.visibility = View.VISIBLE
-            mFabToolbar?.expandFab()
+        fab_toolbar.setFab(fab)
+        fab.setOnClickListener {
+            fab_toolbar.visibility = View.VISIBLE
+            fab_toolbar.expandFab()
         }
 
-        mSearchEditText = mFabToolbar?.findViewById(R.id.search_edit_text)
-        mSearchEditText?.addTextChangedListener(object : TextWatcher {
+        search_edit_text.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val text = s.toString().toLowerCase()
-                mAdapter?.filter(text)
+                mAdapter.filter(text)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -62,24 +56,22 @@ class WordListFragment : BaseFragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
         })
-        mSearchEditText?.setListener {
-            mSearchEditText?.text?.clear()
-            mFabToolbar?.slideInFab()
+        search_edit_text.setListener {
+            search_edit_text.text?.clear()
+            fab_toolbar.slideInFab()
         }
-
-        mRecyclerView = rootView?.findViewById(R.id.word_list)
         setupRecyclerView()
     }
 
     override fun onPause() {
         super.onPause()
-        mScrollPosition = (mRecyclerView?.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition() ?: 0
+        mScrollPosition = (word_list.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition() ?: 0
     }
 
     override fun onBackPressed(): Boolean {
-        if (mFabToolbar?.isFabExpanded == true) {
-            mSearchEditText?.text?.clear()
-            mFabToolbar?.slideInFab()
+        if (fab_toolbar.isFabExpanded) {
+            search_edit_text.text.clear()
+            fab_toolbar.slideInFab()
             return true
         }
         return false
@@ -90,11 +82,7 @@ class WordListFragment : BaseFragment() {
     }
 
     override fun getTargetsToExcludeFromTransitions(): List<View> {
-        val toolbar = mFabToolbar
-        if (toolbar != null) {
-            return listOf(toolbar)
-        }
-        return super.getTargetsToExcludeFromTransitions()
+        return listOf(fab_toolbar)
     }
 
     /**
@@ -108,22 +96,27 @@ class WordListFragment : BaseFragment() {
 
     private fun setupRecyclerView() {
         //todo This should maybe show a loading bar?
-        Words.getWords(context, {
-            mAdapter = SimpleItemRecyclerViewAdapter(it)
-            mRecyclerView?.adapter = mAdapter
-            (mRecyclerView?.layoutManager as LinearLayoutManager).scrollToPosition(mScrollPosition)
-            mRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    mScrollPosition = (mRecyclerView?.layoutManager as? LinearLayoutManager)
-                            ?.findFirstCompletelyVisibleItemPosition() ?: 0
+        Words.getWords(context)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { it ->
+                    mAdapter = SimpleItemRecyclerViewAdapter(it)
+                    word_list.adapter = mAdapter
+                    (word_list.layoutManager as LinearLayoutManager).scrollToPosition(mScrollPosition)
+                    word_list.addOnScrollListener(mOnScrollListener)
                 }
+    }
 
-                override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                }
-            })
-        })
+    private val mOnScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            mScrollPosition = (word_list.layoutManager as? LinearLayoutManager)
+                    ?.findFirstCompletelyVisibleItemPosition() ?: 0
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+        }
     }
 
     inner class SimpleItemRecyclerViewAdapter(private val mValues: Collection<Word>) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {

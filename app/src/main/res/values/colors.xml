@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF5722</color>
     <color name="windowBackground">#303030</color>
     <color name="amoled_black">#000000</color>
+    <color name="incorrect">#F44336</color>
+    <color name="correct">#4CAF50</color>
 </resources>
+

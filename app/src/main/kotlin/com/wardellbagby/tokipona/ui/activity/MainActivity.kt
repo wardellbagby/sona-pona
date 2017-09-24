@@ -15,11 +15,13 @@ import com.wardellbagby.tokipona.TokiPonaApplication
 import com.wardellbagby.tokipona.overlay.service.TokiPonaClipboardService
 import com.wardellbagby.tokipona.ui.fragment.DefinitionsFragment
 import com.wardellbagby.tokipona.ui.fragment.GlossFragment
+import com.wardellbagby.tokipona.ui.fragment.QuizFragment
 import com.wardellbagby.tokipona.util.IntentExtras
 import com.wardellbagby.tokipona.util.Preferences
 import com.wardellbagby.tokipona.util.getLastBackStackEntry
 import io.reactivex.processors.AsyncProcessor
 import io.reactivex.processors.FlowableProcessor
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 /**
@@ -37,18 +39,18 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
 
     private lateinit var mEventProcessor: AsyncProcessor<MainEvent>
 
-    private var mNavigationView: BottomNavigationView? = null
     private var mRequestedOverlayPermission by state(false)
     private var mIgnoreItemSelected = false
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        if (mIgnoreItemSelected || item.itemId == mNavigationView?.selectedItemId) {
+        if (mIgnoreItemSelected || item.itemId == navigation.selectedItemId) {
             return@OnNavigationItemSelectedListener true
         }
         val fragment: Fragment = supportFragmentManager.findFragmentByTag(item.itemId.toString()) ?:
                 when (item.itemId) {
                     R.id.navigation_dictionary -> DefinitionsFragment()
                     R.id.navigation_gloss -> GlossFragment()
+                    R.id.navigation_quiz -> QuizFragment()
                     else -> Fragment()
                 }
 
@@ -63,14 +65,13 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
 
         mEventProcessor = AsyncProcessor.create()
 
-        mNavigationView = findViewById(R.id.navigation)
-        mNavigationView?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         if (savedInstanceState == null) {
             replace(R.id.frameLayout, DefinitionsFragment(), R.id.navigation_dictionary.toString())
         }
 
         supportFragmentManager.addOnBackStackChangedListener {
-            val currentSelectedId = mNavigationView?.selectedItemId
+            val currentSelectedId = navigation.selectedItemId
             val newSelectedId = supportFragmentManager
                     .getLastBackStackEntry()
                     ?.name
@@ -83,7 +84,7 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
 
     private fun updateNavigationBarState(selectedId: Int) {
         mIgnoreItemSelected = true
-        mNavigationView?.selectedItemId = selectedId
+        navigation.selectedItemId = selectedId
         mIgnoreItemSelected = false
     }
 
@@ -127,7 +128,7 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
     private fun handleGlossIntent(intent: Intent) {
         val copiedText = intent.extras.getString(IntentExtras.GLOSSABLE_TEXT)
         if (copiedText != null) {
-            mNavigationView?.selectedItemId = R.id.navigation_gloss
+            navigation.selectedItemId = R.id.navigation_gloss
             mEventProcessor.onNext(GlossEvent(copiedText))
             mEventProcessor.onComplete()
         }

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -35,6 +36,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 repositories {
@@ -61,6 +65,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation "com.android.support:support-vector-drawable:$support_lib_version"
     implementation "com.android.support:design:$support_lib_version"
+    implementation "com.android.support:gridlayout-v7:$support_lib_version"
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.bowyer.app:fab-toolbar:1.1.0@aar'
     implementation 'org.droidparts:droidparts-misc:3.2.0'
@@ -69,6 +74,7 @@ dependencies {
     implementation 'org.apache.opennlp:opennlp-tools:1.7.2'
     implementation "io.reactivex.rxjava2:rxkotlin:$rx_version"
     implementation "io.reactivex.rxjava2:rxjava:$rx_version"
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
     implementation 'com.rollbar:rollbar-android:0.2.1'
     implementation 'io.mattcarroll.hover:hover:0.9.8'
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
