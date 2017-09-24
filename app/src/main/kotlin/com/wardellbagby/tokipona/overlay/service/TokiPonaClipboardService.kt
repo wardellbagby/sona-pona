@@ -20,6 +20,8 @@ import com.wardellbagby.tokipona.util.Words
 import io.mattcarroll.hover.HoverView
 import io.mattcarroll.hover.SideDock
 import io.mattcarroll.hover.window.WindowViewController
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import opennlp.tools.sentdetect.SentenceDetectorME
 import opennlp.tools.sentdetect.SentenceModel
 
@@ -101,11 +103,13 @@ class TokiPonaClipboardService : Service() {
             }
         }
         mHoverView?.addToWindow()
-        Words.getWords(this) {
-            Words.glossToText(text, it) {
-                mClipboardHoverMenu?.setText(it)
-            }
-        }
+        Words.getWords(this)
+                .flatMap { Words.glossToText(text, it) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { it ->
+                    mClipboardHoverMenu?.setText(it)
+                }
 
         mHoverView?.setMenu(mClipboardHoverMenu)
         mHoverView?.collapse()

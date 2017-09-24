@@ -14,4 +14,5 @@
     <string name="transition_name_main_content">main_content_transition</string>
     <string name="transition_name_extra_content">extra_content_transition</string>
     <string name="share">Share text to…</string>
+    <string name="quiz_glyph_cont_desc">Toki Pona Glyph for quiz.</string>
 </resources>

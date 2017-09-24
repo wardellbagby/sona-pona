@@ -8,30 +8,22 @@ import android.support.annotation.AnimRes
 import android.support.v7.widget.CardView
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.ImageButton
-import android.widget.TextSwitcher
 import android.widget.TextView
 import android.widget.ViewSwitcher
 import com.wardellbagby.tokipona.R
+import kotlinx.android.synthetic.main.glossed_text_display.view.*
 
 /**
  * @author Wardell Bagby
  */
 class GlossedDisplayView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    CardView(context, attrs, defStyleAttr) {
+        CardView(context, attrs, defStyleAttr) {
 
-    private val mFactory = ViewSwitcher.ViewFactory { LayoutInflater.from(context).inflate(R.layout.glossed_text_view, mGlossedText, false) as TextView }
-
-    private var mGlossedText: TextSwitcher
-    private var mCopyButton: ImageButton
-    private var mShareButton: ImageButton
+    private val mFactory = ViewSwitcher.ViewFactory { LayoutInflater.from(context).inflate(R.layout.default_autosize_text_view, textSwitcher, false) as TextView }
 
     init {
         LayoutInflater.from(context).inflate(R.layout.glossed_text_display, this, true)
-        mGlossedText = findViewById(R.id.textSwitcher)
-        mCopyButton = findViewById(R.id.copy_button)
-        mShareButton = findViewById(R.id.share_button)
-        mGlossedText.setFactory(mFactory)
+        textSwitcher.setFactory(mFactory)
     }
 
     override fun onFinishInflate() {
@@ -48,36 +40,36 @@ class GlossedDisplayView @JvmOverloads constructor(context: Context, attrs: Attr
     }
 
     fun setTextAnimations(context: Context, @AnimRes inAnimRes: Int, @AnimRes outAnimRes: Int) {
-        mGlossedText.setInAnimation(context, inAnimRes)
-        mGlossedText.setOutAnimation(context, outAnimRes)
+        textSwitcher.setInAnimation(context, inAnimRes)
+        textSwitcher.setOutAnimation(context, outAnimRes)
     }
 
     fun setGlossedText(text: CharSequence, animate: Boolean = true) {
         if (animate) {
-            mGlossedText.setText(text)
+            textSwitcher.setText(text)
         } else {
-            mGlossedText.setCurrentText(text)
+            textSwitcher.setCurrentText(text)
         }
     }
 
     fun getGlossedText(): CharSequence {
-        return (mGlossedText.currentView as? TextView)?.text ?: ""
+        return (textSwitcher.currentView as? TextView)?.text ?: ""
     }
 
     private fun setOnCopyClickListener(callback: (CharSequence) -> Unit) {
-        mCopyButton.setOnClickListener {
+        copy_button.setOnClickListener {
             callback(getGlossedText())
         }
     }
 
     private fun setOnShareClickListener(callback: (CharSequence) -> Unit) {
-        mShareButton.setOnClickListener {
+        share_button.setOnClickListener {
             callback(getGlossedText())
         }
     }
 
     fun setSharePaneVisibility(visibility: Int) {
-        mShareButton.visibility = visibility
-        mCopyButton.visibility = visibility
+        share_button.visibility = visibility
+        copy_button.visibility = visibility
     }
 }

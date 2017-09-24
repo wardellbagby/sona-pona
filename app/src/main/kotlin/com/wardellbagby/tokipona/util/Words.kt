@@ -1,9 +1,13 @@
 package com.wardellbagby.tokipona.util
 
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.wardellbagby.tokipona.data.Word
-import com.wardellbagby.tokipona.task.GlossTask
-import com.wardellbagby.tokipona.task.LoadWordListTask
+import io.reactivex.Single
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.util.regex.Pattern
 
 /**
@@ -21,16 +25,23 @@ object Words {
      * Initializes and returns a list of Toki Pona [Word]s. Future calls after the initial call
      * will return the cached copy.
      */
-    fun getWords(context: Context, callback: (List<Word>) -> Unit) {
-        if (wordsList != null) {
-            callback(wordsList ?: listOf())
-            return
+    fun getWords(context: Context): Single<List<Word>> {
+        val words = wordsList
+        if (words != null) {
+            return Single.just(words)
         }
         val stream = context.assets.open("word_list.json")
-        LoadWordListTask {
-            wordsList = it
-            callback(it)
-        }.execute(stream)
+        return Single.defer {
+            getWordsSync(stream)
+        }
+    }
+
+    fun getWordsSync(stream: InputStream): Single<List<Word>> {
+        val reader = BufferedReader(InputStreamReader(stream))
+        val words: List<Word> = Gson().fromJson(reader, object : TypeToken<List<Word>>() {}.type)
+        words.sortedBy(Word::name)
+        wordsList = words
+        return Single.just(words)
     }
 
     /**
@@ -39,20 +50,29 @@ object Words {
      *
      * @param text The text that should be glossed.
      * @param words A word list that contains valid [Word]s. This will be checked against for the glossing functionality.
-     * @param callback The callback that will be invoked with the result of this transaction.
      */
-    private fun gloss(text: String, words: List<Word>, callback: (List<Word>) -> Unit) {
-        GlossTask(words, true, callback).execute(text)
+    private fun gloss(text: String, words: List<Word>): Single<List<Word>> {
+        return Single.defer {
+            glossSync(words, true, text)
+        }
+
+    }
+
+    private fun glossSync(words: List<Word>, includePunctuation: Boolean, text: String): Single<List<Word>> {
+        return Single.just(Words.split(text, includePunctuation)?.map { token ->
+            words.firstOrNull { it.name == token } ?: Word(token, isValidWord = false)
+        } ?: emptyList())
     }
 
     /**
-     * Convenience method for calling [gloss] and passing the result to [reduceToText]
+     * Given a [String] of text and a list of [Word]s, glosses the text into a string of [Word]s.
      *
+     * @param text The text that should be glossed.
+     * @param words A word list that contains valid [Word]s. This will be checked against for the glossing functionality.
      */
-    fun glossToText(text: String, words: List<Word>, callback: (String) -> Unit) {
-        gloss(text, words) {
-            callback(reduceToText(it))
-        }
+    fun glossToText(text: String, words: List<Word>): Single<String> {
+        return gloss(text, words)
+                .map(this::reduceToText)
     }
 
     /**

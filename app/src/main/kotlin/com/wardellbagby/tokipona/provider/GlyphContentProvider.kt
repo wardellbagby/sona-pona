@@ -12,9 +12,9 @@ import java.io.IOException
 class GlyphContentProvider : ContentProvider() {
 
     companion object {
-        private val GLYPH_ASSET_PATH = "glyphs"
+        val GLYPH_ASSET_PATH = "glyphs"
 
-        fun getUriForWord(word: Word?): Uri {
+        fun getUriForWord(word: Word?): Uri? {
             return Uri.parse("content://com.wardellbagby.tokipona/" + word?.name)
         }
     }

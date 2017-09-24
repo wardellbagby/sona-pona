@@ -7,7 +7,7 @@
     tools:context="com.wardellbagby.tokipona.ui.fragment.GlossFragment">
 
     <com.wardellbagby.tokipona.overlay.widget.GlossedDisplayView
-        android:id="@+id/transition_root"
+        android:id="@+id/glossed_display_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/glossed_display_view_margin"
