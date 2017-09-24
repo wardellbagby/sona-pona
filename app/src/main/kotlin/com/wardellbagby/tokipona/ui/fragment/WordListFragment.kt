@@ -5,14 +5,19 @@ import android.os.Bundle
 import android.support.v7.util.SortedList
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
-import android.text.TextWatcher
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.BackgroundColorSpan
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.jakewharton.rxbinding2.widget.RxTextView
 import com.wardellbagby.tokipona.R
 import com.wardellbagby.tokipona.data.Word
 import com.wardellbagby.tokipona.provider.GlyphContentProvider
@@ -21,6 +26,7 @@ import com.wardellbagby.tokipona.util.emptyString
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_word_list.*
+import java.util.concurrent.TimeUnit
 
 /**
  * @author Wardell Bagby
@@ -40,25 +46,25 @@ class WordListFragment : BaseFragment() {
         super.onViewCreated(rootView, savedInstanceState)
 
         fab_toolbar.setFab(fab)
+        /*Fixes an issue where the word list wouldn't properly expand to fill the space of the toolbar
+          and where the fab would animate to 0,0 when first clicked.
+         */
+        fab_toolbar.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                fab_toolbar.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                fab_toolbar.visibility = View.GONE
+            }
+        })
         fab.setOnClickListener {
+            TransitionManager.beginDelayedTransition(word_list, AutoTransition())
             fab_toolbar.visibility = View.VISIBLE
             fab_toolbar.expandFab()
         }
-
-        search_edit_text.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val text = s.toString().toLowerCase()
-                mAdapter.filter(text)
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-        })
         search_edit_text.setListener {
+            TransitionManager.beginDelayedTransition(word_list, AutoTransition())
             search_edit_text.text?.clear()
-            fab_toolbar.slideInFab()
+            fab_toolbar.contractFab()
+            fab_toolbar.visibility = View.GONE
         }
         setupRecyclerView()
     }
@@ -70,8 +76,10 @@ class WordListFragment : BaseFragment() {
 
     override fun onBackPressed(): Boolean {
         if (fab_toolbar.isFabExpanded) {
+            TransitionManager.beginDelayedTransition(word_list, AutoTransition())
             search_edit_text.text.clear()
             fab_toolbar.slideInFab()
+            fab_toolbar.visibility = View.GONE
             return true
         }
         return false
@@ -99,12 +107,23 @@ class WordListFragment : BaseFragment() {
         Words.getWords(context)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { it ->
-                    mAdapter = SimpleItemRecyclerViewAdapter(it)
-                    word_list.adapter = mAdapter
-                    (word_list.layoutManager as LinearLayoutManager).scrollToPosition(mScrollPosition)
-                    word_list.addOnScrollListener(mOnScrollListener)
+                .subscribe(this::onWordListReady)
+    }
+
+    private fun onWordListReady(words: List<Word>) {
+        RxTextView.afterTextChangeEvents(search_edit_text)
+                .debounce(300L, TimeUnit.MILLISECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    val text = it.editable()?.toString() ?: return@subscribe
+                    mAdapter.filter(text)
                 }
+        TransitionManager.beginDelayedTransition(word_list)
+        mAdapter = SimpleItemRecyclerViewAdapter(words)
+        word_list.adapter = mAdapter
+        (word_list.layoutManager as LinearLayoutManager).scrollToPosition(mScrollPosition)
+        word_list.addOnScrollListener(mOnScrollListener)
     }
 
     private val mOnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -121,6 +140,7 @@ class WordListFragment : BaseFragment() {
 
     inner class SimpleItemRecyclerViewAdapter(private val mValues: Collection<Word>) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
         private var mWords: SortedList<Word>? = null
+        private var mFilterText: String = emptyString()
 
         init {
             mWords = SortedList<Word>(Word::class.java, object : SortedList.Callback<Word>() {
@@ -132,8 +152,29 @@ class WordListFragment : BaseFragment() {
                     this@SimpleItemRecyclerViewAdapter.notifyItemRangeInserted(p0, p1)
                 }
 
-                override fun compare(p0: Word?, p1: Word?): Int {
-                    return p0?.name?.compareTo(p1?.name ?: emptyString()) ?: 0
+                override fun compare(left: Word, right: Word): Int {
+                    if (mFilterText.isBlank()) return left.name.compareTo(right.name)
+                    val filter = mFilterText
+                    val filterInLeftName = filter in left.name
+                    val filterInRightName = filter in right.name
+                    if (filterInLeftName && !filterInRightName) {
+                        return -1
+                    } else if (!filterInLeftName && filterInRightName) {
+                        return 1
+                    } else if (filterInLeftName && filterInRightName) {
+                        return left.name.compareTo(right.name)
+                    }
+                    val leftDefinition = left.definitions.first().definitionText
+                    val rightDefinition = right.definitions.first().definitionText
+                    val filterInLeftDef = filter in leftDefinition
+                    val filterInRightDef = filter in rightDefinition
+                    return if (filterInLeftDef && !filterInRightDef) {
+                        -1
+                    } else if (!filterInLeftDef && filterInRightDef) {
+                        1
+                    } else {
+                        leftDefinition.compareTo(rightDefinition)
+                    }
                 }
 
                 override fun areItemsTheSame(p0: Word?, p1: Word?): Boolean {
@@ -151,7 +192,6 @@ class WordListFragment : BaseFragment() {
                 override fun onMoved(p0: Int, p1: Int) {
                     this@SimpleItemRecyclerViewAdapter.notifyItemMoved(p0, p1)
                 }
-
             })
             mWords?.beginBatchedUpdates()
             for (word in mValues) {
@@ -166,15 +206,15 @@ class WordListFragment : BaseFragment() {
         }
 
         override fun onBindViewHolder(holder: SimpleItemRecyclerViewAdapter.ViewHolder, position: Int) {
-            holder.word = mWords?.get(position)
-            holder.name.text = holder.word?.name
-            holder.definition.text = holder.word?.definitions?.get(0)?.definitionText
+            holder.word = mWords?.get(position) ?: return
+            holder.name.text = createHighlightedFilteredText(holder.word.name)
+            holder.definition.text = createHighlightedFilteredText(holder.word.definitions.first().definitionText)
             Glide.with(this@WordListFragment)
                     .asBitmap()
                     .load(GlyphContentProvider.getUriForWord(holder.word))
                     .into(holder.icon)
 
-            holder.icon.contentDescription = holder.word?.name
+            holder.icon.contentDescription = holder.word.name
 
             //todo Almost certain I can just use a ColorStateList for this...
             if (mSelectedWord == holder.word) {
@@ -192,7 +232,7 @@ class WordListFragment : BaseFragment() {
             }
 
             holder.view.setOnClickListener { _ ->
-                if (mListener?.invoke(holder.word ?: Word()) != false) {
+                if (mListener?.invoke(holder.word) != false) {
                     mSelectedWord = holder.word
                     notifyDataSetChanged()
                 }
@@ -200,20 +240,50 @@ class WordListFragment : BaseFragment() {
 
         }
 
+        private fun createHighlightedFilteredText(text: String): CharSequence {
+            if (mFilterText.isBlank()) {
+                return text
+            }
+            val filterText = mFilterText
+            val highlightedText = SpannableStringBuilder(text)
+            val start = text.indexOf(filterText, ignoreCase = true)
+            val end = start + filterText.length
+            if (start < 0 || end > text.length) {
+                return text
+            }
+            @Suppress("DEPRECATION") // Necessary evil until minSdk is Marshmallow.
+            highlightedText.setSpan(BackgroundColorSpan(resources.getColor(R.color.colorAccent)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            return highlightedText
+        }
+
         override fun getItemCount(): Int {
             return mWords?.size() ?: 0
         }
 
         fun filter(text: String) {
-            mWords?.beginBatchedUpdates()
-            mWords?.clear()
-            mWords?.addAll(mValues.filter { containsText(it, text) })
-            mWords?.endBatchedUpdates()
+            val words = mWords ?: return
+            if (mFilterText == text) return
+            mFilterText = text
+            TransitionManager.beginDelayedTransition(word_list)
+            words.beginBatchedUpdates()
+            words.clear()
+            words.addAll(mValues.filter { containsText(it, text) }.map { createFilteredWord(it, text) })
+            words.endBatchedUpdates()
+            mWords = words
+        }
 
+        private fun createFilteredWord(word: Word, text: String): Word {
+            if (text.isBlank()) return word
+            return word.definitions.firstOrNull {
+                text.toLowerCase() in it.definitionText.toLowerCase()
+            }.let {
+                Word(word.name, listOf(it ?: return word))
+            }
         }
 
         private fun containsText(item: Word, text: String): Boolean {
             return when {
+                text.isEmpty() -> true
                 text.toLowerCase() in item.name -> true
                 else -> item.definitions.any { text.toLowerCase() in it.definitionText.toLowerCase() }
             }
@@ -224,7 +294,7 @@ class WordListFragment : BaseFragment() {
             val name: TextView = view.findViewById(R.id.name)
             val definition: TextView = view.findViewById(R.id.definition)
             val contentView: ViewGroup = view.findViewById(R.id.content)
-            var word: Word? = null
+            lateinit var word: Word
         }
     }
 }
