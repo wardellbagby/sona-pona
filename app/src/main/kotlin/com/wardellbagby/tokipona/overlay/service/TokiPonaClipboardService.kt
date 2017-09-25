@@ -43,7 +43,7 @@ class TokiPonaClipboardService : Service() {
 
     override fun onUnbind(intent: Intent?): Boolean {
         mIsBound = false
-        return super.onUnbind(intent)
+        return true
     }
 
     override fun onRebind(intent: Intent?) {
