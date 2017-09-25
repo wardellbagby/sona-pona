@@ -2,6 +2,7 @@ package com.wardellbagby.tokipona.ui.activity
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
@@ -69,15 +70,19 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
         saveInstanceState(outState)
     }
 
+    override fun onStart() {
+        super.onStart()
+        bindService(Intent(this, TokiPonaClipboardService::class.java), mConnection, Context.BIND_NOT_FOREGROUND)
+    }
+
     override fun onPause() {
         super.onPause()
         disposables?.dispose()
-        unbindService(mConnection)
     }
 
-    override fun onResume() {
-        super.onResume()
-        bindService(Intent(this, TokiPonaClipboardService::class.java), mConnection, 0)
+    override fun onStop() {
+        super.onStop()
+        unbindService(mConnection)
     }
 
     override fun onBackPressed() {
