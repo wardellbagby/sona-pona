@@ -16,7 +16,6 @@ import com.wardellbagby.tokipona.overlay.service.TokiPonaClipboardService
 import com.wardellbagby.tokipona.ui.fragment.DefinitionsFragment
 import com.wardellbagby.tokipona.ui.fragment.GlossFragment
 import com.wardellbagby.tokipona.ui.fragment.QuizFragment
-import com.wardellbagby.tokipona.util.IntentExtras
 import com.wardellbagby.tokipona.util.Preferences
 import com.wardellbagby.tokipona.util.getLastBackStackEntry
 import io.reactivex.processors.AsyncProcessor
@@ -105,7 +104,7 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
     }
 
     private fun isIntentForGloss(intent: Intent?): Boolean {
-        return intent != null && intent.hasExtra(IntentExtras.GLOSSABLE_TEXT)
+        return intent != null && intent.hasExtra(Intent.EXTRA_TEXT)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -126,7 +125,7 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
     }
 
     private fun handleGlossIntent(intent: Intent) {
-        val copiedText = intent.extras.getString(IntentExtras.GLOSSABLE_TEXT)
+        val copiedText = intent.extras.getString(Intent.EXTRA_TEXT)
         if (copiedText != null) {
             navigation.selectedItemId = R.id.navigation_gloss
             mEventProcessor.onNext(GlossEvent(copiedText))

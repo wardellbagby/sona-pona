@@ -44,12 +44,8 @@ class GlossedDisplayView @JvmOverloads constructor(context: Context, attrs: Attr
         textSwitcher.setOutAnimation(context, outAnimRes)
     }
 
-    fun setGlossedText(text: CharSequence, animate: Boolean = true) {
-        if (animate) {
-            textSwitcher.setText(text)
-        } else {
-            textSwitcher.setCurrentText(text)
-        }
+    fun setGlossedText(text: CharSequence) {
+        textSwitcher.setText(text)
     }
 
     fun getGlossedText(): CharSequence {

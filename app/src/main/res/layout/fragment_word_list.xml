@@ -61,6 +61,7 @@
                 android:drawableRight="@drawable/ic_clear"
                 android:hint="@string/search_hint"
                 android:maxLines="1"
+                android:inputType="textShortMessage"
                 android:padding="8dp"
                 tools:ignore="RtlHardcoded" />
             <!--This lib only supports drawableRight or drawableLeft, so can't use drawableEnd.-->
