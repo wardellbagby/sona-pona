@@ -21,8 +21,8 @@ import java.util.Random
 class QuizViewModel(private val words: List<Word>) {
 
     companion object {
-        val MAX_TIMER_VALUE = 10000L
-        private val TIMER_INTERVAL = 100L
+        val MAX_TIMER_VALUE = 15000L
+        private val TIMER_INTERVAL = 10L
         private val WAIT_BEFORE_TIMER_START = 1500L
         private val MAX_RECENT_ITEMS_COUNT = 5
     }

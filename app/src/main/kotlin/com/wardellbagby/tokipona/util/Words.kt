@@ -44,21 +44,14 @@ object Words {
         return Single.just(words)
     }
 
-    /**
-     * Given a [String] of text and a list of [Word]s, glosses the text into a list of [Word]s. The returned
-     * list is in the same order as the given text.
-     *
-     * @param text The text that should be glossed.
-     * @param words A word list that contains valid [Word]s. This will be checked against for the glossing functionality.
-     */
-    private fun gloss(text: String, words: List<Word>): Single<List<Word>> {
+    private fun gloss(text: String, words: List<Word>, includePunctuation: Boolean = true): Single<List<Word>> {
         return Single.defer {
-            glossSync(words, true, text)
+            glossSync(text, words, includePunctuation)
         }
 
     }
 
-    private fun glossSync(words: List<Word>, includePunctuation: Boolean, text: String): Single<List<Word>> {
+    private fun glossSync(text: String, words: List<Word>, includePunctuation: Boolean): Single<List<Word>> {
         return Single.just(Words.split(text, includePunctuation)?.map { token ->
             words.firstOrNull { it.name == token } ?: Word(token, isValidWord = false)
         } ?: emptyList())
@@ -69,9 +62,10 @@ object Words {
      *
      * @param text The text that should be glossed.
      * @param words A word list that contains valid [Word]s. This will be checked against for the glossing functionality.
+     * @param includePunctuation Flag that determines whether punctuation should be included or removed from the result.
      */
-    fun glossToText(text: String, words: List<Word>): Single<String> {
-        return gloss(text, words)
+    fun glossToText(text: String, words: List<Word>, includePunctuation: Boolean = true): Single<String> {
+        return gloss(text, words, includePunctuation)
                 .map(this::reduceToText)
     }
 
@@ -84,12 +78,18 @@ object Words {
         if (glossedWords.isEmpty()) {
             return emptyString()
         }
-        return glossedWords.map(Word::gloss).reduce { total, next ->
-            if (Words.isSpecialCharacter(next) || Words.isSpecialCharacter(total?.last())) {
-                return@reduce total + next
-            }
-            return@reduce total + " " + next
-        } ?: emptyString()
+        return glossedWords.map(Word::gloss)
+                .reduce { total, next ->
+                    val lastChar = total?.lastOrNull()
+                    if (lastChar == '\n' && next?.singleOrNull() == '\n') {
+                        return@reduce total
+                    }
+                    if (Words.isSpecialCharacter(next) || Words.isSpecialCharacter(total?.lastOrNull())) {
+                        return@reduce total + next
+                    }
+                    return@reduce total + " " + next
+                }?.trim() ?: emptyString()
+
     }
 
     private fun isSpecialCharacter(text: String?): Boolean {

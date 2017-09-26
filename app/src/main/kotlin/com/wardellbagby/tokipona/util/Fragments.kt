@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager
 import android.transition.AutoTransition
 import android.transition.Transition
 import android.view.View
-import android.view.ViewGroup
 import com.wardellbagby.tokipona.ui.fragment.BaseFragment
 
 /**
@@ -68,40 +67,4 @@ object Fragments {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP) private fun getDefaultEnterTransition() = AutoTransition()
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP) private fun getDefaultExitTransition() = AutoTransition()
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    fun getSharedElementForTransition(rootView: View?, manager: FragmentManager, transitionName: String): View? {
-        return getSharedElementFromView(rootView, transitionName) ?: getSharedElementFromManager(manager, transitionName)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun getSharedElementFromView(view: View?, transitionName: String): View? {
-        if (view !is ViewGroup) {
-            return null
-        }
-        if (view.transitionName == transitionName) {
-            return view
-        }
-        return (0..view.childCount).map(view::getChildAt)
-                .firstOrNull {
-                    it != null && it.transitionName == transitionName
-                }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun getSharedElementFromManager(manager: FragmentManager, transitionName: String): View? {
-        if (manager.fragments.isNotEmpty()) {
-            manager.fragments.filter {
-                it is BaseFragment
-            }.map {
-                it as BaseFragment
-            }.forEach {
-                val element = it.getSharedElementForTransition(transitionName)
-                if (element != null) {
-                    return element
-                }
-            }
-        }
-        return null
-    }
 }

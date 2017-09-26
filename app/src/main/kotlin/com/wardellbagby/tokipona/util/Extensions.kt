@@ -2,6 +2,7 @@ package com.wardellbagby.tokipona.util
 
 import android.content.Context
 import android.support.v4.app.FragmentManager
+import android.support.v7.util.SortedList
 import com.wardellbagby.tokipona.ui.activity.BaseActivity
 import com.wardellbagby.tokipona.ui.fragment.BaseFragment
 import java.util.Random
@@ -40,4 +41,8 @@ fun Random.nextInt(from: Int, to: Int): Int {
 
 fun <T> Random.randomItem(list: List<T>): T {
     return list[nextInt(0, list.size - 1)]
+}
+
+operator fun <T> SortedList<T>.plusAssign(values: Collection<T>) {
+    addAll(values)
 }

@@ -23,12 +23,14 @@ import com.wardellbagby.tokipona.data.Word
 import com.wardellbagby.tokipona.provider.GlyphContentProvider
 import com.wardellbagby.tokipona.util.Words
 import com.wardellbagby.tokipona.util.emptyString
+import com.wardellbagby.tokipona.util.plusAssign
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_word_list.*
 import java.util.concurrent.TimeUnit
 
 /**
+ * todo Use ViewModel for this.
  * @author Wardell Bagby
  */
 class WordListFragment : BaseFragment() {
@@ -108,11 +110,12 @@ class WordListFragment : BaseFragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onWordListReady)
+                .also(this::disposeOnPause)
     }
 
     private fun onWordListReady(words: List<Word>) {
         RxTextView.afterTextChangeEvents(search_edit_text)
-                .debounce(300L, TimeUnit.MILLISECONDS)
+                .debounce(400L, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -139,7 +142,7 @@ class WordListFragment : BaseFragment() {
     }
 
     inner class SimpleItemRecyclerViewAdapter(private val mValues: Collection<Word>) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
-        private var mWords: SortedList<Word>? = null
+        private val mWords: SortedList<Word>
         private var mFilterText: String = emptyString()
 
         init {
@@ -193,11 +196,9 @@ class WordListFragment : BaseFragment() {
                     this@SimpleItemRecyclerViewAdapter.notifyItemMoved(p0, p1)
                 }
             })
-            mWords?.beginBatchedUpdates()
-            for (word in mValues) {
-                mWords?.add(word)
-            }
-            mWords?.endBatchedUpdates()
+            mWords.beginBatchedUpdates()
+            mWords += mValues
+            mWords.endBatchedUpdates()
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimpleItemRecyclerViewAdapter.ViewHolder {
@@ -206,7 +207,7 @@ class WordListFragment : BaseFragment() {
         }
 
         override fun onBindViewHolder(holder: SimpleItemRecyclerViewAdapter.ViewHolder, position: Int) {
-            holder.word = mWords?.get(position) ?: return
+            holder.word = mWords.get(position) ?: return
             holder.name.text = createHighlightedFilteredText(holder.word.name)
             holder.definition.text = createHighlightedFilteredText(holder.word.definitions.first().definitionText)
             Glide.with(this@WordListFragment)
@@ -257,19 +258,17 @@ class WordListFragment : BaseFragment() {
         }
 
         override fun getItemCount(): Int {
-            return mWords?.size() ?: 0
+            return mWords.size()
         }
 
         fun filter(text: String) {
-            val words = mWords ?: return
             if (mFilterText == text) return
             mFilterText = text
             TransitionManager.beginDelayedTransition(word_list)
-            words.beginBatchedUpdates()
-            words.clear()
-            words.addAll(mValues.filter { containsText(it, text) }.map { createFilteredWord(it, text) })
-            words.endBatchedUpdates()
-            mWords = words
+            mWords.beginBatchedUpdates()
+            mWords.clear()
+            mWords += mValues.filter { containsText(it, text) }.map { createFilteredWord(it, text) }
+            mWords.endBatchedUpdates()
         }
 
         private fun createFilteredWord(word: Word, text: String): Word {

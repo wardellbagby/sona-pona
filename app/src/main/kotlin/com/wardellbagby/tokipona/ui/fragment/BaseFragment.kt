@@ -1,9 +1,7 @@
 package com.wardellbagby.tokipona.ui.fragment
 
-import android.os.Build
 import android.os.Bundle
 import android.support.annotation.IdRes
-import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.view.View
 import com.github.yamamotoj.pikkel.Pikkel
@@ -11,14 +9,19 @@ import com.github.yamamotoj.pikkel.PikkelDelegate
 import com.wardellbagby.tokipona.R
 import com.wardellbagby.tokipona.util.Fragments
 import com.wardellbagby.tokipona.util.sendOnBackPressed
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 /**
  * @author Wardell Bagby
  */
 open class BaseFragment : Fragment(), Pikkel by PikkelDelegate() {
 
+    private var mDisposables: CompositeDisposable? = null
+
     override fun onViewCreated(rootView: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(rootView, savedInstanceState)
+        mDisposables = CompositeDisposable()
         restoreInstanceState(savedInstanceState)
     }
 
@@ -30,6 +33,13 @@ open class BaseFragment : Fragment(), Pikkel by PikkelDelegate() {
     override fun onResume() {
         super.onResume()
         setTitle(getTitle())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mDisposables?.isDisposed == false) {
+            mDisposables?.dispose()
+        }
     }
 
     open fun onBackPressed(): Boolean {
@@ -56,9 +66,8 @@ open class BaseFragment : Fragment(), Pikkel by PikkelDelegate() {
         return listOf()
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    fun getSharedElementForTransition(transitionName: String): View? {
-        return Fragments.getSharedElementForTransition(view, childFragmentManager, transitionName)
+    fun disposeOnPause(disposable: Disposable) {
+        mDisposables?.add(disposable)
     }
 
     fun replace(@IdRes id: Int, fragment: Fragment, tag: String) {

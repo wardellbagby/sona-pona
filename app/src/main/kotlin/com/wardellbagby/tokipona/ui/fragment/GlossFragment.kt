@@ -81,14 +81,6 @@ class GlossFragment : BaseFragment() {
 
     @Suppress("ConvertLambdaToReference") //It can't be done. inputted_text's type is too confusing.
     private fun onGlossEvent(event: MainActivity.GlossEvent) {
-        glossed_display_view.setGlossedText(emptyString())
-        Words.getWords(context)
-                .flatMap { Words.glossToText(event.glossableText, it) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { it ->
-                    //Set it on the input so it can be cleared and the animations will start.
-                    inputted_text.setText(it)
-                }
+        inputted_text.setText(event.glossableText)
     }
 }

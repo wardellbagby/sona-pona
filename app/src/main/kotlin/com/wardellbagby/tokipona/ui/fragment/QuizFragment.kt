@@ -96,6 +96,7 @@ class QuizFragment : BaseFragment() {
         quiz_question_container_view.removeAllViews()
         quiz_answer_view.removeAllViews()
         quiz_countdown_timer.progressDrawable.setColorFilter(mCorrectColor, PorterDuff.Mode.MULTIPLY)
+        mHandler.removeCallbacks(null)
     }
 
     private fun instantiateFromModel() {
@@ -163,18 +164,19 @@ class QuizFragment : BaseFragment() {
                         Log.e(TAG, "Something terrible happened?", t)
                     }
 
-                    override fun onNext(t: Long) {
-                        quiz_countdown_timer.progress = t.toInt()
+                    override fun onNext(progress: Long) {
+                        quiz_countdown_timer.progress = progress.toInt()
                         //No one man should have all these primitive casts.
-                        setTimerColor((t.toInt() / quiz_countdown_timer.max.toFloat()))
+                        setTimerColor((progress / quiz_countdown_timer.max.toFloat()))
                     }
                 })
     }
 
     private fun setTimerColor(ratio: Float) {
-        val red = Math.abs(ratio * Color.red(mCorrectColor) + (1 - ratio) * Color.red(mIncorrectColor)).toInt()
-        val green = Math.abs(ratio * Color.green(mCorrectColor) + (1 - ratio) * Color.green(mIncorrectColor)).toInt()
-        val blue = Math.abs(ratio * Color.blue(mCorrectColor) + (1 - ratio) * Color.blue(mIncorrectColor)).toInt()
+        val newRatio = (1 - Math.cos(ratio * Math.PI)) / 2
+        val red = Math.abs(Color.red(mIncorrectColor) * (1 - newRatio) + Color.red(mCorrectColor) * newRatio).toInt()
+        val green = Math.abs(Color.green(mIncorrectColor) * (1 - newRatio) + Color.green(mCorrectColor) * newRatio).toInt()
+        val blue = Math.abs(Color.blue(mIncorrectColor) * (1 - newRatio) + Color.blue(mCorrectColor) * newRatio).toInt()
         quiz_countdown_timer.progressDrawable.setColorFilter(Color.rgb(red, green, blue), PorterDuff.Mode.MULTIPLY)
     }
 
