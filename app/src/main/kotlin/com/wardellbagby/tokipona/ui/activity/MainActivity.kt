@@ -142,7 +142,7 @@ class MainActivity : BaseActivity<MainActivity.MainEvent>() {
         }
     }
 
-    override fun getProcessor(): FlowableProcessor<MainEvent>? {
+    override fun getEvents(): FlowableProcessor<MainEvent>? {
         return mEventProcessor
     }
 }

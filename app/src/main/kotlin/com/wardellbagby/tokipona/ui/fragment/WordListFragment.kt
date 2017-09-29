@@ -68,12 +68,16 @@ class WordListFragment : BaseFragment() {
             fab_toolbar.contractFab()
             fab_toolbar.visibility = View.GONE
         }
-        setupRecyclerView()
     }
 
     override fun onPause() {
         super.onPause()
         mScrollPosition = (word_list.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition() ?: 0
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupRecyclerView()
     }
 
     override fun onBackPressed(): Boolean {
@@ -261,6 +265,9 @@ class WordListFragment : BaseFragment() {
             return mWords.size()
         }
 
+        /**
+         * Filters the word list using the provided [text]
+         */
         fun filter(text: String) {
             if (mFilterText == text) return
             mFilterText = text
