@@ -55,10 +55,16 @@ class QuizViewModel(private val words: List<Word>) {
         }
     }
 
+    /**
+     *  Returns a [Flowable] that will update with the current time left to answer a [Question].
+     */
     fun onTick(): Flowable<Long> {
         return countdownTimer.onTick
     }
 
+    /**
+     * Returns the current [Question].
+     */
     fun getQuestion(): Question {
         val question = currentQuestion
         if (question != null && !isQuestionAnswered) {
@@ -70,6 +76,10 @@ class QuizViewModel(private val words: List<Word>) {
         return newQuestion
     }
 
+    /**
+     * Answers the current [Question]. Provide a null [answer] or use the no-arg version if the
+     * question was answered due to timeout.
+     */
     fun answerQuestion(answer: Answer? = null): Boolean {
         isQuestionAnswered = true
         if (currentQuestion == null || answer == null) {
@@ -79,6 +89,9 @@ class QuizViewModel(private val words: List<Word>) {
         return getCorrectAnswer() == answer
     }
 
+    /**
+     * Returns the correct [Answer] for the current question.
+     */
     fun getCorrectAnswer(): Answer? {
         return currentQuestion?.answers?.first(Answer::isCorrect)
     }

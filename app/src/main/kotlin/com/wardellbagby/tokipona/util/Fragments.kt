@@ -15,6 +15,12 @@ import com.wardellbagby.tokipona.ui.fragment.BaseFragment
  * @author Wardell Bagby
  */
 object Fragments {
+
+    /**
+     * Using [manager], replaces the current fragment with id [id] with [fragmentToAdd]. This will
+     * correctly set the default animations and handle adding the fragment to the backstack using
+     * [tag]
+     */
     fun replace(manager: FragmentManager, @IdRes id: Int, fragmentToAdd: Fragment, tag: String) {
         val transaction = manager.beginTransaction().addToBackStack(tag)
         val currentFragment: Fragment? = manager.findFragmentById(id)

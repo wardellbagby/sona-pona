@@ -18,6 +18,7 @@ import com.wardellbagby.tokipona.overlay.service.TokiPonaClipboardService
 import com.wardellbagby.tokipona.ui.activity.BaseActivity.BaseEvent
 import com.wardellbagby.tokipona.util.Fragments
 import com.wardellbagby.tokipona.util.sendOnBackPressed
+import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.processors.FlowableProcessor
@@ -41,7 +42,7 @@ import io.reactivex.processors.FlowableProcessor
  *
  * The BaseActivity and Pikkel will take care of the rest.
  *
- * For Activity to Fragment communication, Activity that extend this should override [getProcessor]
+ * For Activity to Fragment communication, Activity that extend this should override [getEvents]
  * and return a valid [FlowableProcessor]. Activities should also create their own implementation
  * of [BaseEvent], as [BaseEvent]s are used to wrap data that should be sent to Fragments.
  *
@@ -99,6 +100,10 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
         findViewById<Toolbar?>(R.id.toolbar)?.setTitle(titleId)
     }
 
+    /**
+     * Subscribe to this Activity's events with the given [consumer], which will be invoked when
+     * an event of type [EventType] is posted.
+     */
     fun <EventType : T> safeSubscribe(consumer: (EventType) -> Unit) {
         val disposable = subscribeWith(consumer)
         if (disposable != null) {
@@ -106,22 +111,29 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
         }
     }
 
-    open fun getProcessor(): FlowableProcessor<T>? {
+    /**
+     * Returns a Flowable that will emit events of type [T] so that Fragments can subscribe to the
+     * events that pertain to them.
+     */
+    open fun getEvents(): Flowable<T>? {
         return null
     }
 
-    open fun <EventType : T> subscribeWith(consumer: (EventType) -> Unit): Disposable? {
-        return getProcessor()?.subscribe({
+    /**
+     * Convenience method for calling [Fragments.replace] with [getSupportFragmentManager].
+     */
+    fun replace(@IdRes id: Int, fragmentToAdd: Fragment, tag: String) {
+        Fragments.replace(supportFragmentManager, id, fragmentToAdd, tag)
+    }
+
+    private fun <EventType : T> subscribeWith(consumer: (EventType) -> Unit): Disposable? {
+        return getEvents()?.subscribe({
             @Suppress("UNCHECKED_CAST") //This will fail safely, and we null-check later.
             val event: EventType? = it as? EventType
             if (event != null) {
                 consumer(event)
             }
         })
-    }
-
-    fun replace(@IdRes id: Int, fragmentToAdd: Fragment, tag: String) {
-        Fragments.replace(supportFragmentManager, id, fragmentToAdd, tag)
     }
 
     private val mConnection: ServiceConnection = object : ServiceConnection {

@@ -13,12 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import com.wardellbagby.tokipona.R
 import com.wardellbagby.tokipona.TokiPonaApplication
 import com.wardellbagby.tokipona.data.Answer
-import com.wardellbagby.tokipona.data.DefinitionQuestion
-import com.wardellbagby.tokipona.data.GlyphQuestion
 import com.wardellbagby.tokipona.data.Question
 import com.wardellbagby.tokipona.util.TAG
 import com.wardellbagby.tokipona.viewmodel.QuizViewModel
@@ -28,8 +25,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subscribers.ResourceSubscriber
 import kotlinx.android.synthetic.main.fragment_quiz.*
-import kotlinx.android.synthetic.main.quiz_definition_view.view.*
-import kotlinx.android.synthetic.main.quiz_glyph_view.view.*
 import javax.inject.Inject
 
 /**
@@ -85,7 +80,7 @@ class QuizFragment : BaseFragment() {
     }
 
     private fun animateTransition() {
-        TransitionManager.beginDelayedTransition(quiz_question_container_view, Fade())
+        TransitionManager.beginDelayedTransition(quiz_question_view, Fade())
         TransitionManager.beginDelayedTransition(quiz_answer_view, AutoTransition())
     }
 
@@ -93,7 +88,7 @@ class QuizFragment : BaseFragment() {
         if (mOnTickDisposable?.isDisposed == false) {
             mOnTickDisposable?.dispose()
         }
-        quiz_question_container_view.removeAllViews()
+        quiz_question_view.setQuestion(null)
         quiz_answer_view.removeAllViews()
         quiz_countdown_timer.progressDrawable.setColorFilter(mCorrectColor, PorterDuff.Mode.MULTIPLY)
         mHandler.removeCallbacks(null)
@@ -109,24 +104,7 @@ class QuizFragment : BaseFragment() {
     }
 
     private fun showQuestion(question: Question) {
-        when (question) {
-            is DefinitionQuestion -> showDefinitionQuestion(question)
-            is GlyphQuestion -> showGlyphQuestion(question)
-        }
-    }
-
-    private fun showDefinitionQuestion(question: DefinitionQuestion) {
-        val definitionView = layoutInflater.inflate(R.layout.quiz_definition_view, quiz_question_container_view, false)
-        quiz_question_container_view.addView(definitionView)
-        (definitionView.quiz_question_text_view as TextView).text = question.questionText
-    }
-
-    private fun showGlyphQuestion(question: GlyphQuestion) {
-        val glyphView = layoutInflater.inflate(R.layout.quiz_glyph_view, quiz_question_container_view, false)
-        quiz_question_container_view.addView(glyphView)
-        Glide.with(this)
-                .load(question.questionGlyph)
-                .into(glyphView.quiz_question_glyph_view)
+        quiz_question_view.setQuestion(question)
     }
 
     private fun showAnswers(answers: List<Answer>) {

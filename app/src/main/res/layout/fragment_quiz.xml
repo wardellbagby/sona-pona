@@ -9,12 +9,13 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="81dp">
 
-    <FrameLayout
-        android:id="@+id/quiz_question_container_view"
+    <com.wardellbagby.tokipona.ui.widget.QuestionView
+        android:id="@+id/quiz_question_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
         android:padding="4dp"
+        app:contentPadding="16dp"
         app:layout_constraintBottom_toTopOf="@+id/quiz_answer_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,12 +25,13 @@
         android:id="@+id/quiz_answer_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         app:columnCount="2"
         app:layout_constraintBottom_toTopOf="@id/quiz_countdown_timer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quiz_question_container_view"
+        app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+        app:layout_constraintStart_toStartOf="@+id/left_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/quiz_question_view"
         app:rowCount="2" />
 
     <ProgressBar
@@ -42,4 +44,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/quiz_answer_view" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/left_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/right_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
 </android.support.constraint.ConstraintLayout>
