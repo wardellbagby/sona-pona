@@ -14,7 +14,9 @@ import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.WindowManager
 import com.wardellbagby.tokipona.R
+import com.wardellbagby.tokipona.TokiPonaApplication
 import com.wardellbagby.tokipona.overlay.hover.ClipboardHoverMenu
+import com.wardellbagby.tokipona.util.Preferences
 import com.wardellbagby.tokipona.util.TAG
 import com.wardellbagby.tokipona.util.Words
 import io.mattcarroll.hover.HoverView
@@ -24,50 +26,70 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import opennlp.tools.sentdetect.SentenceDetectorME
 import opennlp.tools.sentdetect.SentenceModel
+import javax.inject.Inject
 
+/**
+ * A service that monitors for changes in the clipboard and shows a floating button if the clipboard
+ * contains text that could be parsed as Toki Pona.
+ *
+ * Uses the OpenNLP (https://opennlp.apache.org/) library to determine if text is sentence-y or not.
+ * This all happens on-device; no network required.
+ */
 class TokiPonaClipboardService : Service() {
 
     companion object {
-        val CUTOFF_SENTENCE_PROBABILITY = .7f
+        const val CUTOFF_SENTENCE_PROBABILITY = .7f
     }
 
-    private var mHoverView: HoverView? = null
-    private var mClipboardHoverMenu: ClipboardHoverMenu? = null
-    private var mSentenceModel: SentenceModel? = null
-    private var mIsBound = false
+    @Inject lateinit var preferences: Preferences
+    private var hoverView: HoverView? = null
+    private var clipboardHoverMenu: ClipboardHoverMenu? = null
+    private var sentenceModel: SentenceModel? = null
+    private var isBound = false
 
     override fun onBind(intent: Intent): IBinder? {
-        mIsBound = true
+        isBound = true
         return null
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-        mIsBound = false
+        isBound = false
         return true
     }
 
     override fun onRebind(intent: Intent?) {
-        super.onRebind(intent)
-        mIsBound = true
+        isBound = true
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        TokiPonaApplication.appComponent.inject(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
+        Log.d(TAG, "TokiPonaClipboardService has started.")
+
+        if (!preferences.isClipboardServiceEnabled) {
+            Log.i(TAG, "TokiPonaClipboardService is stopping because it has been marked as disabled.")
+            stopSelf()
+        }
+
         if (!canDrawOverlays(this)) {
             Log.i(TAG, "TokiPonaClipboardService is stopping because it does not have the permission to draw overlays.")
             stopSelf()
             return START_NOT_STICKY
         }
 
-        if (mSentenceModel == null) {
+        if (sentenceModel == null) {
             val modelStream = assets.open("en-sent.bin")
-            mSentenceModel = SentenceModel(modelStream)
+            sentenceModel = SentenceModel(modelStream)
         }
 
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboard.addPrimaryClipChangedListener({
             val clipData = clipboard.primaryClip
-            if (!mIsBound && isClipDataText(clipData)) {
+            if (!isBound && isClipDataText(clipData) && !isOurClipData(clipData)) {
                 val text = clipData.getItemAt(0).coerceToText(this).toString()
                 if (isTextLikelyEnglish(text)) {
                     showHoverView(applicationContext, text)
@@ -78,49 +100,47 @@ class TokiPonaClipboardService : Service() {
         return START_STICKY
     }
 
-    private fun isClipDataText(clipData: ClipData): Boolean {
-        return clipData.itemCount > 0 && clipData.description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
-    }
+    private fun isClipDataText(clipData: ClipData): Boolean = clipData.itemCount > 0 && clipData.description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
+
+    private fun isOurClipData(clipData: ClipData): Boolean = clipData.description.label == getString(R.string.app_name)
 
     @SuppressLint("InflateParams") // No way to inflate it here without null. There is no parent.
     private fun showHoverView(context: Context, text: String) {
-
-        if (!canDrawOverlays(context)) {
-            Log.i(TAG, "Stopping TokiPonaClipboardService because we have lost the permission to draw overlays.")
+        if (!canDrawOverlays(context) || !preferences.isClipboardServiceEnabled) {
+            Log.i(TAG, "Stopping TokiPonaClipboardService because the user has told us not to run.")
             stopSelf()
             return
         }
 
-        if (mHoverView == null) {
-            mHoverView = HoverView.createForWindow(
+        if (hoverView == null) {
+            hoverView = HoverView.createForWindow(
                     this,
                     WindowViewController((getSystemService(Context.WINDOW_SERVICE) as WindowManager)),
                     SideDock.SidePosition(SideDock.SidePosition.RIGHT, 0.3f))
-            mClipboardHoverMenu = ClipboardHoverMenu(ContextThemeWrapper(this, R.style.AppTheme_NoActionBar)) {
-                mHoverView?.release()
-                mHoverView?.removeFromWindow()
-                mHoverView = null
+            clipboardHoverMenu = ClipboardHoverMenu(ContextThemeWrapper(this, R.style.AppTheme_NoActionBar)) {
+                hoverView?.release()
+                hoverView?.removeFromWindow()
+                hoverView = null
             }
         }
-        mHoverView?.addToWindow()
+        hoverView?.addToWindow()
         Words.getWords(this)
                 .flatMap { Words.glossToText(text, it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
-                    mClipboardHoverMenu?.setText(it)
+                    clipboardHoverMenu?.setText(it)
                 }
 
-        mHoverView?.setMenu(mClipboardHoverMenu)
-        mHoverView?.collapse()
+        hoverView?.setMenu(clipboardHoverMenu)
+        hoverView?.collapse()
     }
 
-    private fun canDrawOverlays(context: Context): Boolean {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)
-    }
+    private fun canDrawOverlays(context: Context): Boolean =
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)
 
     private fun isTextLikelyEnglish(text: String): Boolean {
-        val sentenceDetector = SentenceDetectorME(mSentenceModel)
+        val sentenceDetector = SentenceDetectorME(sentenceModel)
         sentenceDetector.sentDetect(text) // Don't care about the result.
         val probability = sentenceDetector.sentenceProbabilities.average()
         Log.d(TAG, "Probability of {$probability} for copied text.")
@@ -129,7 +149,8 @@ class TokiPonaClipboardService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mHoverView?.release()
-        mHoverView?.removeFromWindow()
+        Log.d(TAG, "TokiPonaClipboardService has stopped.")
+        hoverView?.release()
+        hoverView?.removeFromWindow()
     }
 }

@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
     defaultConfig {
 
         applicationId "com.wardellbagby.tokipona"
@@ -55,7 +55,7 @@ configurations {
 dependencies {
     ktlint 'com.github.shyiko:ktlint:0.9.1'
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    implementation 'com.github.wardellbagby:FixedQueue:ac1cebdbb2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation "com.android.support:support-v4:$support_lib_version"

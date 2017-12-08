@@ -37,14 +37,16 @@ import io.reactivex.processors.FlowableProcessor
  * ```
  * class MyActivity: BaseActivity
  *
- *     private var mBool by state(false)
+ *     private var bool by state(false)
  * ```
  *
  * The BaseActivity and Pikkel will take care of the rest.
  *
- * For Activity to Fragment communication, Activity that extend this should override [getEvents]
+ * For Activity to Fragment communication, Activities that extend this should override [getEvents]
  * and return a valid [FlowableProcessor]. Activities should also create their own implementation
  * of [BaseEvent], as [BaseEvent]s are used to wrap data that should be sent to Fragments.
+ *
+ * Fragments will subscribe using [safeSubscribe]. If any events are passed
  *
  * @author Wardell Bagby
  */
@@ -54,8 +56,6 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
     private var disposables: CompositeDisposable? = null
 
     abstract class BaseEvent
-    @Suppress("unused") //Will be used as more Activities are added. (Date written: 8/4/2017, remove by 2/4/2018)
-    class VoidEvent : BaseEvent() //Should this exist or should it be in its own BaseFragmentActivity?
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +70,7 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
 
     override fun onStart() {
         super.onStart()
-        bindService(Intent(this, TokiPonaClipboardService::class.java), mConnection, Context.BIND_NOT_FOREGROUND)
+        bindService(Intent(this, TokiPonaClipboardService::class.java), clipboardServiceConnection, Context.BIND_NOT_FOREGROUND)
     }
 
     override fun onPause() {
@@ -81,7 +81,7 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
 
     override fun onStop() {
         super.onStop()
-        unbindService(mConnection)
+        unbindService(clipboardServiceConnection)
     }
 
     override fun onBackPressed() {
@@ -115,9 +115,7 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
      * Returns a Flowable that will emit events of type [T] so that Fragments can subscribe to the
      * events that pertain to them.
      */
-    open fun getEvents(): Flowable<T>? {
-        return null
-    }
+    open fun getEvents(): Flowable<T> = Flowable.empty()
 
     /**
      * Convenience method for calling [Fragments.replace] with [getSupportFragmentManager].
@@ -127,7 +125,7 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
     }
 
     private fun <EventType : T> subscribeWith(consumer: (EventType) -> Unit): Disposable? {
-        return getEvents()?.subscribe({
+        return getEvents().subscribe({
             @Suppress("UNCHECKED_CAST") //This will fail safely, and we null-check later.
             val event: EventType? = it as? EventType
             if (event != null) {
@@ -136,7 +134,7 @@ abstract class BaseActivity<T : BaseActivity.BaseEvent> : AppCompatActivity(), P
         })
     }
 
-    private val mConnection: ServiceConnection = object : ServiceConnection {
+    private val clipboardServiceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(p0: ComponentName?) {}
         override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {}
     }

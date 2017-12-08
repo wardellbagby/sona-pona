@@ -2,17 +2,16 @@ package com.wardellbagby.tokipona.viewmodel
 
 import android.os.CountDownTimer
 import android.os.Handler
+import com.wardellbagby.fixedqueue.FixedQueue
 import com.wardellbagby.tokipona.data.Answer
 import com.wardellbagby.tokipona.data.DefinitionQuestion
 import com.wardellbagby.tokipona.data.GlyphQuestion
 import com.wardellbagby.tokipona.data.Question
 import com.wardellbagby.tokipona.data.Word
 import com.wardellbagby.tokipona.provider.GlyphContentProvider
-import com.wardellbagby.tokipona.util.FixedQueue
 import com.wardellbagby.tokipona.util.randomItem
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
-import java.util.Collections
 import java.util.Random
 
 /**
@@ -21,10 +20,10 @@ import java.util.Random
 class QuizViewModel(private val words: List<Word>) {
 
     companion object {
-        val MAX_TIMER_VALUE = 15000L
-        private val TIMER_INTERVAL = 10L
-        private val WAIT_BEFORE_TIMER_START = 1500L
-        private val MAX_RECENT_ITEMS_COUNT = 5
+        const val MAX_TIMER_VALUE = 15000L
+        private const val TIMER_INTERVAL = 10L
+        private const val WAIT_BEFORE_TIMER_START = 1500L
+        private const val MAX_RECENT_ITEMS_COUNT = 5
     }
 
     private enum class QuestionType {
@@ -149,7 +148,7 @@ class QuizViewModel(private val words: List<Word>) {
     private fun generateAnswers(correctAnswer: Word, incorrectAnswers: List<Word>): List<Answer> {
         val answers = mutableListOf(Answer(correctAnswer.name, true))
         answers += incorrectAnswers.map { Answer(it.name, false) }
-        Collections.shuffle(answers)
+        answers.shuffle()
         return answers
     }
 

@@ -41,7 +41,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".overlay.receiver.BootCompletedReceiver"
+            android:name=".overlay.receiver.StartClipboardServiceReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -51,7 +51,7 @@
 
         <provider
             android:name=".provider.GlyphContentProvider"
-            android:authorities="com.wardellbagby.tokipona"
+            android:authorities="com.wardellbagby.tokipona.glyph"
             android:enabled="true"
             android:exported="false" />
     </application>

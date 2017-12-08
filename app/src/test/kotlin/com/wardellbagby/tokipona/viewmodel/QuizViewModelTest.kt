@@ -7,7 +7,6 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 
@@ -59,7 +58,6 @@ class QuizViewModelTest {
     }
 
     @Test
-    @Ignore("Can't mock CountdownTimer.") //todo Look into switching CountdownTimer for another class or creating our own.
     fun onTick() {
         model.onTick()
                 .timeout(1, TimeUnit.SECONDS)

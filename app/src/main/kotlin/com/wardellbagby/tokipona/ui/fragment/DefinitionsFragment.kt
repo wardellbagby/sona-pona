@@ -12,7 +12,7 @@ import com.wardellbagby.tokipona.R
  */
 class DefinitionsFragment : BaseFragment() {
 
-    private var mTwoPane = false
+    private var isTwoPane = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_definitions, container, false)
@@ -20,7 +20,7 @@ class DefinitionsFragment : BaseFragment() {
 
     override fun onViewCreated(rootView: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(rootView, savedInstanceState)
-        mTwoPane = resources.getBoolean(R.bool.is_two_pane)
+        isTwoPane = resources.getBoolean(R.bool.is_two_pane)
         var listFragment: WordListFragment? = childFragmentManager.findFragmentByTag(getString(R.string.fragment_word_list)) as WordListFragment?
         if (listFragment == null) {
             listFragment = WordListFragment()
@@ -33,7 +33,7 @@ class DefinitionsFragment : BaseFragment() {
                 fragment.arguments = Bundle().apply { putParcelable(WordDetailsFragment.Companion.WORD, it) }
             }
             replace(R.id.word_detail_container, fragment, it.name)
-            mTwoPane // We only need to show an item as selected on two panes, where the user can see the list and details.
+            isTwoPane // We only need to show an item as selected on two panes, where the user can see the list and details.
         }
     }
 

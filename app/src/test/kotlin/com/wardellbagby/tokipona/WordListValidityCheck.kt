@@ -30,7 +30,7 @@ class WordListValidityCheck {
         if (!wordListFile.exists()) return fail("word_list.json was not found in ${file.absolutePath}")
         val stream = FileInputStream(wordListFile)
         val expectedWordCount = 123
-        val words = Words.getWordsSync(stream).blockingGet()
+        val words = Words.getWordsSync(stream)
         assertTrue("Received an empty list of words.", words.isNotEmpty())
         assertTrue("Expected at least $expectedWordCount words. Received ${words.size}", words.size >= expectedWordCount)
         words.forEach {

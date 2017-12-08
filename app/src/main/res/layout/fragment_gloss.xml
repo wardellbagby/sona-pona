@@ -13,6 +13,8 @@
         android:layout_margin="@dimen/glossed_display_view_margin"
         android:transitionGroup="true"
         android:transitionName="@string/transition_name_main_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintBottom_toTopOf="@+id/inputted_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,13 +32,11 @@
         android:hint="@string/gloss_text_hint"
         android:inputType="textNoSuggestions|textMultiLine|textVisiblePassword"
         android:maxLines="4"
-        android:padding="8dp"
+        android:padding="12dp"
         android:scrollbars="vertical"
         android:transitionName="@string/transition_name_extra_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="RtlHardcoded,UnusedAttribute" /><!--This lib only supports drawableRight or drawableLeft, so can't use drawableEnd.-->
-
-
 </android.support.constraint.ConstraintLayout>
