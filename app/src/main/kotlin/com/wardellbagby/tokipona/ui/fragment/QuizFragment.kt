@@ -21,7 +21,6 @@ import com.wardellbagby.tokipona.util.TAG
 import com.wardellbagby.tokipona.viewmodel.QuizViewModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subscribers.ResourceSubscriber
 import kotlinx.android.synthetic.main.fragment_quiz.*
@@ -33,24 +32,22 @@ import javax.inject.Inject
 class QuizFragment : BaseFragment() {
 
     companion object {
-        private val RESULT_DELAY = 1500L
+        private const val RESULT_DELAY = 1500L
     }
 
-    @Inject lateinit var mQuizViewModelProvider: Single<QuizViewModel>
-    private var mQuizViewModel: QuizViewModel? = null
-    private val mHandler = Handler()
-    private var mOnTickDisposable: Disposable? = null
-    private var mCorrectColor: Int = 0
-    private var mIncorrectColor: Int = 0
+    @Inject lateinit var quizViewModelProvider: Single<QuizViewModel>
+    private var quizViewModel: QuizViewModel? = null
+    private val handler = Handler()
+    private var correctColor: Int = 0
+    private var incorrectColor: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TokiPonaApplication.appComponent.inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_quiz, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_quiz, container, false)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -59,13 +56,13 @@ class QuizFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        mQuizViewModelProvider
+        quizViewModelProvider
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
-                    mQuizViewModel = it
+                    quizViewModel = it
                     instantiateFromModel()
-                }
+                }.attach()
     }
 
     override fun onPause() {
@@ -75,8 +72,8 @@ class QuizFragment : BaseFragment() {
 
     @Suppress("DEPRECATION") // Necessary evil until minSdk is Marshmallow.
     private fun setColors(context: Context) {
-        mCorrectColor = context.resources.getColor(R.color.correct)
-        mIncorrectColor = context.resources.getColor(R.color.incorrect)
+        correctColor = context.resources.getColor(R.color.correct)
+        incorrectColor = context.resources.getColor(R.color.incorrect)
     }
 
     private fun animateTransition() {
@@ -85,19 +82,16 @@ class QuizFragment : BaseFragment() {
     }
 
     private fun reset() {
-        if (mOnTickDisposable?.isDisposed == false) {
-            mOnTickDisposable?.dispose()
-        }
         quiz_question_view.setQuestion(null)
         quiz_answer_view.removeAllViews()
-        quiz_countdown_timer.progressDrawable.setColorFilter(mCorrectColor, PorterDuff.Mode.MULTIPLY)
-        mHandler.removeCallbacks(null)
+        quiz_countdown_timer.progressDrawable.setColorFilter(correctColor, PorterDuff.Mode.MULTIPLY)
+        handler.removeCallbacksAndMessages(null)
     }
 
     private fun instantiateFromModel() {
         animateTransition()
         reset()
-        val currentQuestion = mQuizViewModel?.getQuestion() ?: return
+        val currentQuestion = quizViewModel?.getQuestion() ?: return
         showQuestion(currentQuestion)
         showAnswers(currentQuestion.answers)
         setupTimer()
@@ -108,7 +102,7 @@ class QuizFragment : BaseFragment() {
     }
 
     private fun showAnswers(answers: List<Answer>) {
-        val model = mQuizViewModel ?: return
+        val model = quizViewModel ?: return
         answers.forEachIndexed { index, answer ->
             val view = LayoutInflater.from(context).inflate(R.layout.quiz_answer_view, quiz_answer_view, false)
             val answerView: TextView = view.findViewById(R.id.answer_text)
@@ -122,56 +116,54 @@ class QuizFragment : BaseFragment() {
     }
 
     private fun setupTimer() {
-        val model = mQuizViewModel ?: return
-        if (mOnTickDisposable?.isDisposed == false) {
-            mOnTickDisposable?.dispose()
-        }
-        mOnTickDisposable = model.onTick()
-                .subscribeWith(object : ResourceSubscriber<Long>() {
-                    override fun onStart() {
-                        super.onStart()
-                        quiz_countdown_timer.max = QuizViewModel.MAX_TIMER_VALUE.toInt()
-                        quiz_countdown_timer.progress = quiz_countdown_timer.max
-                    }
-
-                    override fun onComplete() {
-                        handleResult(model.answerQuestion())
-                    }
-
-                    override fun onError(t: Throwable?) {
-                        Log.e(TAG, "Something terrible happened?", t)
-                    }
-
-                    override fun onNext(progress: Long) {
-                        quiz_countdown_timer.progress = progress.toInt()
-                        //No one man should have all these primitive casts.
-                        setTimerColor((progress / quiz_countdown_timer.max.toFloat()))
-                    }
-                })
+        val model = quizViewModel ?: return
+        model.onTick().subscribeWith(OnTickSubscriber()).attach()
     }
 
     private fun setTimerColor(ratio: Float) {
         val newRatio = (1 - Math.cos(ratio * Math.PI)) / 2
-        val red = Math.abs(Color.red(mIncorrectColor) * (1 - newRatio) + Color.red(mCorrectColor) * newRatio).toInt()
-        val green = Math.abs(Color.green(mIncorrectColor) * (1 - newRatio) + Color.green(mCorrectColor) * newRatio).toInt()
-        val blue = Math.abs(Color.blue(mIncorrectColor) * (1 - newRatio) + Color.blue(mCorrectColor) * newRatio).toInt()
+        val red = Math.abs(Color.red(incorrectColor) * (1 - newRatio) + Color.red(correctColor) * newRatio).toInt()
+        val green = Math.abs(Color.green(incorrectColor) * (1 - newRatio) + Color.green(correctColor) * newRatio).toInt()
+        val blue = Math.abs(Color.blue(incorrectColor) * (1 - newRatio) + Color.blue(correctColor) * newRatio).toInt()
         quiz_countdown_timer.progressDrawable.setColorFilter(Color.rgb(red, green, blue), PorterDuff.Mode.MULTIPLY)
     }
 
-    @Suppress("ConvertLambdaToReference") //It can't be done. quiz_answer_view's type is too confusing.
     private fun handleResult(correct: Boolean, selected: View? = null) {
         if (correct) {
-            selected?.setBackgroundColor(mCorrectColor)
+            selected?.setBackgroundColor(correctColor)
         } else {
-            selected?.setBackgroundColor(mIncorrectColor)
-            val model = mQuizViewModel ?: return
+            selected?.setBackgroundColor(incorrectColor)
+            val model = quizViewModel ?: return
             val answer = model.getCorrectAnswer()
             (0 until quiz_answer_view.childCount)
-                    .map { quiz_answer_view.getChildAt(it) }
+                    .map(quiz_answer_view::getChildAt)
                     .first { it.tag == answer }
-                    .setBackgroundColor(mCorrectColor)
+                    .setBackgroundColor(correctColor)
 
         }
-        mHandler.postDelayed(this::instantiateFromModel, RESULT_DELAY)
+        handler.postDelayed(this::instantiateFromModel, RESULT_DELAY)
+    }
+
+    inner class OnTickSubscriber : ResourceSubscriber<Long>() {
+        override fun onStart() {
+            super.onStart()
+            quiz_countdown_timer.max = QuizViewModel.MAX_TIMER_VALUE.toInt()
+            quiz_countdown_timer.progress = quiz_countdown_timer.max
+        }
+
+        override fun onComplete() {
+            val model = quizViewModel ?: return
+            handleResult(model.answerQuestion())
+        }
+
+        override fun onError(t: Throwable?) {
+            Log.e(TAG, "Something terrible happened in the OnTickSubscriber?", t)
+        }
+
+        override fun onNext(progress: Long) {
+            //No one man should have all these primitive casts.
+            quiz_countdown_timer.progress = progress.toInt()
+            setTimerColor((progress / quiz_countdown_timer.max.toFloat()))
+        }
     }
 }

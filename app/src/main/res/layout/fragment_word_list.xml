@@ -49,14 +49,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:tb_anim_duration="400"
-            app:tb_color="@color/colorAccent"
+            app:tb_color="@color/amoled_black"
             app:tb_container_gravity="center"
             app:tb_fab_type="normal">
 
             <org.droidparts.widget.ClearableEditText
                 android:id="@+id/search_edit_text"
+                style="@android:style/Widget.EditText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/amoled_black"
                 android:drawableRight="@drawable/ic_clear"
                 android:hint="@string/search_hint"

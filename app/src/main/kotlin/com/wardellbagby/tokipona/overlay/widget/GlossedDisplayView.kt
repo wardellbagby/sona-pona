@@ -19,11 +19,11 @@ import kotlinx.android.synthetic.main.glossed_text_display.view.*
 class GlossedDisplayView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
         CardView(context, attrs, defStyleAttr) {
 
-    private val mFactory = ViewSwitcher.ViewFactory { LayoutInflater.from(context).inflate(R.layout.default_autosize_text_view, textSwitcher, false) as TextView }
+    private val viewSwitcherFactory = ViewSwitcher.ViewFactory { LayoutInflater.from(context).inflate(R.layout.default_autosize_text_view, textSwitcher, false) as TextView }
 
     init {
         LayoutInflater.from(context).inflate(R.layout.glossed_text_display, this, true)
-        textSwitcher.setFactory(mFactory)
+        textSwitcher.setFactory(viewSwitcherFactory)
     }
 
     override fun onFinishInflate() {

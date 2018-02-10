@@ -12,10 +12,10 @@ import java.io.IOException
 class GlyphContentProvider : ContentProvider() {
 
     companion object {
-        val GLYPH_ASSET_PATH = "glyphs"
+        const val GLYPH_ASSET_PATH = "glyphs"
 
         fun getUriForWord(word: Word?): Uri? {
-            return Uri.parse("content://com.wardellbagby.tokipona/" + word?.name)
+            return Uri.parse("content://com.wardellbagby.tokipona.glyph/" + word?.name)
         }
     }
 

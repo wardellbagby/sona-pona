@@ -2,6 +2,7 @@ package com.wardellbagby.tokipona
 
 import android.app.Application
 import android.content.Intent
+import android.os.Build
 import com.rollbar.android.Rollbar
 import com.wardellbagby.tokipona.dagger.AppComponent
 import com.wardellbagby.tokipona.dagger.AppModule
@@ -26,9 +27,12 @@ class TokiPonaApplication : Application() {
             if (flavor.isEmpty()) {
                 flavor = "default"
             }
-            Rollbar.init(this, BuildConfig.ROLLBAR_ACCESS_TOKEN, flavor + "/" + BuildConfig.BUILD_TYPE)
+            Rollbar.init(this, BuildConfig.ROLLBAR_ACCESS_TOKEN, "$flavor/${BuildConfig.BUILD_TYPE}")
         }
         appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
-        startService(Intent(this, TokiPonaClipboardService::class.java))
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            startService(Intent(this, TokiPonaClipboardService::class.java))
+        }
     }
 }

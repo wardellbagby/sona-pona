@@ -10,22 +10,27 @@ import android.content.SharedPreferences
 class Preferences(private val preferences: SharedPreferences) {
 
     /**
-     * Returns whether or not the Overlay Permission dialog should be shown.
+     * Whether or not the Overlay Permission dialog should be shown.
      */
-    fun shouldShowOverlayPermission(): Boolean {
-        return preferences.getBoolean(SHOULD_SHOW_OVERLAY_PERMISSION, true)
-    }
+    var shouldShowOverlayPermission: Boolean
+        get() = preferences.getBoolean(SHOULD_SHOW_OVERLAY_PERMISSION, true)
+        set(value) {
+            preferences.edit()
+                    .putBoolean(SHOULD_SHOW_OVERLAY_PERMISSION, value)
+                    .apply()
+        }
 
     /**
-     * Sets whether or not the Overlay Permission dialog should be shown.
+     * Whether or not the clipboard service should be enabled.
      */
-    fun setShouldShowOverlayPermission(shouldShowOverlayPermission: Boolean) {
-        preferences.edit()
-                .putBoolean(SHOULD_SHOW_OVERLAY_PERMISSION, shouldShowOverlayPermission)
-                .apply()
-    }
+    var isClipboardServiceEnabled: Boolean
+        get() = preferences.getBoolean(IS_CLIPBOARD_SERVICE_ENABLED, false)
+        set(value) {
+            preferences.edit().putBoolean(IS_CLIPBOARD_SERVICE_ENABLED, value).apply()
+        }
 
     companion object {
-        private val SHOULD_SHOW_OVERLAY_PERMISSION = "shouldShowOverlayPermission"
+        private const val SHOULD_SHOW_OVERLAY_PERMISSION = "shouldShowOverlayPermission"
+        private const val IS_CLIPBOARD_SERVICE_ENABLED = "isClipboardServiceEnabled"
     }
 }

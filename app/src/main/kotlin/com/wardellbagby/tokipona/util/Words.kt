@@ -31,30 +31,26 @@ object Words {
             return Single.just(words)
         }
         val stream = context.assets.open("word_list.json")
-        return Single.defer {
-            getWordsSync(stream)
-        }
+        return Single.fromCallable { getWordsSync(stream) }
     }
 
-    fun getWordsSync(stream: InputStream): Single<List<Word>> {
+    fun getWordsSync(stream: InputStream): List<Word> {
         val reader = BufferedReader(InputStreamReader(stream))
         val words: List<Word> = Gson().fromJson(reader, object : TypeToken<List<Word>>() {}.type)
         words.sortedBy(Word::name)
         wordsList = words
-        return Single.just(words)
+        return words
     }
 
     private fun gloss(text: String, words: List<Word>, includePunctuation: Boolean = true): Single<List<Word>> {
-        return Single.defer {
-            glossSync(text, words, includePunctuation)
-        }
+        return Single.fromCallable { glossSync(text, words, includePunctuation) }
 
     }
 
-    private fun glossSync(text: String, words: List<Word>, includePunctuation: Boolean): Single<List<Word>> {
-        return Single.just(Words.split(text, includePunctuation)?.map { token ->
+    private fun glossSync(text: String, words: List<Word>, includePunctuation: Boolean): List<Word> {
+        return Words.split(text, includePunctuation)?.map { token ->
             words.firstOrNull { it.name == token } ?: Word(token, isValidWord = false)
-        } ?: emptyList())
+        } ?: emptyList()
     }
 
     /**
@@ -92,16 +88,12 @@ object Words {
 
     }
 
-    private fun isSpecialCharacter(text: String?): Boolean {
-        return text != null && text.length == 1 && isSpecialCharacter(text.single())
-    }
+    private fun isSpecialCharacter(text: String?): Boolean =
+            text != null && text.length == 1 && isSpecialCharacter(text.single())
 
-    private fun isSpecialCharacter(char: Char?): Boolean {
-        return char != null && !Character.isLetter(char)
-    }
+    private fun isSpecialCharacter(char: Char?): Boolean = char != null && !Character.isLetter(char)
 
-    fun split(text: String?, includePunctuation: Boolean = true): List<String>? {
-        return text?.split(if (includePunctuation) REGEX_KEEP_DELIMITERS else REGEX_EXCLUDE_DELIMITERS)
-    }
+    private fun split(text: String?, includePunctuation: Boolean = true): List<String>? =
+            text?.split(if (includePunctuation) REGEX_KEEP_DELIMITERS else REGEX_EXCLUDE_DELIMITERS)
 
 }
